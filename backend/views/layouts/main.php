@@ -15,7 +15,9 @@ use yii\web\View;
 if (class_exists('ramosisw\CImaterial\web\MaterialAsset')) {
     MaterialAsset::register($this);
 }
-
+if (!isset($this->params['active'])) {
+    $this->params['active'] = 'index';
+}
 FontAwesomeAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
