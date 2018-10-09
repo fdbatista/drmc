@@ -50,13 +50,13 @@ FontAwesomeAsset::register($this);
                         ?>
                         <ul class="nav">
                             <li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li>
-                            <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">content_paste</i>Marcas</a></li>
-                            <li class="<?= $this->params['active'] === 'countries' ? 'active' : '' ?>"><a href="<?= Url::to(['/countries']) ?>"><i class="material-icons">content_paste</i>Pa&iacute;ses</a></li>
-                            <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">content_paste</i>Tipos de dispositivos</a></li>
-                            <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">content_paste</i>Configuraci&oacute;n</a></li>
-                            <li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">content_paste</i>Tienda</a></li>
-                            <li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">content_paste</i>Almac&eacute;n</a></li>
-                            <li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">content_paste</i>Reparaciones</a></li>
+                            <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li>
+                            <li class="<?= $this->params['active'] === 'countries' ? 'active' : '' ?>"><a href="<?= Url::to(['/countries']) ?>"><i class="material-icons">location_on</i>Pa&iacute;ses</a></li>
+                            <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">add_to_queue</i>Tipos de dispositivos</a></li>
+                            <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li>
+                            <li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li>
+                            <li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li>
+                            <li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li>
                         </ul>
                         <?php
                     }

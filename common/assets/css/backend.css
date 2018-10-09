@@ -118,3 +118,11 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+a .material-icons {
+    margin-top: -4px!important;
+}
+
+.sidebar .nav li > a, .off-canvas-sidebar .nav li > a {
+    margin: 5px 15px!important;
+}
