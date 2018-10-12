@@ -60,8 +60,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'site';
-        return $this->render('index');
+        return $this->actionDashboard();
     }
     
     public function actionDashboard() {

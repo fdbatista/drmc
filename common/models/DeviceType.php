@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ *
+ * @property Device[] $devices
  */
 class DeviceType extends \yii\db\ActiveRecord
 {
@@ -41,5 +43,13 @@ class DeviceType extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDevices()
+    {
+        return $this->hasMany(Device::className(), ['type_id' => 'id']);
     }
 }

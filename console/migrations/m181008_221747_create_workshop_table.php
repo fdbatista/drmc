@@ -21,7 +21,7 @@ class m181008_221747_create_workshop_table extends Migration
             'signature_out' => $this->string(50),
             'effort' => $this->integer(),
             'receiver_id' => $this->integer(),
-        ]);
+        ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         $this->addForeignKey('fk_workshop_device', 'workshop', 'device_id', 'device', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_workshop_receiver', 'workshop', 'receiver_id', 'user', 'id', 'SET NULL', 'CASCADE');
         $this->createIndex('idx_workshop_device', 'workshop', 'device_id', true);

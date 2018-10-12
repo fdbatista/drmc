@@ -10,24 +10,25 @@ use common\models\Shop;
 /**
  * ShopSearch represents the model behind the search form of `common\models\Shop`.
  */
-class ShopSearch extends Shop
-{
+class ShopSearch extends Shop {
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    
+    public $device;
+    
+    public function rules() {
         return [
-            [['device_id', 'price_in', 'price_out', 'first_discount', 'major_discount'], 'integer'],
-            [['inventory', 'code'], 'safe'],
+                [['device_id', 'price_in', 'price_out', 'first_discount', 'major_discount'], 'integer'],
+                [['inventory', 'code', 'device', 'items'], 'safe'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,15 +40,21 @@ class ShopSearch extends Shop
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Shop::find();
 
         // add conditions that should always apply here
 
+        $query->joinWith(['device']);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['device'] = [
+            'asc' => ['device.name' => SORT_ASC],
+            'desc' => ['device.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -67,8 +74,10 @@ class ShopSearch extends Shop
         ]);
 
         $query->andFilterWhere(['like', 'inventory', $this->inventory])
-            ->andFilterWhere(['like', 'code', $this->code]);
+                ->andFilterWhere(['like', 'code', $this->code])
+                ->andFilterWhere(['like', 'device.name', $this->device]);
 
         return $dataProvider;
     }
+
 }

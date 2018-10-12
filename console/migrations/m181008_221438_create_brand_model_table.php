@@ -16,7 +16,7 @@ class m181008_221438_create_brand_model_table extends Migration {
             'name' => $this->string(75)->notNull()->unique(),
             'description' => $this->string(250),
             'brand_id' => $this->integer()->notNull(),
-        ]);
+        ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         $this->addForeignKey('fk_model_brand', 'brand_model', 'brand_id', 'brand', 'id', 'CASCADE', 'CASCADE');
     }
 

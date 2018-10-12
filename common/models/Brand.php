@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $description
+ *
+ * @property BrandModel[] $brandModels
  */
 class Brand extends \yii\db\ActiveRecord
 {
@@ -44,5 +46,13 @@ class Brand extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'description' => Yii::t('app', 'Description'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBrandModels()
+    {
+        return $this->hasMany(BrandModel::className(), ['brand_id' => 'id']);
     }
 }

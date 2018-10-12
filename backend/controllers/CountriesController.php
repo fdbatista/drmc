@@ -27,13 +27,17 @@ class CountriesController extends Controller {
             ],
         ];
     }
+    
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'countries';
+        return true;
+    }
 
     /**
      * Lists all Country models.
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'countries';
         $searchModel = new CountrySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

@@ -19,6 +19,7 @@ use Yii;
  *
  * @property UserRole[] $userRoles
  * @property Role[] $roles
+ * @property Workshop[] $workshops
  */
 class UserDB extends \yii\db\ActiveRecord
 {
@@ -78,5 +79,13 @@ class UserDB extends \yii\db\ActiveRecord
     public function getRoles()
     {
         return $this->hasMany(Role::className(), ['id' => 'role_id'])->viaTable('user_role', ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWorkshops()
+    {
+        return $this->hasMany(Workshop::className(), ['receiver_id' => 'id']);
     }
 }

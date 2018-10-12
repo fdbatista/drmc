@@ -28,6 +28,11 @@ class WorkshopController extends Controller {
         ];
     }
 
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'workshop';
+        return true;
+    }
+
     /**
      * Lists all Workshop models.
      * @return mixed

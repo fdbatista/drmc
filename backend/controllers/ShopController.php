@@ -27,13 +27,17 @@ class ShopController extends Controller {
             ],
         ];
     }
+    
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'shop';
+        return true;
+    }
 
     /**
      * Lists all Shop models.
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'shop';
         $searchModel = new ShopSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

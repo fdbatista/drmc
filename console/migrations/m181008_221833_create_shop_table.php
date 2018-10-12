@@ -20,7 +20,7 @@ class m181008_221833_create_shop_table extends Migration
             'price_out' => $this->integer()->notNull(),
             'first_discount' => $this->integer()->notNull(),
             'major_discount' => $this->integer()->notNull(),
-        ]);
+        ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         $this->addForeignKey('fk_shop_device', 'shop', 'device_id', 'device', 'id', 'CASCADE', 'CASCADE');
         $this->createIndex('idx_shop_device', 'shop', 'device_id', true);
     }

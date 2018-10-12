@@ -6331,7 +6331,7 @@ S2.define('select2/selection/stopPropagation',[
         args.unshift(event, delta, deltaX, deltaY);
 
         // Clearout lowestDelta after sometime to better
-        // handle multiple device types that give different
+        // handle multiple Tipos de dispositivo that give different
         // a different lowestDelta
         // Ex: trackpad = 3 and mouse wheel = 120
         if (nullLowestDeltaTimeout) { clearTimeout(nullLowestDeltaTimeout); }

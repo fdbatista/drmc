@@ -15,7 +15,7 @@ class m181008_221626_create_device_type_table extends Migration
         $this->createTable('device_type', [
             'id' => $this->primaryKey(),
             'name' => $this->string(50)->notNull()->unique(),
-        ]);
+        ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
     }
 
     /**

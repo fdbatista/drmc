@@ -4,9 +4,11 @@
 
 use backend\assets\FontAwesomeAsset;
 use ramosisw\CImaterial\web\MaterialAsset;
+use yii\bootstrap\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
+use yii\widgets\Breadcrumbs;
 
 /*
   use yii\dependencies
@@ -19,6 +21,7 @@ if (!isset($this->params['active'])) {
     $this->params['active'] = 'index';
 }
 FontAwesomeAsset::register($this);
+$this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector: \'[data-toggle="tooltip"]\'}); });');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -28,6 +31,7 @@ FontAwesomeAsset::register($this);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
+        <link rel="shortcut icon" type=image/png href="<?= Url::to('@web/img/favicon.png') ?>">
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
@@ -52,11 +56,13 @@ FontAwesomeAsset::register($this);
                             <li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li>
                             <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li>
                             <li class="<?= $this->params['active'] === 'countries' ? 'active' : '' ?>"><a href="<?= Url::to(['/countries']) ?>"><i class="material-icons">location_on</i>Pa&iacute;ses</a></li>
-                            <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">add_to_queue</i>Tipos de dispositivos</a></li>
+                            <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li>
+                            <li class="<?= $this->params['active'] === 'devices' ? 'active' : '' ?>"><a href="<?= Url::to(['/devices']) ?>"><i class="material-icons">phone_android</i>Dispositivos</a></li>
                             <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li>
                             <li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li>
                             <li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li>
                             <li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li>
+                            <li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li>
                         </ul>
                         <?php
                     }
@@ -75,7 +81,7 @@ FontAwesomeAsset::register($this);
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <span class="navbar-brand" href="">Bienvenido, <?= Yii::$app->user->identity->username ?>.</span>
+                            <span class="navbar-brand" href="">Bienvenido, <?= Yii::$app->user->identity->username ?></span>
                         </div>
                         <?php
                         if (!Yii::$app->user->isGuest) {
@@ -134,6 +140,7 @@ FontAwesomeAsset::register($this);
                     <div class="container-fluid" style="padding: 0 20px;">
                         <div class="row">
                             <div class="col-lg-12">
+                                <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
                                 <?= $content ?>
                             </div>
                         </div>
@@ -143,7 +150,7 @@ FontAwesomeAsset::register($this);
                 <footer class="footer">
                     <div class="container-fluid">
                         <p class="copyright pull-right">
-                            &copy; <?= date('Y') ?> <a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>, made with love for a better web
+                            &copy; <?= date('Y') ?> <a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>
                         </p>
                     </div>
                 </footer>

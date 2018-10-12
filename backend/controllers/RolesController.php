@@ -27,13 +27,17 @@ class RolesController extends Controller {
             ],
         ];
     }
+    
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'roles';
+        return true;
+    }
 
     /**
      * Lists all Role models.
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'roles';
         $searchModel = new RoleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

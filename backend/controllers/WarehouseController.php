@@ -27,6 +27,11 @@ class WarehouseController extends Controller {
             ],
         ];
     }
+    
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'warehouse';
+        return true;
+    }
 
     /**
      * Lists all Warehouse models.

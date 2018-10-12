@@ -1,37 +1,71 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\BrandSearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\BrandSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Brands');
+/* @var $this View */
+/* @var $searchModel BrandSearch */
+/* @var $dataProvider ActiveDataProvider */
+
+$this->title = Yii::t('app', 'Marcas');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Brand'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Agregar marca'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'description',
-
-            ['class' => 'yii\grid\ActionColumn'],
+                [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
+                [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('description'),
+            ],
+                [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Acciones',
+                'headerOptions' => ['class' => 'actions-grid-header'],
+                'template' => '{view} {update} {delete} {models}',
+                'buttons' =>
+                    [
+                    'view' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
+                    },
+                    'update' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                    },
+                    'models' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-tag"></span>', $url, [
+                                    'title' => Yii::t('yii', 'Modelos'),
+                                    'data-toggle' => 'tooltip',
+                                    'data-placement' => 'top',
+                                    'data-pjax' => 0,
+                        ]);
+                    },
+                    'delete' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
+                    }
+                ]
+            ],
         ],
-    ]); ?>
+    ]);
+    ?>
     <?php Pjax::end(); ?>
 </div>

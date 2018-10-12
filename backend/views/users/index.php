@@ -1,43 +1,89 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\UserSearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\UserSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Users');
+/* @var $this View */
+/* @var $searchModel UserSearch */
+/* @var $dataProvider ActiveDataProvider */
+
+$this->title = Yii::t('app', 'Usuarios');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Agregar usuario'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'username',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
-            //'email:email',
-            //'status',
-            //'created_at',
-            //'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'username',
+                'label' => AttributesLabels::getAttributeLabel('username'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+            ],
+            [
+                'attribute' => 'email',
+                'label' => AttributesLabels::getAttributeLabel('email'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+            ],
+            [
+                'label' => AttributesLabels::getAttributeLabel('status'),
+                'attribute' => 'status',
+                'content' => function ($searchModel) {
+                        return $searchModel->status === 10 ? 'Activo' : 'Inactivo';
+                    },
+                'filter' => [0 => 'Inactivo', 10 => 'Activo']
+            ],
+            [
+                'attribute' => 'updated_at',
+                'label' => AttributesLabels::getAttributeLabel('updated_at'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+                'format' => ['date', 'php:Y-m-d H:i:s']
+            ],
+                            
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Acciones',
+                'headerOptions' => ['class' => 'actions-grid-header'],
+                'template' => '{view} {update}' . ($searchModel->username === 'admin' ? ' {delete}' : ''),
+                'buttons' =>
+                    [
+                    'view' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
+                    },
+                    'update' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                    },
+                    'delete' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
+                    },
+                ]
+            ],
         ],
-    ]); ?>
+    ]);
+    ?>
     <?php Pjax::end(); ?>
 </div>

@@ -28,6 +28,11 @@ class DeviceTypesController extends Controller {
         ];
     }
 
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'device-types';
+        return true;
+    }
+
     /**
      * Lists all DeviceType models.
      * @return mixed

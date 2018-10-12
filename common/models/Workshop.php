@@ -15,6 +15,9 @@ use Yii;
  * @property string $signature_out
  * @property int $effort
  * @property int $receiver_id
+ *
+ * @property Device $device
+ * @property User $receiver
  */
 class Workshop extends \yii\db\ActiveRecord
 {
@@ -38,6 +41,8 @@ class Workshop extends \yii\db\ActiveRecord
             [['observations'], 'string', 'max' => 500],
             [['signature_in', 'signature_out'], 'string', 'max' => 50],
             [['device_id'], 'unique'],
+            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
+            [['receiver_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['receiver_id' => 'id']],
         ];
     }
 
@@ -56,5 +61,21 @@ class Workshop extends \yii\db\ActiveRecord
             'effort' => Yii::t('app', 'Effort'),
             'receiver_id' => Yii::t('app', 'Receiver ID'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDevice()
+    {
+        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceiver()
+    {
+        return $this->hasOne(User::className(), ['id' => 'receiver_id']);
     }
 }

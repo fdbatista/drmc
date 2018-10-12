@@ -11,6 +11,9 @@ use Yii;
  * @property string $name
  * @property string $description
  * @property int $brand_id
+ *
+ * @property Brand $brand
+ * @property Device[] $devices
  */
 class BrandModel extends \yii\db\ActiveRecord
 {
@@ -33,6 +36,7 @@ class BrandModel extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 75],
             [['description'], 'string', 'max' => 250],
             [['name'], 'unique'],
+            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
         ];
     }
 
@@ -47,5 +51,21 @@ class BrandModel extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'brand_id' => Yii::t('app', 'Brand ID'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBrand()
+    {
+        return $this->hasOne(Brand::className(), ['id' => 'brand_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDevices()
+    {
+        return $this->hasMany(Device::className(), ['model_id' => 'id']);
     }
 }

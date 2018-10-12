@@ -11,6 +11,8 @@ use Yii;
  * @property int $device_id
  * @property double $amount
  * @property string $date
+ *
+ * @property Device $device
  */
 class WorkshopPayment extends \yii\db\ActiveRecord
 {
@@ -32,6 +34,7 @@ class WorkshopPayment extends \yii\db\ActiveRecord
             [['device_id'], 'integer'],
             [['amount'], 'number'],
             [['date'], 'safe'],
+            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
         ];
     }
 
@@ -46,5 +49,13 @@ class WorkshopPayment extends \yii\db\ActiveRecord
             'amount' => Yii::t('app', 'Amount'),
             'date' => Yii::t('app', 'Date'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDevice()
+    {
+        return $this->hasOne(Device::className(), ['id' => 'device_id']);
     }
 }

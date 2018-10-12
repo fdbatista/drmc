@@ -27,13 +27,17 @@ class UsersController extends Controller {
             ],
         ];
     }
-
+    
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'users';
+        return true;
+    }
+    
     /**
      * Lists all User models.
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'users';
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

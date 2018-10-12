@@ -27,6 +27,11 @@ class DevicesController extends Controller {
             ],
         ];
     }
+    
+    public function beforeAction($action) {
+        Yii::$app->view->params['active'] = 'devices';
+        return true;
+    }
 
     /**
      * Lists all Device models.

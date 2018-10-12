@@ -5,16 +5,16 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Brand */
 
-$this->title = Yii::t('app', 'Update Brand: ' . $model->name, [
+$this->title = Yii::t('app', 'Actualizar Brand: ' . $model->name, [
     'nameAttribute' => '' . $model->name,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Brands'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marcas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Actualizar');
 ?>
 <div class="brand-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <?= $this->render('_form', [
         'model' => $model,
