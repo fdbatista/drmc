@@ -1,10 +1,13 @@
 <?php
 
+use common\models\Brand;
+use common\utils\AttributesLabels;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Brand */
+/* @var $this View */
+/* @var $model Brand */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marcas'), 'url' => ['index']];
@@ -12,12 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-view">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+    <!--<h3><?= Html::encode($this->title) ?></h3>-->
 
     <p>
-        <?= Html::a(Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Modelos'), ['models', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
+        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="material-icons">tablet_android</i> ' . Yii::t('app', 'Modelos'), ['index-models', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -29,8 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'name',
-            'description',
+            [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
+                [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('description'),
+            ],
         ],
     ]) ?>
 

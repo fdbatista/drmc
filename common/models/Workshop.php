@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "workshop".
  *
- * @property int $device_id
+ * @property int $id
  * @property string $pre_diagnosis
  * @property string $password_pattern
  * @property string $observations
@@ -15,9 +15,13 @@ use Yii;
  * @property string $signature_out
  * @property int $effort
  * @property int $receiver_id
+ * @property int $type_id
+ * @property int $model_id
  *
- * @property Device $device
+ * @property BrandModel $model
  * @property User $receiver
+ * @property DeviceType $type
+ * @property WorkshopPayment[] $workshopPayments
  */
 class Workshop extends \yii\db\ActiveRecord
 {
@@ -35,14 +39,14 @@ class Workshop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['device_id', 'pre_diagnosis'], 'required'],
-            [['device_id', 'effort', 'receiver_id'], 'integer'],
+            [['pre_diagnosis', 'type_id', 'model_id'], 'required'],
+            [['effort', 'receiver_id', 'type_id', 'model_id'], 'integer'],
             [['pre_diagnosis', 'password_pattern'], 'string', 'max' => 250],
             [['observations'], 'string', 'max' => 500],
             [['signature_in', 'signature_out'], 'string', 'max' => 50],
-            [['device_id'], 'unique'],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
+            [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['receiver_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['receiver_id' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -52,7 +56,7 @@ class Workshop extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'device_id' => Yii::t('app', 'Device ID'),
+            'id' => Yii::t('app', 'ID'),
             'pre_diagnosis' => Yii::t('app', 'Pre Diagnosis'),
             'password_pattern' => Yii::t('app', 'Password Pattern'),
             'observations' => Yii::t('app', 'Observations'),
@@ -60,15 +64,17 @@ class Workshop extends \yii\db\ActiveRecord
             'signature_out' => Yii::t('app', 'Signature Out'),
             'effort' => Yii::t('app', 'Effort'),
             'receiver_id' => Yii::t('app', 'Receiver ID'),
+            'type_id' => Yii::t('app', 'Type ID'),
+            'model_id' => Yii::t('app', 'Model ID'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDevice()
+    public function getModel()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(BrandModel::className(), ['id' => 'model_id']);
     }
 
     /**
@@ -77,5 +83,21 @@ class Workshop extends \yii\db\ActiveRecord
     public function getReceiver()
     {
         return $this->hasOne(User::className(), ['id' => 'receiver_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(DeviceType::className(), ['id' => 'type_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWorkshopPayments()
+    {
+        return $this->hasMany(WorkshopPayment::className(), ['workshop_id' => 'id']);
     }
 }

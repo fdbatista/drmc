@@ -17,12 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Agregar marca'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar marca'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?=
@@ -35,14 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('name'),
             ],
                 [
-                'attribute' => 'name',
+                'attribute' => 'description',
                 'label' => AttributesLabels::getAttributeLabel('description'),
             ],
                 [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {delete} {models}',
+                'template' => '{view} {update} {delete} {index-models}',
                 'buttons' =>
                     [
                     'view' => function ($key) {
@@ -51,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
-                    'models' => function ($url, $model) {
+                    'index-models' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-tag"></span>', $url, [
                                     'title' => Yii::t('yii', 'Modelos'),
                                     'data-toggle' => 'tooltip',

@@ -1,10 +1,13 @@
 <?php
 
+use common\models\DeviceType;
+use common\utils\AttributesLabels;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\DeviceType */
+/* @var $this View */
+/* @var $model DeviceType */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tipos de dispositivo'), 'url' => ['index']];
@@ -12,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="device-type-view">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+    <!--<h3><?= Html::encode($this->title) ?></h3>-->
 
     <p>
-        <?= Html::a(Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
+        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -28,8 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
         ],
     ]) ?>
 

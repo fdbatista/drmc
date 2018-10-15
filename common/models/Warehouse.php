@@ -7,14 +7,17 @@ use Yii;
 /**
  * This is the model class for table "warehouse".
  *
- * @property int $device_id
+ * @property int $id
  * @property string $code
  * @property string $name
  * @property int $price_in
  * @property int $price_public
  * @property int $items
+ * @property int $type_id
+ * @property int $model_id
  *
- * @property Device $device
+ * @property BrandModel $model
+ * @property DeviceType $type
  */
 class Warehouse extends \yii\db\ActiveRecord
 {
@@ -32,11 +35,11 @@ class Warehouse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['device_id', 'code', 'name', 'price_in', 'price_public', 'items'], 'required'],
-            [['device_id', 'price_in', 'price_public', 'items'], 'integer'],
+            [['code', 'name', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'required'],
+            [['price_in', 'price_public', 'items', 'type_id', 'model_id'], 'integer'],
             [['code', 'name'], 'string', 'max' => 50],
-            [['device_id'], 'unique'],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
+            [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -46,20 +49,30 @@ class Warehouse extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'device_id' => Yii::t('app', 'Device ID'),
+            'id' => Yii::t('app', 'ID'),
             'code' => Yii::t('app', 'Code'),
             'name' => Yii::t('app', 'Name'),
             'price_in' => Yii::t('app', 'Price In'),
             'price_public' => Yii::t('app', 'Price Public'),
             'items' => Yii::t('app', 'Items'),
+            'type_id' => Yii::t('app', 'Type ID'),
+            'model_id' => Yii::t('app', 'Model ID'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDevice()
+    public function getModel()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(BrandModel::className(), ['id' => 'model_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(DeviceType::className(), ['id' => 'type_id']);
     }
 }

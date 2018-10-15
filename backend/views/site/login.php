@@ -1,7 +1,7 @@
 <?php
 /* @var $this View */
 /* @var $form ActiveForm */
-/* @var $model common\models\LoginForm */
+/* @var $model LoginForm */
 
 use common\models\LoginForm;
 use yii\bootstrap\ActiveForm;
@@ -29,21 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="alert alert-danger <?= $model->hasErrors() ? 'display' : 'display-hide' ?>">
-                            <button class="close" data-close="alert"></button>
-                            <ul>
-                            <?php
-                            $errors = $model->getErrors();
-                            foreach ($errors as $error) {
-                                echo '<li>' . $error[0] . '</li>';
-                            }
-                            ?>
-                                </ul>
-                        </div> 
-                    </div>
-                </div>
+                <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                 <div class="row">
                     <div class="col-xs-6">
                         <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => $model->getAttributeLabel('username'), 'class' => 'form-control form-control-solid placeholder-no-fix form-group'])->label(false) ?>

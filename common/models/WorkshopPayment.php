@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "workshop_payment".
  *
  * @property int $id
- * @property int $device_id
  * @property double $amount
  * @property string $date
+ * @property int $workshop_id
  *
- * @property Device $device
+ * @property Workshop $workshop
  */
 class WorkshopPayment extends \yii\db\ActiveRecord
 {
@@ -30,11 +30,11 @@ class WorkshopPayment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['device_id', 'amount', 'date'], 'required'],
-            [['device_id'], 'integer'],
+            [['amount', 'date', 'workshop_id'], 'required'],
             [['amount'], 'number'],
             [['date'], 'safe'],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
+            [['workshop_id'], 'integer'],
+            [['workshop_id'], 'exist', 'skipOnError' => true, 'targetClass' => Workshop::className(), 'targetAttribute' => ['workshop_id' => 'id']],
         ];
     }
 
@@ -45,17 +45,17 @@ class WorkshopPayment extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'device_id' => Yii::t('app', 'Device ID'),
             'amount' => Yii::t('app', 'Amount'),
             'date' => Yii::t('app', 'Date'),
+            'workshop_id' => Yii::t('app', 'Workshop ID'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDevice()
+    public function getWorkshop()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(Workshop::className(), ['id' => 'workshop_id']);
     }
 }

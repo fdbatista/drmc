@@ -1,23 +1,26 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\CountrySearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\CountrySearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $this View */
+/* @var $searchModel CountrySearch */
+/* @var $dataProvider ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Países');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="country-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Agregar País'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar País'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,13 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
 
-            'name',
+            [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'header' => 'Actions',
+                'header' => 'Acciones',
                 'template' => '{view} {update} {delete}',
                 'buttons' =>
                     [

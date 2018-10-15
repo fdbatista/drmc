@@ -1,34 +1,39 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\DeviceTypeSearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\DeviceTypeSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+
+/* @var $this View */
+/* @var $searchModel DeviceTypeSearch */
+/* @var $dataProvider ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Tipos de dispositivo');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="device-type-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Agregar Tipo de Dispositivo'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Tipo de Dispositivo'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'name',
-
-            [
+                [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
+                [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
@@ -47,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
         ],
-    ]); ?>
+    ]);
+    ?>
     <?php Pjax::end(); ?>
 </div>

@@ -13,6 +13,7 @@ class AppAsset extends AssetBundle
     public $sourcePath = '@app/../common/assets';
     
     public $css = [
+        'css/common.css',
         'css/backend.css',
         'css/material-icons/material-icons.css',
     ];

@@ -16,12 +16,13 @@ class ShopSearch extends Shop {
      * {@inheritdoc}
      */
     
-    public $device;
+    public $type;
+    public $model;
     
     public function rules() {
         return [
-                [['device_id', 'price_in', 'price_out', 'first_discount', 'major_discount'], 'integer'],
-                [['inventory', 'code', 'device', 'items'], 'safe'],
+                [['price_in', 'price_out', 'first_discount', 'major_discount'], 'integer'],
+                [['inventory', 'code', 'type', 'model', 'items'], 'safe'],
         ];
     }
 
@@ -45,15 +46,21 @@ class ShopSearch extends Shop {
 
         // add conditions that should always apply here
 
-        $query->joinWith(['device']);
+        $query->joinWith(['type']);
+        $query->joinWith(['model']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['device'] = [
-            'asc' => ['device.name' => SORT_ASC],
-            'desc' => ['device.name' => SORT_DESC],
+        $dataProvider->sort->attributes['type'] = [
+            'asc' => ['device_type.name' => SORT_ASC],
+            'desc' => ['device_type.name' => SORT_DESC],
+        ];
+        
+        $dataProvider->sort->attributes['model'] = [
+            'asc' => ['brand_model.name' => SORT_ASC],
+            'desc' => ['brand_model.name' => SORT_DESC],
         ];
 
         $this->load($params);
@@ -66,7 +73,6 @@ class ShopSearch extends Shop {
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'device_id' => $this->device_id,
             'price_in' => $this->price_in,
             'price_out' => $this->price_out,
             'first_discount' => $this->first_discount,
@@ -75,7 +81,8 @@ class ShopSearch extends Shop {
 
         $query->andFilterWhere(['like', 'inventory', $this->inventory])
                 ->andFilterWhere(['like', 'code', $this->code])
-                ->andFilterWhere(['like', 'device.name', $this->device]);
+                ->andFilterWhere(['like', 'device_type.name', $this->type])
+                ->andFilterWhere(['like', 'brand_model.name', $this->model]);
 
         return $dataProvider;
     }

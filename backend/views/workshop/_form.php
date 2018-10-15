@@ -1,11 +1,13 @@
 <?php
 
+use common\models\DeviceType;
 use common\models\Workshop;
 use common\utils\StaticMembers;
 use kartik\widgets\Select2;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
-use yii\widgets\ActiveForm;
 
 /* @var $this View */
 /* @var $model Workshop */
@@ -17,11 +19,21 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?=
-    $form->field($model, 'device_id')->widget(Select2::classname(), [
-        'data' => StaticMembers::getDevices(),
+    $form->field($model, 'type_id')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
         'language' => 'es',
-        'theme' => Select2::THEME_BOOTSTRAP,
-        'options' => ['placeholder' => 'Seleccione un elemento'],
+        'options' => ['placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ])
+    ?>
+
+    <?=
+    $form->field($model, 'model_id')->widget(Select2::classname(), [
+        'data' => StaticMembers::getModelsAndBrand(),
+        'language' => 'es',
+        'options' => ['placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
         'pluginOptions' => [
             'allowClear' => true
         ],

@@ -4,7 +4,6 @@
 
 use backend\assets\FontAwesomeAsset;
 use ramosisw\CImaterial\web\MaterialAsset;
-use yii\bootstrap\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -53,12 +52,10 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                     if (!Yii::$app->user->isGuest) {
                         ?>
                         <ul class="nav">
-                            <li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li>
+                            <?php if (Yii::$app->user->can('view-dashboard')) {?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
                             <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li>
                             <li class="<?= $this->params['active'] === 'countries' ? 'active' : '' ?>"><a href="<?= Url::to(['/countries']) ?>"><i class="material-icons">location_on</i>Pa&iacute;ses</a></li>
                             <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li>
-                            <li class="<?= $this->params['active'] === 'devices' ? 'active' : '' ?>"><a href="<?= Url::to(['/devices']) ?>"><i class="material-icons">phone_android</i>Dispositivos</a></li>
-                            <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li>
                             <li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li>
                             <li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li>
                             <li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li>
@@ -88,9 +85,10 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                             ?>
                             <div class="collapse navbar-collapse">
                                 <ul class="nav navbar-nav navbar-right">
+                                    <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="material-icons">security</i>
+                                            <i class="material-icons">security</i> Seguridad
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li>

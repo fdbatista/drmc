@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-payment-create">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+    <!--<h3><?= Html::encode($this->title) ?></h3>-->
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -2,11 +2,11 @@
 
 namespace backend\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\LoginForm;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
 
 /**
  * Site controller
@@ -28,9 +28,16 @@ class SiteController extends Controller {
                         'allow' => true,
                     ],
                         [
-                        'actions' => ['logout', 'index', 'dashboard', 'profile'],
+                        'actions' => ['logout', 'index', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                        [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->can($action->id);
+                        }
                     ],
                 ],
             ],
@@ -60,14 +67,14 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        return $this->actionDashboard();
+        return $this->actionViewDashboard();
     }
-    
-    public function actionDashboard() {
+
+    public function actionViewDashboard() {
         Yii::$app->view->params['active'] = 'dashboard';
         return $this->render('dashboard');
     }
-    
+
     public function actionProfile() {
         Yii::$app->view->params['active'] = 'profile';
         return $this->render('profile');
@@ -80,7 +87,7 @@ class SiteController extends Controller {
      */
     public function actionLogin() {
         $this->layout = 'login';
-        
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

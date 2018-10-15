@@ -7,6 +7,7 @@ use common\models\BrandModel;
 use common\models\search\BrandModelSearch;
 use common\models\search\BrandSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -21,19 +22,28 @@ class BrandsController extends Controller {
      */
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                        [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $entityId = 'brands';
+                            Yii::$app->view->params['active'] = $entityId;
+                            $permissionName = "$action->id-$entityId";
+                            $res = Yii::$app->user->can($permissionName);
+                            return $res;
+                        }
+                    ],
                 ],
-            ],
+            ]
         ];
     }
 
-    public function beforeAction($action) {
-        Yii::$app->view->params['active'] = 'brands';
-        return true;
-    }
+    /* public function beforeAction($action) {
+      Yii::$app->view->params['active'] = $this->entityId;
+      } */
 
     /**
      * Lists all Modelos.
@@ -53,38 +63,33 @@ class BrandsController extends Controller {
      * Lists all BrandModel models.
      * @return mixed
      */
-    public function actionModels($id) {
+    public function actionIndexModels($id) {
         $searchModel = new BrandModelSearch();
         $searchModel->brand_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('models', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index-models', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider]);
     }
 
-    public function actionModelCreate($id) {
+    public function actionCreateModels($id) {
         $model = new BrandModel(['brand_id' => $id]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['model-view', 'id' => $model->id]);
+            return $this->redirect(['view-models', 'id' => $model->id]);
         }
 
-        return $this->render('model-create', ['model' => $model, 'id' => $id]);
+        return $this->render('create-models', ['model' => $model, 'id' => $id]);
     }
-    
-   /**
+
+    /**
      * Displays a single BrandModel model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionModelView($id) {
-        return $this->render('model-view', ['model' => $this->findBrandModel($id),
-        ]);
+    public function actionViewModels($id) {
+        return $this->render('view-models', ['model' => $this->findBrandModel($id)]);
     }
-    
+
     /**
      * Updates an existing BrandModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -92,18 +97,14 @@ class BrandsController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionModelUpdate($id) {
+    public function actionUpdateModels($id) {
         $model = $this->findBrandModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['model-view', 'id' => $model->id]);
+            return $this->redirect(['view-models', 'id' => $model->id]);
         }
-
-        return $this->render('model-update', [
-                    'model' => $model,
-        ]);
+        return $this->render('update-models', ['model' => $model]);
     }
-    
+
     /**
      * Deletes an existing BrandModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -111,9 +112,8 @@ class BrandsController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionModelDelete($id) {
+    public function actionDeleteModels($id) {
         $this->findBrandModel($id)->delete();
-
         return $this->redirect(['models']);
     }
 
@@ -192,7 +192,7 @@ class BrandsController extends Controller {
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-    
+
     protected function findBrandModel($id) {
         if (($model = BrandModel::findOne($id)) !== null) {
             return $model;

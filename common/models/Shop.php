@@ -7,16 +7,19 @@ use Yii;
 /**
  * This is the model class for table "shop".
  *
- * @property int $device_id
+ * @property int $id
  * @property string $inventory
  * @property string $code
+ * @property int $items
  * @property int $price_in
  * @property int $price_out
  * @property int $first_discount
  * @property int $major_discount
- * @property int $items
+ * @property int $type_id
+ * @property int $model_id
  *
- * @property Device $device
+ * @property BrandModel $model
+ * @property DeviceType $type
  */
 class Shop extends \yii\db\ActiveRecord
 {
@@ -34,11 +37,11 @@ class Shop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['device_id', 'inventory', 'code', 'price_in', 'price_out', 'first_discount', 'major_discount', 'items'], 'required'],
-            [['device_id', 'price_in', 'price_out', 'first_discount', 'major_discount', 'items'], 'integer'],
+            [['inventory', 'code', 'items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'type_id', 'model_id'], 'required'],
+            [['items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'type_id', 'model_id'], 'integer'],
             [['inventory', 'code'], 'string', 'max' => 50],
-            [['device_id'], 'unique'],
-            [['device_id'], 'exist', 'skipOnError' => true, 'targetClass' => Device::className(), 'targetAttribute' => ['device_id' => 'id']],
+            [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
+            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -48,22 +51,32 @@ class Shop extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'device_id' => Yii::t('app', 'Device ID'),
+            'id' => Yii::t('app', 'ID'),
             'inventory' => Yii::t('app', 'Inventory'),
             'code' => Yii::t('app', 'Code'),
+            'items' => Yii::t('app', 'Items'),
             'price_in' => Yii::t('app', 'Price In'),
             'price_out' => Yii::t('app', 'Price Out'),
             'first_discount' => Yii::t('app', 'First Discount'),
             'major_discount' => Yii::t('app', 'Major Discount'),
-            'items' => Yii::t('app', 'Items'),
+            'type_id' => Yii::t('app', 'Type ID'),
+            'model_id' => Yii::t('app', 'Model ID'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDevice()
+    public function getModel()
     {
-        return $this->hasOne(Device::className(), ['id' => 'device_id']);
+        return $this->hasOne(BrandModel::className(), ['id' => 'model_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(DeviceType::className(), ['id' => 'type_id']);
     }
 }

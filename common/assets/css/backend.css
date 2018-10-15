@@ -138,10 +138,6 @@ a .material-icons {
     padding: 5px!important;
 }
 
-.form-group {
-    margin-top: 0!important;
-}
-
 .form-group .help-block {
     display: block!important;
     margin-bottom: 5px;
@@ -179,4 +175,12 @@ a .material-icons {
 
 .actions-grid-header {
     color: #9c27b0;
+}
+
+table tbody tr th {
+    width: 25%;
+}
+
+table tbody tr td {
+    width: 75%;
 }

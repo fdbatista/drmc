@@ -4,7 +4,7 @@ use common\models\User;
 use kartik\widgets\Select2;
 use yii\helpers\Html;
 use yii\web\View;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this View */
 /* @var $model User */

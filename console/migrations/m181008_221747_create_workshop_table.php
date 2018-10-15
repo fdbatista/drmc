@@ -13,7 +13,7 @@ class m181008_221747_create_workshop_table extends Migration
     public function safeUp()
     {
         $this->createTable('workshop', [
-            'device_id' => $this->integer()->notNull(),
+            'id' => $this->primaryKey(),
             'pre_diagnosis' => $this->string(250)->notNull(),
             'password_pattern' => $this->string(250),
             'observations' => $this->string(500),
@@ -21,10 +21,12 @@ class m181008_221747_create_workshop_table extends Migration
             'signature_out' => $this->string(50),
             'effort' => $this->integer(),
             'receiver_id' => $this->integer(),
+            'type_id' => $this->integer()->notNull(),
+            'model_id' => $this->integer()->notNull(),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
-        $this->addForeignKey('fk_workshop_device', 'workshop', 'device_id', 'device', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_workshop_type', 'workshop', 'type_id', 'device_type', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_workshop_model', 'workshop', 'model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_workshop_receiver', 'workshop', 'receiver_id', 'user', 'id', 'SET NULL', 'CASCADE');
-        $this->createIndex('idx_workshop_device', 'workshop', 'device_id', true);
     }
 
     /**

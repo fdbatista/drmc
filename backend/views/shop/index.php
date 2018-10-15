@@ -1,42 +1,64 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\ShopSearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ShopSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $this View */
+/* @var $searchModel ShopSearch */
+/* @var $dataProvider ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Tienda');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="shop-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+    <!--<h3><?= Html::encode($this->title) ?></h3>-->
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Agregar Artículo'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Artículo'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'attribute' => 'device',
-                'value' => 'device.name'
+                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('type'),
+                'value' => 'type.name'
             ],
-            'inventory',
-            'code',
-            'items',
-            'price_in',
-            'price_out',
-            //'first_discount',
-            //'major_discount',
+            [
+                'attribute' => 'model',
+                'label' => AttributesLabels::getAttributeLabel('model'),
+                'value' => 'model.name'
+            ],
+            [
+                'attribute' => 'inventory',
+                'label' => AttributesLabels::getAttributeLabel('inventory'),
+            ],
+            [
+                'attribute' => 'code',
+                'label' => AttributesLabels::getAttributeLabel('code'),
+            ],
+            [
+                'attribute' => 'items',
+                'label' => AttributesLabels::getAttributeLabel('items'),
+            ],
+            [
+                'attribute' => 'price_in',
+                'label' => AttributesLabels::getAttributeLabel('price_in'),
+            ],
+            [
+                'attribute' => 'price_out',
+                'label' => AttributesLabels::getAttributeLabel('price_out'),
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',

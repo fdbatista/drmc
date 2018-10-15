@@ -28,6 +28,6 @@ class StaticMembers {
     }
     
     public static function getModelAndBrandName(BrandModel $model) {
-        return $model->getBrand()->name . ' ' . $model->name;
+        return $model->getBrand()->one()->name . ' ' . $model->name;
     }
 }
