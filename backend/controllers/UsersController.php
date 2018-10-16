@@ -2,12 +2,13 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\User;
 use common\models\search\UserSearch;
+use common\models\User;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UsersController implements the CRUD actions for User model.
@@ -19,18 +20,23 @@ class UsersController extends Controller {
      */
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                        [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $entityId = 'users';
+                            Yii::$app->view->params['active'] = $entityId;
+                            $permissionName = "$action->id-$entityId";
+                            $res = Yii::$app->user->can($permissionName);
+                            return $res;
+                        }
+                    ],
                 ],
-            ],
+            ]
         ];
-    }
-    
-    public function beforeAction($action) {
-        Yii::$app->view->params['active'] = 'users';
-        return true;
     }
     
     /**

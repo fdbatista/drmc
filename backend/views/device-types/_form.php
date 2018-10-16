@@ -5,11 +5,10 @@ use common\utils\AttributesLabels;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
-use yii\widgets\ActiveForm as ActiveForm2;
 
 /* @var $this View */
 /* @var $model DeviceType */
-/* @var $form ActiveForm2 */
+/* @var $form ActiveForm */
 ?>
 
 <div class="content">

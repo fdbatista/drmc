@@ -1,11 +1,15 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\WorkshopSearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\WorkshopSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $this View */
+/* @var $searchModel WorkshopSearch */
+/* @var $dataProvider ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Reparaciones');
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,17 +28,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'device_id',
-            'pre_diagnosis',
-            'password_pattern',
-            'observations',
-            'signature_in',
-            //'signature_out',
-            //'effort',
-            //'receiver_id',
-
+            [
+                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('type'),
+                'value' => 'type.name'
+            ],
+            [
+                'attribute' => 'model',
+                'label' => AttributesLabels::getAttributeLabel('model'),
+                'value' => 'model.name'
+            ],
+            [
+                'attribute' => 'pre_diagnosis',
+                'label' => AttributesLabels::getAttributeLabel('pre_diagnosis'),
+            ],
+            [
+                'attribute' => 'observations',
+                'label' => AttributesLabels::getAttributeLabel('observations'),
+            ],
+            
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',

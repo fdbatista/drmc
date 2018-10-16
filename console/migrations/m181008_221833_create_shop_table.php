@@ -22,7 +22,8 @@ class m181008_221833_create_shop_table extends Migration
             'first_discount' => $this->integer()->notNull(),
             'major_discount' => $this->integer()->notNull(),
             'type_id' => $this->integer()->notNull(),
-            'model_id' => $this->integer()->notNull()
+            'model_id' => $this->integer()->notNull(),
+            'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         $this->addForeignKey('fk_shop_type', 'shop', 'type_id', 'device_type', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_shop_model', 'shop', 'model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');

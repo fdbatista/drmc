@@ -1,25 +1,27 @@
 <?php
 
+use common\models\Workshop;
+use common\utils\AttributesLabels;
+use common\utils\StaticMembers;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Workshop */
+/* @var $this View */
+/* @var $model Workshop */
 
-$this->title = $model->device_id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Artículos'), 'url' => ['index']];
+$this->title = 'Datos del dispositivo';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-view">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
     <p>
-        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->device_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->device_id], [
+        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('app', 'Confirme que desa eliminar este elemento'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -28,14 +30,50 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'device_id',
-            'pre_diagnosis',
-            'password_pattern',
-            'observations',
-            'signature_in',
-            'signature_out',
-            'effort',
-            'receiver_id',
+            [
+                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('type'),
+                'value' => $model->getType()->one()->name
+            ],
+            [
+                'attribute' => 'model',
+                'label' => AttributesLabels::getAttributeLabel('model'),
+                'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
+            ],
+            [
+                'attribute' => 'pre_diagnosis',
+                'label' => AttributesLabels::getAttributeLabel('pre_diagnosis'),
+            ],
+            [
+                'attribute' => 'password_pattern',
+                'label' => AttributesLabels::getAttributeLabel('password_pattern'),
+            ],
+            [
+                'attribute' => 'observations',
+                'label' => AttributesLabels::getAttributeLabel('observations'),
+            ],
+            [
+                'attribute' => 'signature_in',
+                'label' => AttributesLabels::getAttributeLabel('signature_in'),
+            ],
+            [
+                'attribute' => 'signature_out',
+                'label' => AttributesLabels::getAttributeLabel('signature_out'),
+            ],
+            [
+                'attribute' => 'effort',
+                'label' => AttributesLabels::getAttributeLabel('effort'),
+            ],
+            [
+                'attribute' => 'receiver_id',
+                'label' => AttributesLabels::getAttributeLabel('receiver_id'),
+                'value' => $model->getReceiver()->one() ? $model->getReceiver()->one()->email : null
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' => 'datetime',
+                'label' => AttributesLabels::getAttributeLabel('updated_at'),
+            ],
         ],
     ]) ?>
 

@@ -1,25 +1,27 @@
 <?php
 
+use common\models\Sale;
+use common\utils\AttributesLabels;
+use common\utils\StaticMembers;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Sale */
+/* @var $this View */
+/* @var $model Sale */
 
-$this->title = $model->id;
+$this->title = 'Datos de la venta';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sale-view">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('app', 'Confirme que desa eliminar este elemento'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -28,11 +30,28 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'device_id',
-            'price_in',
-            'price_out',
-            'items',
+            [
+                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('type'),
+                'value' => $model->getType()->one()->name
+            ],
+            [
+                'attribute' => 'model',
+                'label' => AttributesLabels::getAttributeLabel('model'),
+                'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
+            ],
+            [
+                'attribute' => 'price_in',
+                'label' => AttributesLabels::getAttributeLabel('price_in'),
+            ],
+            [
+                'attribute' => 'price_out',
+                'label' => AttributesLabels::getAttributeLabel('price_out'),
+            ],
+            [
+                'attribute' => 'items',
+                'label' => AttributesLabels::getAttributeLabel('items'),
+            ],
         ],
     ]) ?>
 

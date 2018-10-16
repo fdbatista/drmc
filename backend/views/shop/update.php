@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model common\models\Shop */
 
 $this->title = Yii::t('app', 'Actualizar artículo');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Artículos'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tienda'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Venta de artículo'), 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Actualizar');
 ?>
 <div class="shop-update">

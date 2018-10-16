@@ -2,6 +2,7 @@
 
 use common\models\DeviceType;
 use common\models\Shop;
+use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use kartik\select2\Select2;
 use yii\bootstrap\ActiveForm;
@@ -56,28 +57,28 @@ use yii\web\View;
 
                         <div class="row">
                             <div class="col-sm-4">
-                                <?= $form->field($model, 'inventory')->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($model, 'inventory', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('inventory') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-4">
-                                <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($model, 'code', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('code') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-4">
-                                <?= $form->field($model, 'items')->textInput() ?>
+                                <?= $form->field($model, 'items', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('items') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="col-sm-3">
-                                <?= $form->field($model, 'price_in')->textInput() ?>
+                                <?= $form->field($model, 'price_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_in') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($model, 'price_out')->textInput() ?>
+                                <?= $form->field($model, 'price_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_out') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($model, 'first_discount')->textInput() ?>
+                                <?= $form->field($model, 'first_discount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('first_discount') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($model, 'major_discount')->textInput() ?>
+                                <?= $form->field($model, 'major_discount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('major_discount') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                         </div>
 

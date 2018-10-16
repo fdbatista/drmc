@@ -2,12 +2,13 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\Workshop;
 use common\models\search\WorkshopSearch;
+use common\models\Workshop;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * WorkshopController implements the CRUD actions for Workshop model.
@@ -19,18 +20,23 @@ class WorkshopController extends Controller {
      */
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                        [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $entityId = 'workshop-items';
+                            Yii::$app->view->params['active'] = $entityId;
+                            $permissionName = "$action->id-$entityId";
+                            $res = Yii::$app->user->can($permissionName);
+                            return $res;
+                        }
+                    ],
                 ],
-            ],
+            ]
         ];
-    }
-
-    public function beforeAction($action) {
-        Yii::$app->view->params['active'] = 'workshop';
-        return true;
     }
 
     /**
@@ -38,7 +44,6 @@ class WorkshopController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'workshop';
         $searchModel = new WorkshopSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -69,7 +74,7 @@ class WorkshopController extends Controller {
         $model = new Workshop();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->device_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -88,7 +93,7 @@ class WorkshopController extends Controller {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->device_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

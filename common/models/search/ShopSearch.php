@@ -12,10 +12,6 @@ use common\models\Shop;
  */
 class ShopSearch extends Shop {
 
-    /**
-     * {@inheritdoc}
-     */
-    
     public $type;
     public $model;
     

@@ -1,11 +1,15 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\WarehouseSearch;
+use common\utils\AttributesLabels;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\WarehouseSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $this View */
+/* @var $searchModel WarehouseSearch */
+/* @var $dataProvider ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Almacén');
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,14 +28,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'device_id',
-            'code',
-            'name',
-            'price_in',
-            'price_public',
-
+            [
+                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('type'),
+                'value' => 'type.name'
+            ],
+            [
+                'attribute' => 'model',
+                'label' => AttributesLabels::getAttributeLabel('model'),
+                'value' => 'model.name'
+            ],
+            [
+                'attribute' => 'code',
+                'label' => AttributesLabels::getAttributeLabel('code'),
+            ],
+            [
+                'attribute' => 'name',
+                'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
+            [
+                'attribute' => 'items',
+                'label' => AttributesLabels::getAttributeLabel('items'),
+            ],
+            
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',

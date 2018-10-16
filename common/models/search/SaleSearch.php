@@ -10,23 +10,25 @@ use common\models\Sale;
 /**
  * SaleSearch represents the model behind the search form of `common\models\Sale`.
  */
-class SaleSearch extends Sale
-{
+class SaleSearch extends Sale {
+
+    public $type;
+    public $model;
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'device_id', 'price_in', 'price_out', 'items'], 'integer'],
+                [['id', 'price_in', 'price_out', 'items'], 'integer'],
+                [['type', 'model'], 'safe'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -38,15 +40,27 @@ class SaleSearch extends Sale
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Sale::find();
 
         // add conditions that should always apply here
 
+        $query->joinWith(['type']);
+        $query->joinWith(['model']);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['type'] = [
+            'asc' => ['device_type.name' => SORT_ASC],
+            'desc' => ['device_type.name' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['model'] = [
+            'asc' => ['brand_model.name' => SORT_ASC],
+            'desc' => ['brand_model.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -59,12 +73,15 @@ class SaleSearch extends Sale
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'device_id' => $this->device_id,
             'price_in' => $this->price_in,
             'price_out' => $this->price_out,
             'items' => $this->items,
         ]);
 
+        $query->andFilterWhere(['like', 'device_type.name', $this->type])
+                ->andFilterWhere(['like', 'brand_model.name', $this->model]);
+
         return $dataProvider;
     }
+
 }

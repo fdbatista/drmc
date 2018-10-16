@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="shop-index">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -50,14 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'items',
                 'label' => AttributesLabels::getAttributeLabel('items'),
-            ],
-            [
-                'attribute' => 'price_in',
-                'label' => AttributesLabels::getAttributeLabel('price_in'),
-            ],
-            [
-                'attribute' => 'price_out',
-                'label' => AttributesLabels::getAttributeLabel('price_out'),
             ],
 
             [

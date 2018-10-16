@@ -19,12 +19,22 @@ class UserRolesController extends Controller {
      */
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                        [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $entityId = 'user-roles';
+                            Yii::$app->view->params['active'] = $entityId;
+                            $permissionName = "$action->id-$entityId";
+                            $res = Yii::$app->user->can($permissionName);
+                            return $res;
+                        }
+                    ],
                 ],
-            ],
+            ]
         ];
     }
 
@@ -33,7 +43,6 @@ class UserRolesController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'user-roles';
         $searchModel = new UserRoleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

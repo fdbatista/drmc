@@ -2,12 +2,12 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\Warehouse;
 use common\models\search\WarehouseSearch;
+use common\models\Warehouse;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * WarehouseController implements the CRUD actions for Warehouse model.
@@ -19,18 +19,23 @@ class WarehouseController extends Controller {
      */
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                        [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $entityId = 'warehouse-items';
+                            Yii::$app->view->params['active'] = $entityId;
+                            $permissionName = "$action->id-$entityId";
+                            $res = Yii::$app->user->can($permissionName);
+                            return $res;
+                        }
+                    ],
                 ],
-            ],
+            ]
         ];
-    }
-    
-    public function beforeAction($action) {
-        Yii::$app->view->params['active'] = 'warehouse';
-        return true;
     }
 
     /**
@@ -38,7 +43,6 @@ class WarehouseController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'warehouse';
         $searchModel = new WarehouseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -69,7 +73,7 @@ class WarehouseController extends Controller {
         $model = new Warehouse();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->device_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -88,7 +92,7 @@ class WarehouseController extends Controller {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->device_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

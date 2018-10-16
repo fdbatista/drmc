@@ -10,20 +10,18 @@ use yii\widgets\DetailView;
 /* @var $this View */
 /* @var $model Shop */
 
-$this->title = 'Venta de artículo';
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Artículos'), 'url' => ['index']];
+$this->title = 'Detalles del dispositivo';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tienda'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="shop-view">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
 
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('app', 'Confirme que desa eliminar este elemento'),
                 'method' => 'post',
             ],
         ]) ?>
