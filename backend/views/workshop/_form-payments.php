@@ -2,15 +2,16 @@
 
 use common\models\WorkshopPayment;
 use common\utils\AttributesLabels;
-use kartik\date\DatePicker;
+use kartik\date\DatePickerAsset;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
-use yii\widgets\ActiveForm as ActiveForm2;
+
+DatePickerAsset::register($this);
 
 /* @var $this View */
 /* @var $model WorkshopPayment */
-/* @var $form ActiveForm2 */
+/* @var $form ActiveForm */
 ?>
 
 <div class="content">
@@ -30,16 +31,7 @@ use yii\widgets\ActiveForm as ActiveForm2;
                                 <?= $form->field($model, 'amount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('amount') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-6">
-                                <?=
-                                $form->field($model, 'date')->widget(DatePicker::classname(), [
-                                    'options' => ['placeholder' => AttributesLabels::getAttributeLabel('date'), 'class' => 'form-control'],
-                                    'pluginOptions' => [
-                                        'autoclose' => true,
-                                        'todayHighlight' => true,
-                                        'format' => 'yyyy-mm-dd',
-                                    ]
-                                ])->label(false)
-                                ?>
+                                <?= $form->field($model, 'date', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('date') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'datetimepicker form-control', 'readonly' => 'readonly'])->label(false) ?>
                             </div>
                         </div>
 

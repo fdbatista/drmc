@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
+    
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
@@ -68,17 +68,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update}' . ($searchModel->username === 'admin' ? ' {delete}' : ''),
+                'template' => '{view} {update} {delete}',
                 'buttons' =>
                     [
                     'view' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     },
                     'update' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
-                    'delete' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
+                    'delete' => function ($key, $searchModel) {
+                        return Yii::$app->user->identity->id !== $searchModel->id ? '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>' : '';
                     },
                 ]
             ],

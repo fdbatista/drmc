@@ -41,6 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'email'
             ],
             [
+                'label' => AttributesLabels::getAttributeLabel('name'),
+                'value' => $model->getFullName(),
+            ],
+            [
+                'label' => AttributesLabels::getAttributeLabel('address'),
+                'value' => $model->address,
+            ],
+            [
+                'label' => AttributesLabels::getAttributeLabel('telephone'),
+                'value' => $model->telephone,
+            ],
+            [
                 'label' => AttributesLabels::getAttributeLabel('status'),
                 'value' => $model->status === 10 ? 'Activo' : 'Inactivo'
             ],

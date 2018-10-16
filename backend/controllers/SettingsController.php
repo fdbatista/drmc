@@ -3,40 +3,18 @@
 namespace backend\controllers;
 
 use common\models\AppConfig;
-use common\models\search\AppConfigSearch;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * SettingsController implements the CRUD actions for AppConfig model.
  */
-class SettingsController extends Controller {
+class SettingsController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'app-config';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'app-config';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
 
     /**

@@ -5,38 +5,17 @@ namespace backend\controllers;
 use common\models\search\ShopSearch;
 use common\models\Shop;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * ShopController implements the CRUD actions for Shop model.
  */
-class ShopController extends Controller {
+class ShopController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'shop';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'shop';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
 
     /**

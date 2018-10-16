@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\search\SaleSearch */
@@ -20,13 +20,9 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'device_id') ?>
+    <?= $form->field($model, 'date') ?>
 
-    <?= $form->field($model, 'price_in') ?>
-
-    <?= $form->field($model, 'price_out') ?>
-
-    <?= $form->field($model, 'items') ?>
+    <?= $form->field($model, 'updated_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

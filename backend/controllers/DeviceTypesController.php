@@ -5,38 +5,17 @@ namespace backend\controllers;
 use common\models\DeviceType;
 use common\models\search\DeviceTypeSearch;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * DeviceTypesController implements the CRUD actions for DeviceType model.
  */
-class DeviceTypesController extends Controller {
+class DeviceTypesController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'device-types';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'device-types';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
 
     /**

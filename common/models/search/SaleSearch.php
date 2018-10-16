@@ -12,16 +12,17 @@ use common\models\Sale;
  */
 class SaleSearch extends Sale {
 
-    public $type;
-    public $model;
+    public $customer;
+    public $start_date;
+    public $end_date;
 
     /**
      * {@inheritdoc}
      */
     public function rules() {
         return [
-                [['id', 'price_in', 'price_out', 'items'], 'integer'],
-                [['type', 'model'], 'safe'],
+                [['id'], 'integer'],
+                [['date', 'start_date', 'end_date', 'updated_at', 'customer'], 'safe'],
         ];
     }
 
@@ -45,21 +46,15 @@ class SaleSearch extends Sale {
 
         // add conditions that should always apply here
 
-        $query->joinWith(['type']);
-        $query->joinWith(['model']);
+        $query->joinWith(['customer']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['type'] = [
-            'asc' => ['device_type.name' => SORT_ASC],
-            'desc' => ['device_type.name' => SORT_DESC],
-        ];
-
-        $dataProvider->sort->attributes['model'] = [
-            'asc' => ['brand_model.name' => SORT_ASC],
-            'desc' => ['brand_model.name' => SORT_DESC],
+        $dataProvider->sort->attributes['customer'] = [
+            'asc' => ['user.first_name' => SORT_ASC],
+            'desc' => ['user.last_name' => SORT_DESC],
         ];
 
         $this->load($params);
@@ -73,13 +68,12 @@ class SaleSearch extends Sale {
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'price_in' => $this->price_in,
-            'price_out' => $this->price_out,
-            'items' => $this->items,
+            'date' => $this->date,
+            'updated_at' => $this->updated_at,
         ]);
+        $query->andFilterWhere(['between', 'date', $this->start_date, $this->end_date]);
 
-        $query->andFilterWhere(['like', 'device_type.name', $this->type])
-                ->andFilterWhere(['like', 'brand_model.name', $this->model]);
+        $query->andFilterWhere(['like', "concat(user.first_name, ' ', user.last_name)", $this->customer]);
 
         return $dataProvider;
     }

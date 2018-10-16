@@ -56,15 +56,12 @@ use yii\web\View;
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <?= $form->field($model, 'pre_diagnosis', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('pre_diagnosis') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <?= $form->field($model, 'observations', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('observations') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
@@ -95,17 +92,20 @@ use yii\web\View;
                                     <?= $form->field($model, 'password_pattern', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('password_pattern') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <?=
                                     $form->field($model, 'receiver_id')->widget(Select2::classname(), [
                                         'data' => ArrayHelper::map(User::find()->orderBy(['username' => SORT_ASC])->all(), 'id', 'email'),
                                         'language' => 'es',
-                                        'options' => ['placeholder' => 'Seleccione un usuario', 'class' => 'form-control'],
+                                        'options' => ['placeholder' => AttributesLabels::getAttributeLabel('receiver_id'), 'class' => 'form-control'],
                                         'pluginOptions' => [
                                             'allowClear' => true
                                         ],
-                                    ])
+                                    ])->label(false)
                                     ?>
                                 </div>
                             </div>

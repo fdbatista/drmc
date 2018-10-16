@@ -14,9 +14,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marcas'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-view">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">tablet_android</i> ' . Yii::t('app', 'Modelos'), ['index-models', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
@@ -37,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('name'),
             ],
                 [
-                'attribute' => 'name',
+                'attribute' => 'description',
                 'label' => AttributesLabels::getAttributeLabel('description'),
             ],
         ],

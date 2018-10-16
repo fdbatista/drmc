@@ -15,6 +15,7 @@ use Yii;
  * @property int $items
  * @property int $type_id
  * @property int $model_id
+ * @property string $updated_at
  *
  * @property BrandModel $model
  * @property DeviceType $type
@@ -37,6 +38,7 @@ class Warehouse extends \yii\db\ActiveRecord
         return [
             [['code', 'name', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'required'],
             [['price_in', 'price_public', 'items', 'type_id', 'model_id'], 'integer'],
+            [['updated_at'], 'safe'],
             [['code', 'name'], 'string', 'max' => 50],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -57,6 +59,7 @@ class Warehouse extends \yii\db\ActiveRecord
             'items' => Yii::t('app', 'Items'),
             'type_id' => Yii::t('app', 'Type ID'),
             'model_id' => Yii::t('app', 'Model ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 

@@ -2,40 +2,21 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\UserRole;
 use common\models\search\UserRoleSearch;
-use yii\web\Controller;
+use common\models\UserRole;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UserRolesController implements the CRUD actions for UserRole model.
  */
-class UserRolesController extends Controller {
+class UserRolesController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'user-roles';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'roles-users';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
 
     /**

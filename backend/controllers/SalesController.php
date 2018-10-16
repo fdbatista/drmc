@@ -3,54 +3,34 @@
 namespace backend\controllers;
 
 use common\models\Sale;
+use common\models\SaleItem;
+use common\models\search\SaleItemSearch;
 use common\models\search\SaleSearch;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * SaleController implements the CRUD actions for Sale model.
+ * SalesController implements the CRUD actions for Sale model.
  */
-class SalesController extends Controller
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'sales';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+class SalesController extends GenericController {
+
+    public function beforeAction($action) {
+        $this->entityId = 'sales';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
 
     /**
      * Lists all Sale models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new SaleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -60,10 +40,9 @@ class SalesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -72,8 +51,7 @@ class SalesController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Sale();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -81,7 +59,7 @@ class SalesController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -92,8 +70,7 @@ class SalesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,7 +78,7 @@ class SalesController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -112,8 +89,7 @@ class SalesController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -126,12 +102,107 @@ class SalesController extends Controller
      * @return Sale the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Sale::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
+    //--------------------Items-------------------------
+
+    /**
+     * Lists all SaleItem models.
+     * @return mixed
+     */
+    public function actionIndexItems($id) {
+        $searchModel = new SaleItemSearch();
+        $searchModel->sale_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-items', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single SaleItem model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionViewItems($id) {
+        return $this->render('view-items', [
+                    'model' => $this->findItemsModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new SaleItem model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreateItems($id) {
+        $model = new SaleItem();
+        $model->sale_id = $id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create-items', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing SaleItem model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdateItems($id) {
+        $model = $this->findItemsModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-items', 'id' => $model->id]);
+        }
+
+        return $this->render('update-items', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing SaleItem model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDeleteItems($id) {
+        $model = $this->findItemsModel($id);
+        $parent_id = $model->sale_id;
+        $model->delete();
+        return $this->actionIndexItems($parent_id);
+    }
+
+    /**
+     * Finds the SaleItem model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return SaleItem the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findItemsModel($id) {
+        if (($model = SaleItem::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
 }

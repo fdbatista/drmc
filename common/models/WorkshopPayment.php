@@ -11,6 +11,7 @@ use Yii;
  * @property double $amount
  * @property string $date
  * @property int $workshop_id
+ * @property string $updated_at
  *
  * @property Workshop $workshop
  */
@@ -32,7 +33,7 @@ class WorkshopPayment extends \yii\db\ActiveRecord
         return [
             [['amount', 'date', 'workshop_id'], 'required'],
             [['amount'], 'number'],
-            [['date'], 'safe'],
+            [['date', 'updated_at'], 'safe'],
             [['workshop_id'], 'integer'],
             [['workshop_id'], 'exist', 'skipOnError' => true, 'targetClass' => Workshop::className(), 'targetAttribute' => ['workshop_id' => 'id']],
         ];
@@ -48,6 +49,7 @@ class WorkshopPayment extends \yii\db\ActiveRecord
             'amount' => Yii::t('app', 'Amount'),
             'date' => Yii::t('app', 'Date'),
             'workshop_id' => Yii::t('app', 'Workshop ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 

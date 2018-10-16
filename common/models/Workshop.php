@@ -17,6 +17,7 @@ use Yii;
  * @property int $receiver_id
  * @property int $type_id
  * @property int $model_id
+ * @property string $updated_at
  *
  * @property BrandModel $model
  * @property User $receiver
@@ -41,6 +42,7 @@ class Workshop extends \yii\db\ActiveRecord
         return [
             [['pre_diagnosis', 'type_id', 'model_id'], 'required'],
             [['effort', 'receiver_id', 'type_id', 'model_id'], 'integer'],
+            [['updated_at'], 'safe'],
             [['pre_diagnosis', 'password_pattern'], 'string', 'max' => 250],
             [['observations'], 'string', 'max' => 500],
             [['signature_in', 'signature_out'], 'string', 'max' => 50],
@@ -66,6 +68,7 @@ class Workshop extends \yii\db\ActiveRecord
             'receiver_id' => Yii::t('app', 'Receiver ID'),
             'type_id' => Yii::t('app', 'Type ID'),
             'model_id' => Yii::t('app', 'Model ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 

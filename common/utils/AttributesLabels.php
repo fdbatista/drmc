@@ -36,6 +36,10 @@ class AttributesLabels {
         'updated_at' => 'Actualizado',
         'amount' => 'Cantidad',
         'date' => 'Fecha',
+        'customer_id' => 'Cliente',
+        'first_name' => 'Nombres',
+        'last_name' => 'Apellidos',
+        'telephone' => 'Teléfono',
     ];
     
     public static function getAttributeLabel($name) {

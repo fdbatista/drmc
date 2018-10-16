@@ -15,35 +15,13 @@ use yii\web\NotFoundHttpException;
 /**
  * BrandsController implements the CRUD actions for Modelo.
  */
-class BrandsController extends Controller {
+class BrandsController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'brands';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'brands';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
-
-    /* public function beforeAction($action) {
-      Yii::$app->view->params['active'] = $this->entityId;
-      } */
 
     /**
      * Lists all Modelos.

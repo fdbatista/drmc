@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use yii\db\Migration;
 
 /**
@@ -12,10 +13,27 @@ class m181015_131651_init_rbac extends Migration {
      */
     public function safeUp() {
         $auth = Yii::$app->authManager;
-        $admin = $auth->createRole('admin');
-        $admin->description = 'Administrador general de la aplicación';
-        $auth->add($admin);
-        $auth->assign($admin, 1);
+        $adminRole = $auth->createRole('admin');
+        $adminRole->description = 'Administrador general de la aplicación';
+        $customerRole = $auth->createRole('customer');
+        $customerRole->description = 'Cliente de la entidad';
+        
+        $auth->add($adminRole);
+        $auth->add($customerRole);
+        $auth->assign($adminRole, 1);
+        
+        $customer = new User();
+        $customer->username = 'customer';
+        $customer->first_name = 'Cust';
+        $customer->last_name = 'Omer';
+        $customer->address = '224 Park Avenue';
+        $customer->telephone = '+53 1 234 5678';
+        $customer->email = 'customer@mailcom';
+        $customer->setPassword('a');
+        $customer->generateAuthKey();
+        $customer->save(false);
+        
+        $auth->assign($customerRole, $customer->getId());
 
         $entities = [
             'brands' => 'marcas',
@@ -27,41 +45,43 @@ class m181015_131651_init_rbac extends Migration {
             'workshop' => 'productos del taller',
             'payments-workshop' => 'cotizaciones del taller',
             'sales' => 'ventas',
+            'items-sales' => 'productos de las ventas',
             'app-config' => 'configuración general',
             'users' => 'usuarios',
+            'roles-users' => 'usuarios',
             'roles' => 'roles',
         ];
 
         foreach ($entities as $key => $value) {
-            $perm = $auth->createPermission("index-$key");
-            $perm->description = "Ver lista de $value";
-            $auth->add($perm);
-            $auth->addChild($admin, $perm);
+            $permission = $auth->createPermission("index-$key");
+            $permission->description = "Ver lista de $value";
+            $auth->add($permission);
+            $auth->addChild($adminRole, $permission);
 
-            $perm = $auth->createPermission("view-$key");
-            $perm->description = "Ver detalles de $value";
-            $auth->add($perm);
-            $auth->addChild($admin, $perm);
+            $permission = $auth->createPermission("view-$key");
+            $permission->description = "Ver detalles de $value";
+            $auth->add($permission);
+            $auth->addChild($adminRole, $permission);
 
-            $perm = $auth->createPermission("create-$key");
-            $perm->description = "Adicionar $value";
-            $auth->add($perm);
-            $auth->addChild($admin, $perm);
+            $permission = $auth->createPermission("create-$key");
+            $permission->description = "Adicionar $value";
+            $auth->add($permission);
+            $auth->addChild($adminRole, $permission);
 
-            $perm = $auth->createPermission("update-$key");
-            $perm->description = "Actualizar $value";
-            $auth->add($perm);
-            $auth->addChild($admin, $perm);
+            $permission = $auth->createPermission("update-$key");
+            $permission->description = "Actualizar $value";
+            $auth->add($permission);
+            $auth->addChild($adminRole, $permission);
 
-            $perm = $auth->createPermission("delete-$key");
-            $perm->description = "Eliminar $value";
-            $auth->add($perm);
-            $auth->addChild($admin, $perm);
+            $permission = $auth->createPermission("delete-$key");
+            $permission->description = "Eliminar $value";
+            $auth->add($permission);
+            $auth->addChild($adminRole, $permission);
         }
-        $perm = $auth->createPermission("view-dashboard");
-        $perm->description = "Ver panel de control";
-        $auth->add($perm);
-        $auth->addChild($admin, $perm);
+        $permission = $auth->createPermission("view-dashboard");
+        $permission->description = "Ver panel de control";
+        $auth->add($permission);
+        $auth->addChild($adminRole, $permission);
     }
 
     /**
@@ -72,18 +92,4 @@ class m181015_131651_init_rbac extends Migration {
         $auth->removeAll();
     }
 
-    /*
-      // Use up()/down() to run migration code without a transaction.
-      public function up()
-      {
-
-      }
-
-      public function down()
-      {
-      echo "m181015_131651_init_rbac cannot be reverted.\n";
-
-      return false;
-      }
-     */
 }

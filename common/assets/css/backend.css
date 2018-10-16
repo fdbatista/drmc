@@ -144,13 +144,13 @@ a .material-icons {
 }
 
 .select2-container--krajee .select2-results__option[aria-selected="true"] {
-    background-color: #a586aa;
-    color: #000;
+    background-color: #a586aa!important;
+    color: #000!important;
 }
 
 .select2-container--krajee .select2-results__option--highlighted[aria-selected] {
-    color: #fff;
-    background-color: #9c27b0;
+    color: #fff!important;
+    background-color: #9c27b0!important;
 }
 
 .select2 select2-container {

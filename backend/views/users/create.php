@@ -12,10 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
     <?= $this->render('_form', [
-        'model' => $model,
+        'model' => $model, 'currUserRole' => $currUserRole
     ]) ?>
 
 </div>

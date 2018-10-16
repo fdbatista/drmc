@@ -2,41 +2,19 @@
 
 namespace backend\controllers;
 
-use common\models\Role;
 use common\models\search\RoleSearch;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * RolesController implements the CRUD actions for Role model.
  */
-class RolesController extends Controller {
+class RolesController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'roles';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'roles';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
 
     /**
@@ -44,13 +22,8 @@ class RolesController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new RoleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
+        $roles = Yii::$app->authManager->getRoles();
+        return $this->render('index', ['roles' => $roles]);
     }
 
     /**

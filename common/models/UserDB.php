@@ -10,6 +10,10 @@ use Yii;
  * @property int $id
  * @property string $username
  * @property string $auth_key
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $telephone
+ * @property string $address
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
@@ -17,8 +21,7 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property UserRole[] $userRoles
- * @property Role[] $roles
+ * @property Sale[] $sales
  * @property Workshop[] $workshops
  */
 class UserDB extends \yii\db\ActiveRecord
@@ -37,10 +40,12 @@ class UserDB extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
+            [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+            [['username', 'telephone', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
+            [['first_name', 'last_name'], 'string', 'max' => 50],
+            [['address'], 'string', 'max' => 250],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
@@ -56,6 +61,10 @@ class UserDB extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'username' => Yii::t('app', 'Username'),
             'auth_key' => Yii::t('app', 'Auth Key'),
+            'first_name' => Yii::t('app', 'First Name'),
+            'last_name' => Yii::t('app', 'Last Name'),
+            'telephone' => Yii::t('app', 'Telephone'),
+            'address' => Yii::t('app', 'Address'),
             'password_hash' => Yii::t('app', 'Password Hash'),
             'password_reset_token' => Yii::t('app', 'Password Reset Token'),
             'email' => Yii::t('app', 'Email'),
@@ -68,17 +77,9 @@ class UserDB extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserRoles()
+    public function getSales()
     {
-        return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRoles()
-    {
-        return $this->hasMany(Role::className(), ['id' => 'role_id'])->viaTable('user_role', ['user_id' => 'id']);
+        return $this->hasMany(Sale::className(), ['customer_id' => 'id']);
     }
 
     /**

@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     },
                     'update' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
                     'index-models' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-tag"></span>', $url, [

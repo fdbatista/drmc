@@ -14,7 +14,7 @@ use yii\bootstrap\ActiveForm;
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header" data-background-color="purple">
                         <h4 class="title"><?= $this->title ?></h4>
@@ -24,13 +24,13 @@ use yii\bootstrap\ActiveForm;
                         <?php $form = ActiveForm::begin(); ?>
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-xs-10">
                                 <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-10">
                                 <div class="form-group">
                                     <?= $form->field($model, 'description', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('description') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>

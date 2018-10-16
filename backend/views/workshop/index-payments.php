@@ -2,7 +2,6 @@
 
 use common\models\search\WorkshopPaymentSearch;
 use common\utils\AttributesLabels;
-use common\utils\StaticMembers;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -20,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-payment-index">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -53,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     },
                     'update-payments' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
                     'delete-payments' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';

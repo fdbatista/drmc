@@ -5,40 +5,19 @@ namespace backend\controllers;
 use common\models\search\UserSearch;
 use common\models\User;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * UsersController implements the CRUD actions for User model.
  */
-class UsersController extends Controller {
+class UsersController extends GenericController {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            $entityId = 'users';
-                            Yii::$app->view->params['active'] = $entityId;
-                            $permissionName = "$action->id-$entityId";
-                            $res = Yii::$app->user->can($permissionName);
-                            return $res;
-                        }
-                    ],
-                ],
-            ]
-        ];
+    public function beforeAction($action) {
+        $this->entityId = 'users';
+        Yii::$app->view->params['active'] = $this->entityId;
+        return parent::beforeAction($action);
     }
-    
+
     /**
      * Lists all User models.
      * @return mixed
@@ -76,10 +55,13 @@ class UsersController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('create', [
-                    'model' => $model,
-        ]);
+        
+        $roles = Yii::$app->authManager->getRoles();
+        $value = '';
+        foreach ($roles as $role) {
+            $pp = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id);
+        }
+        return $this->render('create', ['model' => $model, 'roles' => $roles, 'value' => $value]);
     }
 
     /**
@@ -91,14 +73,23 @@ class UsersController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $authManager = Yii::$app->authManager;
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $model->save()) {
+            $role = $authManager->getRole($post['role']);            
+            $authManager->revokeAll($model->id);
+            $authManager->assign($role, $model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('update', [
-                    'model' => $model,
-        ]);
+        $roles = $authManager->getRoles();
+        $currUserRole = '';
+        foreach ($roles as $role) {
+            if ($role->name === array_keys($authManager->getRolesByUser(User::findOne($id)->id))[0]) {
+                $currUserRole = $role->name;
+                break;
+            }
+        }
+        return $this->render('update', ['model' => $model, 'roles' => $roles, 'currUserRole' => $currUserRole]);
     }
 
     /**
