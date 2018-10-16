@@ -2,8 +2,10 @@
 
 namespace backend\controllers;
 
+use common\models\search\WorkshopPaymentSearch;
 use common\models\search\WorkshopSearch;
 use common\models\Workshop;
+use common\models\WorkshopPayment;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -27,7 +29,7 @@ class WorkshopController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            $entityId = 'workshop-items';
+                            $entityId = 'workshop';
                             Yii::$app->view->params['active'] = $entityId;
                             $permissionName = "$action->id-$entityId";
                             $res = Yii::$app->user->can($permissionName);
@@ -126,6 +128,100 @@ class WorkshopController extends Controller {
             return $model;
         }
 
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    //--------------Payments----------------
+
+    /**
+     * Lists all WorkshopPayment models.
+     * @return mixed
+     */
+    public function actionIndexPayments($id) {
+        $searchModel = new WorkshopPaymentSearch();
+        $searchModel->workshop_id = $id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-payments', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single WorkshopPayment model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionViewPayments($id) {
+        return $this->render('view-payments', [
+                    'model' => $this->findPaymentModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new WorkshopPayment model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreatePayments($id) {
+        $model = new WorkshopPayment();
+        $model->workshop_id = $id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-payments', 'id' => $model->id]);
+        }
+
+        return $this->render('create-payments', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing WorkshopPayment model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdatePayments($id) {
+        $model = $this->findPaymentModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-payments', 'id' => $model->id]);
+        }
+
+        return $this->render('update-payments', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing WorkshopPayment model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDeletePayments($id) {
+        $model = $this->findPaymentModel($id);
+        $workshopId = $model->getWorkshop()->one()->id;
+        $model->delete();
+        return $this->actionIndexPayments($workshopId);
+    }
+
+    /**
+     * Finds the WorkshopPayment model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return WorkshopPayment the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findPaymentModel($id) {
+        if (($model = WorkshopPayment::findOne($id)) !== null) {
+            return $model;
+        }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 

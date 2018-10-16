@@ -113,8 +113,10 @@ class BrandsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDeleteModels($id) {
-        $this->findBrandModel($id)->delete();
-        return $this->redirect(['models']);
+        $model = $this->findBrandModel($id);
+        $brandId = $model->getBrand()->one()->id;
+        $model->delete();
+        return $this->actionIndexModels($brandId);
     }
 
     /**

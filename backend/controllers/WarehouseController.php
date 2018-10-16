@@ -26,7 +26,7 @@ class WarehouseController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            $entityId = 'warehouse-items';
+                            $entityId = 'warehouse';
                             Yii::$app->view->params['active'] = $entityId;
                             $permissionName = "$action->id-$entityId";
                             $res = Yii::$app->user->can($permissionName);

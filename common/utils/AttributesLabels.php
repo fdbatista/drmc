@@ -34,6 +34,8 @@ class AttributesLabels {
         'major_discount' => 'Descuento mayor',
         'receiver_id' => 'Receptor',
         'updated_at' => 'Actualizado',
+        'amount' => 'Cantidad',
+        'date' => 'Fecha',
     ];
     
     public static function getAttributeLabel($name) {

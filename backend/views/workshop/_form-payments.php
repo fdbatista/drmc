@@ -1,14 +1,15 @@
 <?php
 
-use common\models\Country;
+use common\models\WorkshopPayment;
 use common\utils\AttributesLabels;
+use kartik\date\DatePicker;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm as ActiveForm2;
 
 /* @var $this View */
-/* @var $model Country */
+/* @var $model WorkshopPayment */
 /* @var $form ActiveForm2 */
 ?>
 
@@ -25,8 +26,20 @@ use yii\widgets\ActiveForm as ActiveForm2;
                         <?php $form = ActiveForm::begin(); ?>
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
-                            <div class="col-xs-12">
-                                <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            <div class="col-sm-6">
+                                <?= $form->field($model, 'amount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('amount') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                            <div class="col-sm-6">
+                                <?=
+                                $form->field($model, 'date')->widget(DatePicker::classname(), [
+                                    'options' => ['placeholder' => AttributesLabels::getAttributeLabel('date'), 'class' => 'form-control'],
+                                    'pluginOptions' => [
+                                        'autoclose' => true,
+                                        'todayHighlight' => true,
+                                        'format' => 'yyyy-mm-dd',
+                                    ]
+                                ])->label(false)
+                                ?>
                             </div>
                         </div>
 

@@ -58,7 +58,7 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'pre_diagnosis', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('pre_diagnosis') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'pre_diagnosis', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('pre_diagnosis') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'observations', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('observations') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'observations', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('observations') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
                             </div>
                         </div>
@@ -74,17 +74,17 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'effort', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('effort') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'effort', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('effort') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'signature_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('signature_in') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'signature_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('signature_in') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'signature_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('signature_out') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'signature_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('signature_out') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'password_pattern', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('password_pattern') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'password_pattern', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('password_pattern') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -122,15 +122,3 @@ use yii\web\View;
         </div>
     </div>
 </div>
-
-
-<?php $form = ActiveForm::begin(); ?>
-
-
-
-<div class="form-group">
-    <?= Html::submitButton(Yii::t('app', 'Aceptar'), ['class' => 'btn btn-success']) ?>
-</div>
-
-<?php ActiveForm::end(); ?>
-

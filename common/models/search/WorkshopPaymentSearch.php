@@ -18,7 +18,7 @@ class WorkshopPaymentSearch extends WorkshopPayment
     public function rules()
     {
         return [
-            [['id', 'device_id'], 'integer'],
+            [['id'], 'integer'],
             [['amount'], 'number'],
             [['date'], 'safe'],
         ];
@@ -61,7 +61,6 @@ class WorkshopPaymentSearch extends WorkshopPayment
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'device_id' => $this->device_id,
             'amount' => $this->amount,
             'date' => $this->date,
         ]);

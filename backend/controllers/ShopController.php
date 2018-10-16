@@ -27,7 +27,7 @@ class ShopController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            $entityId = 'shop-items';
+                            $entityId = 'shop';
                             Yii::$app->view->params['active'] = $entityId;
                             $permissionName = "$action->id-$entityId";
                             $res = Yii::$app->user->can($permissionName);

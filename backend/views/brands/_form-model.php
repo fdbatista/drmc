@@ -26,14 +26,14 @@ use yii\widgets\ActiveForm as ActiveForm2;
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
                             <div class="col-xs-12">
-                                <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false)->error(false) ?>
+                                <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'description', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('description') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false)->error(false) ?>
+                                    <?= $form->field($model, 'description', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('description') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
                             </div>
                         </div>

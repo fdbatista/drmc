@@ -1,13 +1,21 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\search\WorkshopPaymentSearch;
+use common\utils\AttributesLabels;
+use common\utils\StaticMembers;
+use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\search\WorkshopPaymentSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $this View */
+/* @var $searchModel WorkshopPaymentSearch */
+/* @var $dataProvider ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Workshop Payments');
+$this->title = Yii::t('app', 'Cotizaciones');
+$parent = $searchModel->getWorkshop()->one();
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos del dispositivo'), 'url' => ['view', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-payment-index">
@@ -17,34 +25,37 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Workshop Payment'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar cotización'), ['create-payments', 'id' => $parent->id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'device_id',
-            'amount',
-            'date',
+            [
+                'attribute' => 'amount',
+                'label' => AttributesLabels::getAttributeLabel('amount'),
+            ],
+            [
+                'attribute' => 'date',
+                'label' => AttributesLabels::getAttributeLabel('date'),
+                'format' => 'datetime'
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {delete}',
+                'template' => '{view-payments} {update-payments} {delete-payments}',
                 'buttons' =>
                     [
-                    'view' => function ($key) {
+                    'view-payments' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     },
-                    'update' => function ($key) {
+                    'update-payments' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Modificar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
-                    'delete' => function ($key) {
+                    'delete-payments' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
                     },
                 ]
