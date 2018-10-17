@@ -19,6 +19,7 @@ class m181008_221747_create_workshop_table extends Migration
             'observations' => $this->string(500),
             'signature_in' => $this->string(50),
             'signature_out' => $this->string(50),
+            'serial_number' => $this->string()->notNull(),
             'effort' => $this->integer(),
             'receiver_id' => $this->integer(),
             'type_id' => $this->integer()->notNull(),
