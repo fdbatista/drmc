@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar venta'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="matDateRangePickererial-icons">add</i> ' . Yii::t('app', 'Agregar venta'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'attribute' => 'date',
                 'label' => AttributesLabels::getAttributeLabel('date'),
-                'filter' => DateRangePicker::widget([
+                /*'filter' => DateRangePicker::widget([
                     'name' => 'date_range_1',
                     'value' => '01-Jan-14 to 20-Feb-14',
                     'convertFormat' => true,
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'opens' => 'left'
                     ]
-                ])
+                ])*/
             /* DatePicker::widget([
               'name' => 'start_date',
               'name2' => 'end_date',
