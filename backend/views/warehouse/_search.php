@@ -26,7 +26,7 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'price_in') ?>
 
-    <?= $form->field($model, 'price_public') ?>
+    <?= $form->field($model, 'price_out') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

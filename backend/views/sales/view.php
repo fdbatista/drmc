@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('<i class="material-icons">shopping_cart</i> ' . Yii::t('app', 'Artículos'), ['index-items', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">shopping_cart</i> ' . Yii::t('app', 'Artículos'), ['index-items', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">card_giftcard</i> ' . Yii::t('app', 'Cerrar venta'), ['index-items', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -33,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'customer_id',
                 'label' => AttributesLabels::getAttributeLabel('customer_id'),
-                'value' => $model->getCustomer()->one()->getFullname(),
+                'value' => $model->getCustomer()->one()->code,
             ],
             [
                 'attribute' => 'date',

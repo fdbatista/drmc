@@ -12,7 +12,7 @@ use Yii;
  * @property int $customer_id
  * @property string $updated_at
  *
- * @property User $customer
+ * @property Customer $customer
  * @property SaleItem[] $saleItems
  */
 class Sale extends \yii\db\ActiveRecord
@@ -31,10 +31,10 @@ class Sale extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'customer_id'], 'required'],
+            [['date'], 'required'],
             [['date', 'updated_at'], 'safe'],
             [['customer_id'], 'integer'],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
 
@@ -56,7 +56,7 @@ class Sale extends \yii\db\ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(User::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
     }
 
     /**

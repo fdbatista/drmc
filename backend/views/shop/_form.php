@@ -32,7 +32,7 @@ use yii\web\View;
                         <?php $form = ActiveForm::begin(); ?>
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <?=
                                 $form->field($model, 'type_id')->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
@@ -45,7 +45,7 @@ use yii\web\View;
                                 ?>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <?=
                                 $form->field($model, 'model_id')->widget(Select2::classname(), [
                                     'data' => StaticMembers::getModelsAndBrand(),

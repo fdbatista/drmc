@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <input class="form-control placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
                     <div class="form-actions">
                         <button type="button" id="back-btn" class="btn green btn-outline">Regresar</button>
-                        <button type="submit" class="btn btn-success uppercase pull-right">Continuar</button>
+                        <button type="submit" class="btn btn-info uppercase pull-right">Continuar</button>
                     </div>
                 </form>
                 <!-- END FORGOT PASSWORD FORM -->

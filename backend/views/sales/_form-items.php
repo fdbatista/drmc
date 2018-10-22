@@ -18,20 +18,20 @@ use yii\bootstrap\ActiveForm;
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header" data-background-color="purple">
                         <h4 class="title"><?= $this->title ?></h4>
                         <p class="category">Complete el siguiente formulario</p>
                     </div>
                     <div class="card-content">
-                        <?php $form = ActiveForm::begin(); ?>
+                        <?php $form = ActiveForm::begin(['id' => 'items-form']); ?>
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-8">
                                 <?=
                                 $form->field($model, 'type_id')->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
+                                    'data' => StaticMembers::getDevicesForSale(),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
                                     'pluginOptions' => [
@@ -40,10 +40,13 @@ use yii\bootstrap\ActiveForm;
                                 ])->label(false)
                                 ?>
                             </div>
-                            <div class="col-sm-6">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-8">
                                 <?=
                                 $form->field($model, 'model_id')->widget(Select2::classname(), [
-                                    'data' => StaticMembers::getModelsAndBrand(),
+                                    'data' => StaticMembers::getBrandModelsForSale(),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
                                     'pluginOptions' => [
@@ -55,21 +58,11 @@ use yii\bootstrap\ActiveForm;
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <?= $form->field($model, 'items', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('items') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'price_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_in') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'price_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_out') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
-                                </div>
-                            </div>                            
                         </div>
 
                         <div class="form-group">

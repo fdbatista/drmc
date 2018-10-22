@@ -2,10 +2,13 @@
 
 namespace backend\controllers;
 
+use common\models\Customer;
 use common\models\Sale;
 use common\models\SaleItem;
 use common\models\search\SaleItemSearch;
 use common\models\search\SaleSearch;
+use common\models\Shop;
+use common\models\Warehouse;
 use Yii;
 use yii\web\NotFoundHttpException;
 
@@ -26,6 +29,7 @@ class SalesController extends GenericController {
      */
     public function actionIndex() {
         $searchModel = new SaleSearch();
+        $pp = Yii::$app->request->queryParams;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['date' => SORT_DESC];
 
@@ -54,16 +58,22 @@ class SalesController extends GenericController {
      */
     public function actionCreate() {
         $model = new Sale();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $post = Yii::$app->request->post();
+        if (count($post) > 0) {
+            if (($post['client-type'] === '1' && $post['Sale']['client-code'] === '') || ($post['client-type'] === '2' && $post['Sale']['customer_id'] === '')) {
+                $model->addError('customer_id', 'Debe asociar un cliente a la venta.');
+            } else {
+                if ($post['Sale']['customer_id'] === '') {
+                    $customer = Customer::findOne(['code' => $post['Sale']['client-code']]);
+                    $post['Sale']['customer_id'] = $customer->id;
+                }
+                if ($model->load($post) && $model->save()) {
+                    return $this->actionIndexItems($model->id);
+                }
+            }
         }
-        
-        $model->date = date('Y-m-d');
-
-        return $this->render('create', [
-                    'model' => $model,
-        ]);
+        $model->date = date('Y-m-d H:i');
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
@@ -75,14 +85,10 @@ class SalesController extends GenericController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('update', [
-                    'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model]);
     }
 
     /**
@@ -151,8 +157,38 @@ class SalesController extends GenericController {
         $model = new SaleItem();
         $model->sale_id = $id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $found = false;
+            $stock = Shop::findOne(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
+            if ($stock) {
+                $found = true;
+                if ($stock->items < $model->items) {
+                    $model->addError('items', 'Solo existen ' . $stock->items . ' unidades de este producto en la tienda.');
+                }
+            } else {
+                $stock = Warehouse::findOne(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
+                if ($stock) {
+                    $found = true;
+                    if ($stock->items < $model->items) {
+                        $model->addError('items', 'Solo existen ' . $stock->items . ' unidades de este producto en la tienda.');
+                    }
+                }
+            }
+            if (!$found) {
+                $model->addError('type_id', 'No existen artículos en tienda o almacén con ese tipo/modelo');
+            }
+            if (!$model->hasErrors()) {
+                $model->price_in = $stock->price_in;
+                $model->price_out = $stock->price_out;
+                $model->save();
+                $stock->items -= $model->items;
+                if ($stock->items === 0) {
+                    $stock->delete();
+                } else {
+                    $stock->save();
+                }
+                return $this->redirect(['view', 'id' => $id]);
+            }
         }
 
         return $this->render('create-items', [

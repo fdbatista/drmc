@@ -17,7 +17,7 @@ class WarehouseSearch extends Warehouse {
 
     public function rules() {
         return [
-                [['price_in', 'price_public'], 'integer'],
+                [['price_in', 'price_out'], 'integer'],
                 [['code', 'name', 'items', 'type', 'model'], 'safe'],
         ];
     }
@@ -70,7 +70,7 @@ class WarehouseSearch extends Warehouse {
         // grid filtering conditions
         $query->andFilterWhere([
             'price_in' => $this->price_in,
-            'price_public' => $this->price_public,
+            'price_out' => $this->price_out,
             'items' => $this->items,
         ]);
 

@@ -8,9 +8,5 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sale-create">
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    <?= $this->render('_form', ['model' => $model, 'clientType' => 1]) ?>
 </div>

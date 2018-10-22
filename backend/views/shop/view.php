@@ -41,10 +41,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
             ],
             [
-                'attribute' => 'inventory',
-                'label' => AttributesLabels::getAttributeLabel('inventory'),
-            ],
-            [
                 'attribute' => 'code',
                 'label' => AttributesLabels::getAttributeLabel('code'),
             ],

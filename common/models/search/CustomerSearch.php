@@ -5,24 +5,21 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Sale;
+use common\models\Customer;
 
 /**
- * SaleSearch represents the model behind the search form of `common\models\Sale`.
+ * CustomerSearch represents the model behind the search form of `common\models\Customer`.
  */
-class SaleSearch extends Sale
+class CustomerSearch extends Customer
 {
-    
-    public $customer;
-    
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'customer_id'], 'integer'],
-            [['date', 'updated_at', 'customer'], 'safe'],
+            [['id'], 'integer'],
+            [['code'], 'safe'],
         ];
     }
 
@@ -44,20 +41,13 @@ class SaleSearch extends Sale
      */
     public function search($params)
     {
-        $query = Sale::find();
+        $query = Customer::find();
 
         // add conditions that should always apply here
-        
-        $query->joinWith(['customer']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        
-        $dataProvider->sort->attributes['customer'] = [
-            'asc' => ['customer.code' => SORT_ASC],
-            'desc' => ['customer.code' => SORT_DESC],
-        ];
 
         $this->load($params);
 
@@ -70,11 +60,9 @@ class SaleSearch extends Sale
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'date' => $this->date,
-            'customer_id' => $this->customer_id,
-            'updated_at' => $this->updated_at,
         ]);
-        $query->andFilterWhere(['like', 'customer.code', $this->customer]);
+
+        $query->andFilterWhere(['like', 'code', $this->code]);
 
         return $dataProvider;
     }

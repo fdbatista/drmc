@@ -11,10 +11,5 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta
 $this->params['breadcrumbs'][] = Yii::t('app', 'Actualizar');
 ?>
 <div class="sale-update">
-
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    <?= $this->render('_form', ['model' => $model, 'clientType' => 2]) ?>
 </div>

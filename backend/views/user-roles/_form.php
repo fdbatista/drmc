@@ -17,7 +17,7 @@ use yii\bootstrap\ActiveForm;
     <?= $form->field($model, 'role_id')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Aceptar'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Aceptar'), ['class' => 'btn btn-info']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

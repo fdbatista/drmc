@@ -11,7 +11,7 @@ use Yii;
  * @property int $code
  * @property string $name
  * @property int $price_in
- * @property int $price_public
+ * @property int $price_out
  * @property int $items
  * @property int $type_id
  * @property int $model_id
@@ -36,13 +36,13 @@ class Warehouse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'required'],
-            [['code', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'integer'],
+            [['code', 'price_in', 'price_out', 'items', 'type_id', 'model_id'], 'required'],
+            [['code', 'price_in', 'price_out', 'items', 'type_id', 'model_id'], 'integer'],
             [['updated_at'], 'safe'],
             [['name'], 'string', 'max' => 50],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
-            ['price_public', 'compare', 'compareAttribute' => 'price_in', 'operator' => '>', 'type' => 'number'],
+            ['price_out', 'compare', 'compareAttribute' => 'price_in', 'operator' => '>', 'type' => 'number'],
         ];
     }
 
@@ -56,7 +56,7 @@ class Warehouse extends \yii\db\ActiveRecord
             'code' => Yii::t('app', 'Code'),
             'name' => Yii::t('app', 'Name'),
             'price_in' => Yii::t('app', 'Price In'),
-            'price_public' => Yii::t('app', 'Price Public'),
+            'price_out' => Yii::t('app', 'Price Public'),
             'items' => Yii::t('app', 'Items'),
             'type_id' => Yii::t('app', 'Type ID'),
             'model_id' => Yii::t('app', 'Model ID'),

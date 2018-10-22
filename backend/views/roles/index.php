@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="role-index">
     
     <p>
-        <?php /*echo Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar rol'), ['create'], ['class' => 'btn btn-success'])*/ ?>
+        <?php /*echo Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar rol'), ['create'], ['class' => 'btn btn-info'])*/ ?>
     </p>
 
     <div id="w0" class="grid-view">

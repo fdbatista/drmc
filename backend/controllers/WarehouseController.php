@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\search\WarehouseSearch;
+use common\models\Shop;
 use common\models\Warehouse;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -53,8 +54,15 @@ class WarehouseController extends GenericController {
     public function actionCreate() {
         $model = new Warehouse();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $shop = Shop::findAll(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
+            if (count($shop) === 0) {
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $model->addError('type_id', 'Ese tipo de dispositivo y modelo ya existe en la tienda.');
+            }
         }
 
         return $this->render('create', [
@@ -72,8 +80,15 @@ class WarehouseController extends GenericController {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $shop = Shop::findAll(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
+            if (count($shop) === 0) {
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $model->addError('type_id', 'Ese tipo de dispositivo y modelo ya existe en la tienda.');
+            }
         }
 
         return $this->render('update', [

@@ -72,7 +72,7 @@ use yii\web\View;
                                 <?= $form->field($model, 'price_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_in') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($model, 'price_public', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_public') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                                <?= $form->field($model, 'price_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_out') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                         </div>
 

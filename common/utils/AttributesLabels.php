@@ -23,7 +23,7 @@ class AttributesLabels {
         'items' => 'Cantidad',
         'price_in' => 'Precio entrada',
         'price_out' => 'Precio salida',
-        'price_public' => 'Precio público',
+        'price_out' => 'Precio público',
         'pre_diagnosis' => 'Pre diagnóstico',
         'password' => 'Contraseña',
         'pattern' => 'Patrón',

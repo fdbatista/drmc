@@ -53,8 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('price_in'),
             ],
             [
-                'attribute' => 'price_public',
-                'label' => AttributesLabels::getAttributeLabel('price_public'),
+                'attribute' => 'price_out',
+                'label' => AttributesLabels::getAttributeLabel('price_out'),
             ],
         ],
     ]) ?>

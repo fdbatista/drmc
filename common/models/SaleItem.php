@@ -8,8 +8,8 @@ use Yii;
  * This is the model class for table "sale_item".
  *
  * @property int $id
- * @property int $price_in
- * @property int $price_out
+ * @property double $price_in
+ * @property double $price_out
  * @property int $items
  * @property int $type_id
  * @property int $model_id
@@ -36,8 +36,9 @@ class SaleItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price_in', 'price_out', 'items', 'type_id', 'model_id', 'sale_id'], 'required'],
-            [['price_in', 'price_out', 'items', 'type_id', 'model_id', 'sale_id'], 'integer'],
+            [['items', 'type_id', 'model_id', 'sale_id'], 'required'],
+            [['price_in', 'price_out'], 'number'],
+            [['items', 'type_id', 'model_id', 'sale_id'], 'integer'],
             [['updated_at'], 'safe'],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['sale_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sale::className(), 'targetAttribute' => ['sale_id' => 'id']],

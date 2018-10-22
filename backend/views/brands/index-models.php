@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Modelo'), ['create-models', 'id' => $searchModel->brand_id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Modelo'), ['create-models', 'id' => $searchModel->brand_id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=

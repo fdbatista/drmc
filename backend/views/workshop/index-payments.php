@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar cotización'), ['create-payments', 'id' => $parent->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar cotización'), ['create-payments', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= GridView::widget([
