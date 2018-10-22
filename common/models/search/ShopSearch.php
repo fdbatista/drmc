@@ -18,7 +18,7 @@ class ShopSearch extends Shop {
     public function rules() {
         return [
                 [['price_in', 'price_out', 'first_discount', 'major_discount'], 'integer'],
-                [['inventory', 'code', 'type', 'model', 'items'], 'safe'],
+                [['code', 'type', 'model', 'items'], 'safe'],
         ];
     }
 
@@ -75,8 +75,7 @@ class ShopSearch extends Shop {
             'major_discount' => $this->major_discount,
         ]);
 
-        $query->andFilterWhere(['like', 'inventory', $this->inventory])
-                ->andFilterWhere(['like', 'code', $this->code])
+        $query->andFilterWhere(['like', 'code', $this->code])
                 ->andFilterWhere(['like', 'device_type.name', $this->type])
                 ->andFilterWhere(['like', 'brand_model.name', $this->model]);
 

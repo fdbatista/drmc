@@ -40,7 +40,7 @@ DatePickerAsset::register($this);
                                 <div class="form-group">
                                     <?=
                                 $form->field($model, 'customer_id')->widget(Select2::classname(), [
-                                    'data' => StaticMembers::getCustomers(),
+                                    'data' => StaticMembers::getUsersByRole('customer'),
                                     'language' => 'es',
                                     'options' => ['placeholder' => AttributesLabels::getAttributeLabel('customer_id'), 'class' => 'form-control'],
                                     'pluginOptions' => [

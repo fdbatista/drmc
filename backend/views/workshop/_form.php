@@ -1,7 +1,7 @@
 <?php
 
+use backend\assets\SignaturePadAsset;
 use common\models\DeviceType;
-use common\models\User;
 use common\models\Workshop;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
@@ -10,6 +10,8 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
+
+SignaturePadAsset::register($this);
 
 /* @var $this View */
 /* @var $model Workshop */
@@ -57,56 +59,52 @@ use yii\web\View;
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'pre_diagnosis', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('pre_diagnosis') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
-                                </div>
+                                <?= $form->field($model, 'pre_diagnosis', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('pre_diagnosis') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'observations', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('observations') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
-                                </div>
+                                <?= $form->field($model, 'observations', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('observations') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'serial_number', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('serial_number') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'effort', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('effort') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'effort', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('effort') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'signature_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('signature_in') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'signature_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('signature_out') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <?= $form->field($model, 'password_pattern', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('password_pattern') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                                    <?= Select2::widget([
+                                    'id' => 'passwordOrPattern',
+                                    'name' => 'passwordOrPattern',
+                                    'data' => [1 => 'Contraseña', 2 => 'Patrón'],
+                                    'value' => $passwordOrPattern,
+                                    'pluginEvents' => [
+                                        "select2:select" => 'function() {if ($(this).val() === "1") {$("#password-container").removeClass("hidden");$("#pattern-container").addClass("hidden");} else {$("#pattern-container").removeClass("hidden");$("#password-container").addClass("hidden");}}',
+                                        ]
+                                ]) ?>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-sm-6">
+                        <div id="password-container" class="row <?= $passwordOrPattern === 1 ? '' : 'hidden' ?>">
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    <?=
-                                    $form->field($model, 'receiver_id')->widget(Select2::classname(), [
-                                        'data' => ArrayHelper::map(User::find()->orderBy(['username' => SORT_ASC])->all(), 'id', 'email'),
-                                        'language' => 'es',
-                                        'options' => ['placeholder' => AttributesLabels::getAttributeLabel('receiver_id'), 'class' => 'form-control'],
-                                        'pluginOptions' => [
-                                            'allowClear' => true
-                                        ],
-                                    ])->label(false)
-                                    ?>
+                                    <?= $form->field($model, 'password', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('password') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="pattern-container" class="row <?= $passwordOrPattern === 1 ? 'hidden' : '' ?>">
+                            <div class="col-sm-8">
+                                <div class="form-group label-floating">
+                                    <?= $form->field($model, 'pattern')->hiddenInput(['id' => 'workshop-pattern'])->label(false) ?>
+                                    <canvas id="canvas" ondragend="test" ></canvas><br/>
+                                    <button id="clear-canvas" type="button" class="btn btn-xs btn-danger"><i class="material-icons">delete</i> Limpiar</button>
                                 </div>
                             </div>
                         </div>

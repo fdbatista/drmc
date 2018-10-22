@@ -25,7 +25,8 @@ class AttributesLabels {
         'price_out' => 'Precio salida',
         'price_public' => 'Precio público',
         'pre_diagnosis' => 'Pre diagnóstico',
-        'password_pattern' => 'Contraseña o patrón',
+        'password' => 'Contraseña',
+        'pattern' => 'Patrón',
         'observations' => 'Observaciones',
         'effort' => 'Mano de obra',
         'signature_in' => 'Firma de entrada',
@@ -39,6 +40,7 @@ class AttributesLabels {
         'customer_id' => 'Cliente',
         'first_name' => 'Nombres',
         'last_name' => 'Apellidos',
+        'serial_number' => 'Número de serie',
         'telephone' => 'Teléfono',
     ];
     

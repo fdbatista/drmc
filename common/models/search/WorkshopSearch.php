@@ -21,7 +21,7 @@ class WorkshopSearch extends Workshop {
     public function rules() {
         return [
                 [['effort', 'receiver_id'], 'integer'],
-                [['type', 'model', 'pre_diagnosis', 'password_pattern', 'observations', 'signature_in', 'signature_out'], 'safe'],
+                [['type', 'model', 'pre_diagnosis', 'password', 'observations', 'signature_in', 'signature_out'], 'safe'],
         ];
     }
 
@@ -77,7 +77,7 @@ class WorkshopSearch extends Workshop {
         ]);
 
         $query->andFilterWhere(['like', 'pre_diagnosis', $this->pre_diagnosis])
-                ->andFilterWhere(['like', 'password_pattern', $this->password_pattern])
+                ->andFilterWhere(['like', 'password', $this->password])
                 ->andFilterWhere(['like', 'observations', $this->observations])
                 ->andFilterWhere(['like', 'signature_in', $this->signature_in])
                 ->andFilterWhere(['like', 'signature_out', $this->signature_out])

@@ -46,8 +46,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('pre_diagnosis'),
             ],
             [
-                'attribute' => 'password_pattern',
-                'label' => AttributesLabels::getAttributeLabel('password_pattern'),
+                'attribute' => 'password',
+                'label' => AttributesLabels::getAttributeLabel('password'),
+            ],
+            [
+                'attribute' => 'pattern',
+                'label' => AttributesLabels::getAttributeLabel('pattern'),
+                'format' => ['image', ['height' => '100']],
+                
             ],
             [
                 'attribute' => 'observations',
@@ -68,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'receiver_id',
                 'label' => AttributesLabels::getAttributeLabel('receiver_id'),
-                'value' => $model->getReceiver()->one() ? $model->getReceiver()->one()->email : null
+                'value' => $model->getReceiver()->one()->getFullName()
             ],
             [
                 'attribute' => 'updated_at',

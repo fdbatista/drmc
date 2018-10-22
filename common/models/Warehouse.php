@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "warehouse".
  *
  * @property int $id
- * @property string $code
+ * @property int $code
  * @property string $name
  * @property int $price_in
  * @property int $price_public
@@ -36,12 +36,13 @@ class Warehouse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'required'],
-            [['price_in', 'price_public', 'items', 'type_id', 'model_id'], 'integer'],
+            [['code', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'required'],
+            [['code', 'price_in', 'price_public', 'items', 'type_id', 'model_id'], 'integer'],
             [['updated_at'], 'safe'],
-            [['code', 'name'], 'string', 'max' => 50],
+            [['name'], 'string', 'max' => 50],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
+            ['price_public', 'compare', 'compareAttribute' => 'price_in', 'operator' => '>', 'type' => 'number'],
         ];
     }
 

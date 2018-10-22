@@ -23,9 +23,9 @@ class DeviceTypesController extends GenericController {
      * @return mixed
      */
     public function actionIndex() {
-        Yii::$app->view->params['active'] = 'device-types';
         $searchModel = new DeviceTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->getSort()->defaultOrder = ['name' => SORT_ASC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,

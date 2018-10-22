@@ -11,10 +11,10 @@ use Yii;
  * @property string $inventory
  * @property string $code
  * @property int $items
- * @property int $price_in
- * @property int $price_out
- * @property int $first_discount
- * @property int $major_discount
+ * @property double $price_in
+ * @property double $price_out
+ * @property double $first_discount
+ * @property double $major_discount
  * @property int $type_id
  * @property int $model_id
  * @property string $updated_at
@@ -38,12 +38,14 @@ class Shop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['inventory', 'code', 'items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'type_id', 'model_id'], 'required'],
-            [['items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'type_id', 'model_id'], 'integer'],
+            [['code', 'items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'type_id', 'model_id'], 'required'],
+            [['items', 'type_id', 'model_id'], 'integer'],
+            [['price_in', 'price_out', 'first_discount', 'major_discount'], 'number'],
             [['updated_at'], 'safe'],
             [['inventory', 'code'], 'string', 'max' => 50],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
+            ['price_out', 'compare', 'compareAttribute' => 'price_in', 'operator' => '>', 'type' => 'number'],
         ];
     }
 

@@ -38,10 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('model'),
                 'value' => 'model.name'
             ],
-            [
+            /*[
                 'attribute' => 'inventory',
                 'label' => AttributesLabels::getAttributeLabel('inventory'),
-            ],
+            ],*/
             [
                 'attribute' => 'code',
                 'label' => AttributesLabels::getAttributeLabel('code'),

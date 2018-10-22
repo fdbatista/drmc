@@ -15,8 +15,8 @@ class StaticMembers {
         return ArrayHelper::map(BrandModel::find()->joinWith('brand')->select(["brand_model.id", "concat(brand.name, ' ', brand_model.name) as name"])->orderBy(['brand.name' => SORT_ASC, 'brand_model.name' => SORT_ASC])->all(), 'id', 'name');
     }
     
-    public static function getCustomers() {
-        $customers = Yii::$app->authManager->getUserIdsByRole('customer');
+    public static function getUsersByRole($role) {
+        $customers = Yii::$app->authManager->getUserIdsByRole($role);
         $res = [];
         foreach ($customers as $value) {
             $user = User::findOne($value);

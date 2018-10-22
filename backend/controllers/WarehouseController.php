@@ -25,6 +25,7 @@ class WarehouseController extends GenericController {
     public function actionIndex() {
         $searchModel = new WarehouseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,

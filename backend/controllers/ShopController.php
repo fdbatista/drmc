@@ -25,6 +25,7 @@ class ShopController extends GenericController {
     public function actionIndex() {
         $searchModel = new ShopSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -51,6 +52,8 @@ class ShopController extends GenericController {
      */
     public function actionCreate() {
         $model = new Shop();
+        $model->first_discount = 0.00;
+        $model->major_discount = 0.00;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

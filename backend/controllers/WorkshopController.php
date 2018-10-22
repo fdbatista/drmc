@@ -27,6 +27,8 @@ class WorkshopController extends GenericController {
     public function actionIndex() {
         $searchModel = new WorkshopSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //$dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
+        $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -53,14 +55,11 @@ class WorkshopController extends GenericController {
      */
     public function actionCreate() {
         $model = new Workshop();
-
+        $model->receiver_id = Yii::$app->user->identity->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('create', [
-                    'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
     }
 
     /**
@@ -72,14 +71,10 @@ class WorkshopController extends GenericController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('update', [
-                    'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
     }
 
     /**
@@ -151,6 +146,8 @@ class WorkshopController extends GenericController {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view-payments', 'id' => $model->id]);
         }
+
+        $model->date = date('Y-m-d');
 
         return $this->render('create-payments', [
                     'model' => $model,

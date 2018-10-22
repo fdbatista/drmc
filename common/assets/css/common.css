@@ -9,3 +9,9 @@
 .mt-20 {
     margin-top: 20px!important;
 }
+
+canvas {
+    border: 2px dashed grey;
+    margin-top: 10px;
+    width: 100%;
+}

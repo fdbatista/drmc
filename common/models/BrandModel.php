@@ -15,36 +15,33 @@ use Yii;
  * @property Brand $brand
  * @property Device[] $devices
  */
-class BrandModel extends \yii\db\ActiveRecord
-{
+class BrandModel extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'brand_model';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['name', 'brand_id'], 'required'],
-            [['brand_id'], 'integer'],
-            [['name'], 'string', 'max' => 75],
-            [['description'], 'string', 'max' => 250],
-            [['name'], 'unique'],
-            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
+                [['name', 'brand_id'], 'required'],
+                [['brand_id'], 'integer'],
+                [['name'], 'string', 'max' => 75],
+                [['description'], 'string', 'max' => 250],
+                [['name'], 'unique'],
+                [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
@@ -56,16 +53,15 @@ class BrandModel extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBrand()
-    {
+    public function getBrand() {
         return $this->hasOne(Brand::className(), ['id' => 'brand_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDevices()
-    {
+    public function getDevices() {
         return $this->hasMany(Device::className(), ['model_id' => 'id']);
     }
+
 }

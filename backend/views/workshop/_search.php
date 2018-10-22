@@ -22,7 +22,7 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'pre_diagnosis') ?>
 
-    <?= $form->field($model, 'password_pattern') ?>
+    <?= $form->field($model, 'password') ?>
 
     <?= $form->field($model, 'observations') ?>
 

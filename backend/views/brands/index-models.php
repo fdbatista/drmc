@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('name'),
             ],
                 [
-                'attribute' => 'name',
+                'attribute' => 'description',
                 'label' => AttributesLabels::getAttributeLabel('description'),
             ],
                 [

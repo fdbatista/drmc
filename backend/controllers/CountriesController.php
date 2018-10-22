@@ -25,7 +25,7 @@ class CountriesController extends GenericController {
     public function actionIndex() {
         $searchModel = new CountrySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->getSort()->defaultOrder = ['name' => SORT_ASC];
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,

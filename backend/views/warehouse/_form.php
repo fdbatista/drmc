@@ -55,11 +55,11 @@ use yii\web\View;
                             </div>
                         </div>
 
-                        <div class="row">
+                        <!--<div class="row">
                             <div class="col-sm-12">
                                 <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
-                        </div>
+                        </div>-->
                         
                         <div class="row">
                             <div class="col-sm-3">

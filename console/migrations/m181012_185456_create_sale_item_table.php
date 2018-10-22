@@ -14,8 +14,8 @@ class m181012_185456_create_sale_item_table extends Migration
     {
         $this->createTable('sale_item', [
             'id' => $this->primaryKey(),
-            'price_in' => $this->integer()->notNull(),
-            'price_out' => $this->integer()->notNull(),
+            'price_in' => $this->double()->notNull(),
+            'price_out' => $this->double()->notNull(),
             'items' => $this->integer()->notNull(),
             'type_id' => $this->integer()->notNull(),
             'model_id' => $this->integer()->notNull(),

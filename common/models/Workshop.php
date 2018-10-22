@@ -9,10 +9,12 @@ use Yii;
  *
  * @property int $id
  * @property string $pre_diagnosis
- * @property string $password_pattern
+ * @property string $password
+ * @property string $pattern
  * @property string $observations
  * @property string $signature_in
  * @property string $signature_out
+ * @property string $serial_number
  * @property int $effort
  * @property int $receiver_id
  * @property int $type_id
@@ -40,12 +42,14 @@ class Workshop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pre_diagnosis', 'type_id', 'model_id'], 'required'],
+            [['pre_diagnosis', 'serial_number', 'type_id', 'model_id'], 'required'],
+            [['pattern'], 'string'],
             [['effort', 'receiver_id', 'type_id', 'model_id'], 'integer'],
-            [['updated_at'], 'safe'],
-            [['pre_diagnosis', 'password_pattern'], 'string', 'max' => 250],
+            [['updated_at', 'pattern'], 'safe'],
+            [['pre_diagnosis'], 'string', 'max' => 250],
+            [['password', 'signature_in', 'signature_out'], 'string', 'max' => 50],
             [['observations'], 'string', 'max' => 500],
-            [['signature_in', 'signature_out'], 'string', 'max' => 50],
+            [['serial_number'], 'string', 'max' => 255],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['receiver_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['receiver_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -60,10 +64,12 @@ class Workshop extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'pre_diagnosis' => Yii::t('app', 'Pre Diagnosis'),
-            'password_pattern' => Yii::t('app', 'Password Pattern'),
+            'password' => Yii::t('app', 'Password'),
+            'pattern' => Yii::t('app', 'Pattern'),
             'observations' => Yii::t('app', 'Observations'),
             'signature_in' => Yii::t('app', 'Signature In'),
             'signature_out' => Yii::t('app', 'Signature Out'),
+            'serial_number' => Yii::t('app', 'Serial Number'),
             'effort' => Yii::t('app', 'Effort'),
             'receiver_id' => Yii::t('app', 'Receiver ID'),
             'type_id' => Yii::t('app', 'Type ID'),

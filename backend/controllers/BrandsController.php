@@ -7,9 +7,6 @@ use common\models\BrandModel;
 use common\models\search\BrandModelSearch;
 use common\models\search\BrandSearch;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -30,6 +27,7 @@ class BrandsController extends GenericController {
     public function actionIndex() {
         $searchModel = new BrandSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->getSort()->defaultOrder = ['name' => SORT_ASC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -45,6 +43,7 @@ class BrandsController extends GenericController {
         $searchModel = new BrandModelSearch();
         $searchModel->brand_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->getSort()->defaultOrder = ['name' => SORT_ASC];
         return $this->render('index-models', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider]);
     }
 

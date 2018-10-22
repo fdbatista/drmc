@@ -27,6 +27,7 @@ class SalesController extends GenericController {
     public function actionIndex() {
         $searchModel = new SaleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->getSort()->defaultOrder = ['date' => SORT_DESC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -57,6 +58,8 @@ class SalesController extends GenericController {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        
+        $model->date = date('Y-m-d');
 
         return $this->render('create', [
                     'model' => $model,

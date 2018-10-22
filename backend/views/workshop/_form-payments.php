@@ -1,8 +1,8 @@
 <?php
 
+use backend\assets\DatePickerAsset;
 use common\models\WorkshopPayment;
 use common\utils\AttributesLabels;
-use kartik\date\DatePickerAsset;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;

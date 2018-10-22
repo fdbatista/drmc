@@ -13,27 +13,21 @@ class m181015_131651_init_rbac extends Migration {
      */
     public function safeUp() {
         $auth = Yii::$app->authManager;
+        
         $adminRole = $auth->createRole('admin');
         $adminRole->description = 'Administrador general de la aplicación';
-        $customerRole = $auth->createRole('customer');
-        $customerRole->description = 'Cliente de la entidad';
-        
         $auth->add($adminRole);
-        $auth->add($customerRole);
+        
+        $techRole = $auth->createRole('technician');
+        $techRole->description = 'Técnico de reparaciones';
+        $auth->add($techRole);
+        
+        $now = time();
+        $this->insert('user', ['username' => 'admin', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'admin@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Dannier', 'last_name' => 'Milanés', 'address' => 'Vivienda, Majibacoa']);
+        $this->insert('user', ['username' => 'tech', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'tech@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Juan', 'last_name' => 'Gabriel', 'address' => 'Michoacán']);
+        
         $auth->assign($adminRole, 1);
-        
-        $customer = new User();
-        $customer->username = 'customer';
-        $customer->first_name = 'Cust';
-        $customer->last_name = 'Omer';
-        $customer->address = '224 Park Avenue';
-        $customer->telephone = '+53 1 234 5678';
-        $customer->email = 'customer@mailcom';
-        $customer->setPassword('a');
-        $customer->generateAuthKey();
-        $customer->save(false);
-        
-        $auth->assign($customerRole, $customer->getId());
+        $auth->assign($techRole, 2);
 
         $entities = [
             'brands' => 'marcas',

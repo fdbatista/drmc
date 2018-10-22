@@ -10,24 +10,22 @@ use common\models\Brand;
 /**
  * BrandSearch represents the model behind the search form of `common\models\Brand`.
  */
-class BrandSearch extends Brand
-{
+class BrandSearch extends Brand {
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id'], 'integer'],
-            [['name', 'description'], 'safe'],
+                [['id'], 'integer'],
+                [['name', 'description'], 'safe'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class BrandSearch extends Brand
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Brand::find();
 
         // add conditions that should always apply here
@@ -63,8 +60,9 @@ class BrandSearch extends Brand
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+                ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
+
 }

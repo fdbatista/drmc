@@ -14,13 +14,13 @@ class m181008_221833_create_shop_table extends Migration
     {
         $this->createTable('shop', [
             'id' => $this->primaryKey(),
-            'inventory' => $this->string(50)->notNull(),
+            'inventory' => $this->string(50),
             'code' => $this->string(50)->notNull(),
             'items' => $this->integer()->notNull(),
-            'price_in' => $this->integer()->notNull(),
-            'price_out' => $this->integer()->notNull(),
-            'first_discount' => $this->integer()->notNull(),
-            'major_discount' => $this->integer()->notNull(),
+            'price_in' => $this->double()->notNull(),
+            'price_out' => $this->double()->notNull(),
+            'first_discount' => $this->double()->notNull(),
+            'major_discount' => $this->double()->notNull(),
             'type_id' => $this->integer()->notNull(),
             'model_id' => $this->integer()->notNull(),
             'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
