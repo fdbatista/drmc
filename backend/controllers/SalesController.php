@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\Customer;
+use common\models\DeviceType;
 use common\models\Sale;
 use common\models\SaleItem;
 use common\models\search\SaleItemSearch;
@@ -11,6 +12,7 @@ use common\models\Shop;
 use common\models\Warehouse;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * SalesController implements the CRUD actions for Sale model.
@@ -85,8 +87,20 @@ class SalesController extends GenericController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+        $post = Yii::$app->request->post();
+        if (count($post) > 0) {
+            if (($post['client-type'] === '1' && $post['Sale']['client-code'] === '') || ($post['client-type'] === '2' && $post['Sale']['customer_id'] === '')) {
+                $model->addError('customer_id', 'Debe asociar un cliente a la venta.');
+            } else {
+                if ($post['Sale']['customer_id'] === '') {
+                    $customer = Customer::findOne(['code' => $post['Sale']['client-code']]);
+                    $post['Sale']['customer_id'] = $customer->id;
+                }
+                if ($model->load($post) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
         return $this->render('update', ['model' => $model]);
     }
@@ -156,6 +170,7 @@ class SalesController extends GenericController {
     public function actionCreateItems($id) {
         $model = new SaleItem();
         $model->sale_id = $id;
+        $model->items = 0;
 
         if ($model->load(Yii::$app->request->post())) {
             $found = false;
@@ -191,9 +206,7 @@ class SalesController extends GenericController {
             }
         }
 
-        return $this->render('create-items', [
-                    'model' => $model,
-        ]);
+        return $this->render('create-items', ['model' => $model]);
     }
 
     /**
@@ -242,6 +255,72 @@ class SalesController extends GenericController {
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionGetBrandModelsForSale() {
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $post = Yii::$app->request->post();
+        $res = [];
+        $typeId = $post['depdrop_parents'][0];
+        $deviceType = DeviceType::findOne($typeId);
+
+        if ($deviceType) {
+            $res[$deviceType->name] = [];
+            $shopItems = Shop::findAll(['type_id' => $typeId]);
+            $warehouseItems = Warehouse::findAll(['type_id' => $typeId]);
+            $allItems = array_merge($shopItems, $warehouseItems);
+            foreach ($allItems as $item) {
+                $model = $item->getModel()->one();
+                $res[$deviceType->name][] = ['id' => $model->id, 'name' => $model->name];
+            }
+        }
+        $response->data = ['output' => $res, 'selected' => []];
+        return $response;
+    }
+
+    public function actionCalculatePriceWithDiscounts() {
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $post = Yii::$app->request->post();
+        $type = \common\models\DeviceType::findOne($post['type_id']);
+        $model = \common\models\BrandModel::findOne($post['model_id']);
+        $res = [];
+        if ($type && $model) {
+            $item = Shop::findOne(['type_id' => $type->id, 'model_id' => $model->id]);
+            if (!$item) {
+                $item = Warehouse::findOne(['type_id' => $type->id, 'model_id' => $model->id]);
+            }
+            if ($item) {
+                $items = $post['items'];
+                $priceDiff = $item->price_out - $item->price_in;
+                $publicPrice = $item->price_out;
+                $overallPrice = $item->price_out * $items;
+                $firstDiscount = round((0.3 * $priceDiff * $items), 2);
+                $majorDiscount = round((0.6 * $priceDiff * $items), 2);
+                $priceWithFirstDiscount = $overallPrice - $firstDiscount;
+                $priceWithMajorDiscount = $overallPrice - $majorDiscount;
+                $res = [
+                    'publicPrice' => $publicPrice,
+                    'overallPrice' => $overallPrice,
+                    'firstDiscount' => $firstDiscount,
+                    'majorDiscount' => $majorDiscount,
+                    'priceWithFirstDiscount' => $priceWithFirstDiscount,
+                    'priceWithMajorDiscount' => $priceWithMajorDiscount,
+                ];
+            } else {
+                $res = [
+                    'publicPrice' => '0',
+                    'overallPrice' => '0',
+                    'firstDiscount' => '0.00',
+                    'majorDiscount' => '0.00',
+                    'priceWithFirstDiscount' => '0.00',
+                    'priceWithMajorDiscount' => '0.00',
+                ];
+            }
+        }
+        $response->data = $res;
+        return $response;
     }
 
 }

@@ -7,6 +7,7 @@ use common\models\Customer;
 use common\models\Device;
 use common\models\Shop;
 use common\models\User;
+use common\models\Warehouse;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -32,11 +33,23 @@ class StaticMembers {
     }
     
     public static function getDevicesForSale() {
-        return ArrayHelper::map(Yii::$app->getDb()->createCommand('select `id`, `name` from (select `d`.`id`, `d`.`name`, (select distinct 1 from `shop` `s` where `s`.`type_id` = `d`.`id`) `shop`, (select distinct 1 from `warehouse` `w` where `w`.`type_id` = `d`.`id`) `warehouse` from `device_type` `d`) `sq` where `sq`.`shop` = 1 or `sq`.`warehouse` = 1')->queryAll(), 'id', 'name');
-    }
-    
-    public static function getBrandModelsForSale() {
-        return ArrayHelper::map(Yii::$app->getDb()->createCommand('select `id`, `name` from (select `d`.`id`, `d`.`name`, (select distinct 1 from `shop` `s` where `s`.`model_id` = `d`.`id`) `shop`, (select distinct 1 from `warehouse` `w` where `w`.`model_id` = `d`.`id`) `warehouse` from `brand_model` `d`) `sq` where `sq`.`shop` = 1 or `sq`.`warehouse` = 1')->queryAll(), 'id', 'name');
+        $deviceTypes = [];
+        $deviceTypes = [];
+        $items = Warehouse::find()->all();
+        foreach ($items as $item) {
+            $deviceType = $item->getType()->one();
+            if (!isset($deviceTypes[$deviceType->id])) {
+                $deviceTypes[$deviceType->id] = $deviceType->name;
+            }
+        }
+        $items = Shop::find()->all();
+        foreach ($items as $item) {
+            $deviceType = $item->getType()->one();
+            if (!isset($deviceTypes[$deviceType->id])) {
+                $deviceTypes[$deviceType->id] = $deviceType->name;
+            }
+        }
+        return $deviceTypes;
     }
     
     public static function getDevices() {

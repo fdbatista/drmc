@@ -21,10 +21,13 @@ class GenericController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                        [
+                    [
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
+                            if (in_array($action->id, ['get-brand-models-for-sale', 'calculate-price-with-discounts'])) {
+                                return true;
+                            }
                             $permissionName = "$action->id-$this->entityId";
                             $res = Yii::$app->user->can($permissionName);
                             return $res;
