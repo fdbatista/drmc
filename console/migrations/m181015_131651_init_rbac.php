@@ -37,23 +37,23 @@ class m181015_131651_init_rbac extends Migration {
             'items-sales' => 'productos de las ventas',
             'app-config' => 'configuración general',
             'users' => 'usuarios',
-            'roles-users' => 'usuarios',
+            'roles-users' => 'roles de los usuarios',
             'roles' => 'roles',
         ];
 
         foreach ($entities as $key => $value) {
             $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'admin');
-            $this->addPermission($authManager, "view-$key", "Ver lista de $value", 'admin');
-            $this->addPermission($authManager, "create-$key", "Ver lista de $value", 'admin');
-            $this->addPermission($authManager, "update-$key", "Ver lista de $value", 'admin');
-            $this->addPermission($authManager, "delete-$key", "Ver lista de $value", 'admin');
+            $this->addPermission($authManager, "view-$key", "Ver detalles de $value", 'admin');
+            $this->addPermission($authManager, "create-$key", "Agregar $value", 'admin');
+            $this->addPermission($authManager, "update-$key", "Actualizar $value", 'admin');
+            $this->addPermission($authManager, "delete-$key", "Eliminar $value", 'admin');
 
             if (in_array($key, ['workshop', 'payments-workshop'])) {
                 $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'tech');
-                $this->addPermission($authManager, "view-$key", "Ver lista de $value", 'tech');
-                $this->addPermission($authManager, "create-$key", "Ver lista de $value", 'tech');
-                $this->addPermission($authManager, "update-$key", "Ver lista de $value", 'tech');
-                $this->addPermission($authManager, "delete-$key", "Ver lista de $value", 'tech');
+                $this->addPermission($authManager, "view-$key", "Ver detalles de $value", 'tech');
+                $this->addPermission($authManager, "create-$key", "Agregar $value", 'tech');
+                $this->addPermission($authManager, "update-$key", "Actualizar $value", 'tech');
+                $this->addPermission($authManager, "delete-$key", "Eliminar $value", 'tech');
             }
         }
         $this->addPermission($authManager, "view-dashboard", "Ver panel de control", 'admin');

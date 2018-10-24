@@ -11,11 +11,5 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Roles'), 'url' => ['
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="role-create">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    <?= $this->render('_form', ['model' => $model, 'isNewRole' => true]) ?>
 </div>

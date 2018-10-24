@@ -2,7 +2,8 @@
 
 namespace backend\controllers;
 
-use common\models\search\RoleSearch;
+use common\models\Role;
+use common\utils\StaticMembers;
 use Yii;
 use yii\web\NotFoundHttpException;
 
@@ -27,76 +28,86 @@ class RolesController extends GenericController {
     }
 
     /**
-     * Displays a single Role model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id) {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Role model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate() {
         $model = new Role();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->validateName()) {
+            $authManager = Yii::$app->authManager;
+            $role = $authManager->createRole($model->name);
+            $role->description = $model->description;
+            $authManager->add($role);
+            return $this->actionIndex();
         }
-
-        return $this->render('create', [
-                    'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
      * Updates an existing Role model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param integer $name
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id) {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+    public function actionUpdate($name) {
+        $model = $this->findModel($name);
+        $authManager = Yii::$app->authManager;
+        $role = $authManager->getRole($model->name);
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $post = Yii::$app->request->post();
+            $role->description = $model->description;
+            $authManager->update($role->name, $role);
+            
+            $rolePermissions = $authManager->getPermissionsByRole($role->name);
+            foreach ($rolePermissions as $rolePermission) {
+                $authManager->removeChild($role, $rolePermission);
+            }
+            
+            unset($post['Role'], $post['_csrf']);
+            foreach ($post as $permIndex => $permName) {
+                $perm = $authManager->getPermission($permIndex);
+                if ($perm) {
+                    $authManager->addChild($role, $perm);
+                }
+            }
+            
+            return $this->actionIndex();
         }
-
-        return $this->render('update', [
-                    'model' => $model,
-        ]);
+        $entitiesAndPerms = StaticMembers::getAuthEntitiesAndPerms($authManager, $role);
+        return $this->render('update', ['model' => $model, 'perms' => $entitiesAndPerms]);
     }
 
     /**
      * Deletes an existing Role model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param integer $name
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    public function actionDelete($name) {
+        $authManager = Yii::$app->authManager;
+        $role = $authManager->getRole($name);
+        if ($role) {
+            $authManager->remove($role);
+            return $this->actionIndex();
+        } else {
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        }
     }
 
     /**
      * Finds the Role model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param integer $name
      * @return Role the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
-        if (($model = Role::findOne($id)) !== null) {
-            return $model;
+    protected function findModel($name) {
+        if (($model = Yii::$app->authManager->getRole($name)) !== null) {
+            return new Role(['name' => $model->name, 'description' => $model->description]);
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

@@ -1,21 +1,15 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\Role;
+use yii\web\View;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Role */
+/* @var $this View */
+/* @var $model Role */
 
 $this->title = Yii::t('app', 'Actualizar');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Roles'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Actualizar');
+$this->params['breadcrumbs'][] = Yii::t('app', "Actualizar $model->name");
 ?>
 <div class="role-update">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    <?= $this->render('_form', ['model' => $model, 'isNewRole' => false, 'perms' => $perms]) ?>
 </div>
