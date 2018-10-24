@@ -39,9 +39,7 @@ class UsersController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+        return $this->render('view', ['model' => $this->findModel($id)]);
     }
 
     /**
@@ -52,16 +50,20 @@ class UsersController extends GenericController {
     public function actionCreate() {
         $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->generateAuthKey();
+            $model->generatePasswordResetToken();
+            $model->setPassword($model->password);
+            $now = time();
+            $model->created_at = $now;
+            $model->updated_at = $now;
+            $model->validatePasswordInput();
+            if (!$model->hasErrors() && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
-        
-        $roles = Yii::$app->authManager->getRoles();
-        $value = '';
-        foreach ($roles as $role) {
-            $pp = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id);
-        }
-        return $this->render('create', ['model' => $model, 'roles' => $roles, 'value' => $value]);
+
+        return $this->render('create', ['model' => $model, 'userRole' => 'tech']);
     }
 
     /**
@@ -75,21 +77,22 @@ class UsersController extends GenericController {
         $model = $this->findModel($id);
         $authManager = Yii::$app->authManager;
         $post = Yii::$app->request->post();
-        if ($model->load($post) && $model->save()) {
-            $role = $authManager->getRole($post['role']);            
-            $authManager->revokeAll($model->id);
-            $authManager->assign($role, $model->id);
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-        $roles = $authManager->getRoles();
-        $currUserRole = '';
-        foreach ($roles as $role) {
-            if ($role->name === array_keys($authManager->getRolesByUser(User::findOne($id)->id))[0]) {
-                $currUserRole = $role->name;
-                break;
+        if ($model->load($post)) {
+            $now = time();
+            $model->updated_at = $now;
+            $model->validatePasswordInput();
+            if ($model->password) {
+                $model->setPassword($model->password);
+            }
+            if (!$model->hasErrors() && $model->save()) {
+                $role = $authManager->getRole($post['role']);
+                $authManager->revokeAll($model->id);
+                $authManager->assign($role, $model->id);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         }
-        return $this->render('update', ['model' => $model, 'roles' => $roles, 'currUserRole' => $currUserRole]);
+        $roles = $authManager->getRoles();
+        return $this->render('update', ['model' => $model, 'roles' => $roles]);
     }
 
     /**

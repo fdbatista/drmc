@@ -95,7 +95,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                             </div>
                         </div>
 
-                        <div id="password-container" class="row <?= $passwordOrPattern === 1 ? '' : 'hidden' ?>">
+                        <div id="password-container" class="row animated fadeIn <?= $passwordOrPattern === 1 ? '' : 'hidden' ?>">
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <?= $form->field($model, 'password', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('password') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
@@ -103,11 +103,12 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                             </div>
                         </div>
 
-                        <div id="pattern-container" class="row <?= $passwordOrPattern === 1 ? 'hidden' : '' ?>">
+                        <div id="pattern-container" class="row animated fadeIn <?= $passwordOrPattern === 1 ? 'hidden' : '' ?>">
                             <div class="col-sm-8">
                                 <div id="patternHolder" style="width: 100%;"></div>
                                 <?= Html::hiddenInput('Workshop[pattern]', $model->pattern, ['id' => 'workshop-pattern']) ?>
-                                <span style="font-size: 20px; font-stretch: expanded;" id="pattern-numbers"></span><br/>
+                                <?= Html::hiddenInput('Workshop[pattern_gif]', $model->pattern_gif, ['id' => 'workshop-pattern-gif']) ?>
+                                <p style="margin-top: 10px;"><code style="font-size: 20px;" id="pattern-numbers"></code></p>
                                 <button id="clear-pattern" type="button" class="btn btn-xs btn-danger"><i class="material-icons">delete</i> Limpiar</button>
                             </div>
                         </div>

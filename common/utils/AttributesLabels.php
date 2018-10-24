@@ -42,6 +42,9 @@ class AttributesLabels {
         'last_name' => 'Apellidos',
         'serial_number' => 'Número de serie',
         'telephone' => 'Teléfono',
+        'role' => 'Rol',
+        'sex' => 'Sexo',
+        'password_repeat' => 'Repetir contraseña',
     ];
     
     public static function getAttributeLabel($name) {

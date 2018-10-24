@@ -17,11 +17,11 @@ use Yii;
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
+ * @property string $sex
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
  *
- * @property Sale[] $sales
  * @property Workshop[] $workshops
  */
 class UserDB extends \yii\db\ActiveRecord
@@ -42,10 +42,11 @@ class UserDB extends \yii\db\ActiveRecord
         return [
             [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'telephone', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+            [['username', 'first_name', 'last_name', 'email'], 'string', 'max' => 50],
             [['auth_key'], 'string', 'max' => 32],
-            [['first_name', 'last_name'], 'string', 'max' => 50],
+            [['telephone', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
             [['address'], 'string', 'max' => 250],
+            [['sex'], 'string', 'max' => 1],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
@@ -68,18 +69,11 @@ class UserDB extends \yii\db\ActiveRecord
             'password_hash' => Yii::t('app', 'Password Hash'),
             'password_reset_token' => Yii::t('app', 'Password Reset Token'),
             'email' => Yii::t('app', 'Email'),
+            'sex' => Yii::t('app', 'Sex'),
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSales()
-    {
-        return $this->hasMany(Sale::className(), ['customer_id' => 'id']);
     }
 
     /**

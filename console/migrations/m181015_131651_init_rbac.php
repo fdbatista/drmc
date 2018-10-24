@@ -1,7 +1,7 @@
 <?php
 
-use common\models\User;
 use yii\db\Migration;
+use yii\rbac\ManagerInterface;
 
 /**
  * Class m181015_131651_init_rbac
@@ -12,22 +12,17 @@ class m181015_131651_init_rbac extends Migration {
      * {@inheritdoc}
      */
     public function safeUp() {
-        $auth = Yii::$app->authManager;
-        
-        $adminRole = $auth->createRole('admin');
-        $adminRole->description = 'Administrador general de la aplicación';
-        $auth->add($adminRole);
-        
-        $techRole = $auth->createRole('tech');
-        $techRole->description = 'Técnico de reparaciones';
-        $auth->add($techRole);
-        
+        $authManager = Yii::$app->authManager;
+
+        $this->addRole($authManager, 'admin', 'Administrador general de la aplicación', 1);
+        $this->addRole($authManager, 'tech', 'Técnico de reparaciones', 2);
+
         $now = time();
         $this->insert('user', ['username' => 'admin', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'admin@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Dannier', 'last_name' => 'Milanés', 'address' => 'Vivienda, Majibacoa']);
         $this->insert('user', ['username' => 'tech', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'tech@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Juan', 'last_name' => 'Gabriel', 'address' => 'Michoacán']);
-        
-        $auth->assign($adminRole, 1);
-        $auth->assign($techRole, 2);
+
+        $authManager->assign($authManager->getRole('admin'), 1);
+        $authManager->assign($authManager->getRole('tech'), 2);
 
         $entities = [
             'brands' => 'marcas',
@@ -47,35 +42,37 @@ class m181015_131651_init_rbac extends Migration {
         ];
 
         foreach ($entities as $key => $value) {
-            $permission = $auth->createPermission("index-$key");
-            $permission->description = "Ver lista de $value";
-            $auth->add($permission);
-            $auth->addChild($adminRole, $permission);
+            $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'admin');
+            $this->addPermission($authManager, "view-$key", "Ver lista de $value", 'admin');
+            $this->addPermission($authManager, "create-$key", "Ver lista de $value", 'admin');
+            $this->addPermission($authManager, "update-$key", "Ver lista de $value", 'admin');
+            $this->addPermission($authManager, "delete-$key", "Ver lista de $value", 'admin');
 
-            $permission = $auth->createPermission("view-$key");
-            $permission->description = "Ver detalles de $value";
-            $auth->add($permission);
-            $auth->addChild($adminRole, $permission);
-
-            $permission = $auth->createPermission("create-$key");
-            $permission->description = "Adicionar $value";
-            $auth->add($permission);
-            $auth->addChild($adminRole, $permission);
-
-            $permission = $auth->createPermission("update-$key");
-            $permission->description = "Actualizar $value";
-            $auth->add($permission);
-            $auth->addChild($adminRole, $permission);
-
-            $permission = $auth->createPermission("delete-$key");
-            $permission->description = "Eliminar $value";
-            $auth->add($permission);
-            $auth->addChild($adminRole, $permission);
+            if (in_array($key, ['workshop', 'payments-workshop'])) {
+                $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'tech');
+                $this->addPermission($authManager, "view-$key", "Ver lista de $value", 'tech');
+                $this->addPermission($authManager, "create-$key", "Ver lista de $value", 'tech');
+                $this->addPermission($authManager, "update-$key", "Ver lista de $value", 'tech');
+                $this->addPermission($authManager, "delete-$key", "Ver lista de $value", 'tech');
+            }
         }
-        $permission = $auth->createPermission("view-dashboard");
-        $permission->description = "Ver panel de control";
-        $auth->add($permission);
-        $auth->addChild($adminRole, $permission);
+        $this->addPermission($authManager, "view-dashboard", "Ver panel de control", 'admin');
+    }
+
+    private function addRole(ManagerInterface $authManager, $name, $description) {
+        $role = $authManager->createRole($name);
+        $role->description = $description;
+        $authManager->add($role);
+    }
+
+    private function addPermission(ManagerInterface $authManager, $name, $description, $roleName) {
+        $permission = $authManager->getPermission($name);
+        if (!$permission) {
+            $permission = $authManager->createPermission($name);
+            $permission->description = $description;
+            $authManager->add($permission);
+        }
+        $authManager->addChild($authManager->getRole($roleName), $permission);
     }
 
     /**

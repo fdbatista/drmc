@@ -53,13 +53,12 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                         ?>
                         <ul class="nav">
                             <?php if (Yii::$app->user->can('view-dashboard')) {?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
-                            <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li>
-                            <!--<li class="<?= $this->params['active'] === 'countries' ? 'active' : '' ?>"><a href="<?= Url::to(['/countries']) ?>"><i class="material-icons">location_on</i>Pa&iacute;ses</a></li>-->
-                            <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li>
-                            <li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li>
-                            <li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li>
-                            <li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li>
-                            <li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li>
+                            <?php if (Yii::$app->user->can('index-brands')) {?><li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-device-types')) {?><li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-shop')) {?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-warehouse')) {?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-workshop')) {?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-sales')) {?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
                         </ul>
                         <?php
                     }
@@ -85,25 +84,25 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                             ?>
                             <div class="collapse navbar-collapse">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li>
+                                    <?php if (Yii::$app->user->can('index-app-config')) {?><li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li> <?php } ?>
+                                    <?php if (Yii::$app->user->can('index-users') || Yii::$app->user->can('index-roles')) {?>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <i class="material-icons">security</i> Seguridad
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li>
-                                            <li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">content_paste</i> Roles</a></li>
+                                            <?php if (Yii::$app->user->can('index-users')) {?><li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li> <?php } ?>
+                                            <?php if (Yii::$app->user->can('index-roles')) {?><li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">content_paste</i> Roles</a></li> <?php } ?>
                                         </ul>
-                                    </li>
+                                    </li> <?php } ?>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <i class="material-icons">notifications</i>
-                                            <span class="notification">5</span>
+                                            <span class="notification">0</span>
                                             <p class="hidden-lg hidden-md">Notifications</p>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">Tienes un nuevo correo electr&oacute;nico</a></li>
-                                            <li><a href="#">Has adicionado 1 nuevo producto</a></li>
+                                            <li><a href="#">No tienes notificaciones nuevas</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">

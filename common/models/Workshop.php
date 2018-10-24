@@ -11,6 +11,7 @@ use Yii;
  * @property string $pre_diagnosis
  * @property string $password
  * @property string $pattern
+ * @property string $pattern_gif
  * @property string $observations
  * @property string $signature_in
  * @property string $signature_out
@@ -43,13 +44,13 @@ class Workshop extends \yii\db\ActiveRecord
     {
         return [
             [['pre_diagnosis', 'serial_number', 'type_id', 'model_id'], 'required'],
-            [['pattern'], 'string'],
+            [['pattern_gif'], 'string'],
             [['effort', 'receiver_id', 'type_id', 'model_id'], 'integer'],
-            [['updated_at', 'pattern'], 'safe'],
+            [['updated_at'], 'safe'],
             [['pre_diagnosis'], 'string', 'max' => 250],
             [['password', 'signature_in', 'signature_out'], 'string', 'max' => 50],
+            [['pattern', 'serial_number'], 'string', 'max' => 255],
             [['observations'], 'string', 'max' => 500],
-            [['serial_number'], 'string', 'max' => 255],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
             [['receiver_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['receiver_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -66,6 +67,7 @@ class Workshop extends \yii\db\ActiveRecord
             'pre_diagnosis' => Yii::t('app', 'Pre Diagnosis'),
             'password' => Yii::t('app', 'Password'),
             'pattern' => Yii::t('app', 'Pattern'),
+            'pattern_gif' => Yii::t('app', 'Pattern Gif'),
             'observations' => Yii::t('app', 'Observations'),
             'signature_in' => Yii::t('app', 'Signature In'),
             'signature_out' => Yii::t('app', 'Signature Out'),

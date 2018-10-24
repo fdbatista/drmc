@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\LoginForm;
+use common\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -77,7 +78,7 @@ class SiteController extends Controller {
 
     public function actionProfile() {
         Yii::$app->view->params['active'] = 'profile';
-        return $this->render('profile');
+        return $this->render('profile', ['model' => User::findOne(Yii::$app->user->identity->id)]);
     }
 
     /**

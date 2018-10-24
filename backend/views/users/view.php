@@ -14,9 +14,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Usuarios'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= $model->username !== 'admin' ? Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
@@ -55,6 +52,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => AttributesLabels::getAttributeLabel('status'),
                 'value' => $model->status === 10 ? 'Activo' : 'Inactivo'
+            ],
+            [
+                'label' => AttributesLabels::getAttributeLabel('role'),
+                'value' => $model->getRoleDescription()
             ],
             [
                 'label' => AttributesLabels::getAttributeLabel('created_at'),

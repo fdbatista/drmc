@@ -23,11 +23,12 @@ function setLockPattern(pattern) {
 $('#clear-pattern').on('click', function () {
     lock.reset();
     $('#workshop-pattern').val('');
+    $('#workshop-pattern-gif').val('');
     $('#pattern-numbers').html('');
 });
 
 $('#patternHolder').on('mousedown', function () {
-    var grabRate = 20; // Miliseconds. 500 = half a second
+    var grabRate = 10;
     canvasArray = [];
     encoder = new GIFEncoder();
     encoder.setRepeat(0);
@@ -51,8 +52,9 @@ $('#patternHolder').on('mouseup', function () {
     encoder.finish();
     var binary_gif = encoder.stream().getData();
     var data_url = 'data:image/gif;base64,' + encode64(binary_gif);
-    console.log(data_url);
+    $('#workshop-pattern-gif').val(data_url);
+    /*console.log(data_url);
     var img = document.createElement('img');
     img.src = data_url;
-    document.body.appendChild(img);
+    document.body.appendChild(img);*/
 });

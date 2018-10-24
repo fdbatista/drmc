@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('password'),
             ],
             [
-                'attribute' => 'pattern',
+                'attribute' => 'pattern_gif',
                 'label' => AttributesLabels::getAttributeLabel('pattern'),
                 'format' => ['image', ['height' => '100']],
                 

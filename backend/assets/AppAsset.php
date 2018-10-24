@@ -15,6 +15,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/common.css',
         'css/backend.css',
+        'css/animate.css',
         'css/material-icons/material-icons.css',
     ];
     public $js = [

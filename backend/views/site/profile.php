@@ -1,5 +1,11 @@
 <?php
-/* @var $this yii\web\View */
+
+use common\models\User;
+use yii\helpers\Html;
+use yii\web\View;
+
+/* @var $this View */
+/* @var $model User */
 
 $this->title = 'Mi perfil';
 ?>
@@ -10,8 +16,8 @@ $this->title = 'Mi perfil';
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header" data-background-color="purple">
-                        <h4 class="title">Edit Profile</h4>
-                        <p class="category">Complete your profile</p>
+                        <h4 class="title">Mi Perfil</h4>
+                        <p class="category">Complete el siguiente formulario</p>
                     </div>
                     <div class="card-content">
                         <form>
@@ -99,21 +105,21 @@ $this->title = 'Mi perfil';
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4">
                 <div class="card card-profile">
                     <div class="card-avatar">
                         <a href="#pablo">
-                            <img class="img" src="../assets/img/faces/marc.jpg" />
+                            <?= Html::img('@web/img/' . ($model->sex === 'F' ? 'fe' : '') . 'male.png', ['class' => 'img']) ?>
                         </a>
                     </div>
 
                     <div class="content">
-                        <h6 class="category text-gray">CEO / Co-Founder</h6>
-                        <h4 class="card-title">Alec Thompson</h4>
+                        <h6 class="category text-gray">MI ROL</h6>
+                        <h4 class="card-title">Mi nombre</h4>
                         <p class="card-content">
-                            Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                            Descripci&oacute;n de mi rol
                         </p>
-                        <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
                     </div>
                 </div>
             </div>

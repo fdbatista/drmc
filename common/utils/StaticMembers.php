@@ -70,6 +70,11 @@ class StaticMembers {
         return $deviceTypes;
     }
     
+    public static function getRoles() {
+        $res = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name');
+        return $res;
+    }
+    
     public static function getModelAndBrandName(BrandModel $model) {
         return $model->getBrand()->one()->name . ' ' . $model->name;
     }
