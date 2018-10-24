@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Warehouse;
+use common\models\Stock;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use yii\helpers\Html;
@@ -8,13 +8,14 @@ use yii\web\View;
 use yii\widgets\DetailView;
 
 /* @var $this View */
-/* @var $model Warehouse */
+/* @var $model Shop */
 
-$this->title = $model->name;
+$this->title = 'Detalles del dispositivo';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Almacén'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="warehouse-view">
+<div class="shop-view">
+
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
@@ -30,24 +31,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
-                'value' => $model->getType()->one()->name
+                'attribute' => 'deviceType',
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
+                'value' => $model->getDeviceType()->one()->name
             ],
             [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
-            ],
-            [
-                'attribute' => 'name',
-                'label' => AttributesLabels::getAttributeLabel('name'),
+                'value' => StaticMembers::getModelAndBrandName($model->getBrandModel()->one())
             ],
             [
                 'attribute' => 'code',
                 'label' => AttributesLabels::getAttributeLabel('code'),
             ],
-            
+            [
+                'attribute' => 'items',
+                'label' => AttributesLabels::getAttributeLabel('items'),
+            ],
             [
                 'attribute' => 'price_in',
                 'label' => AttributesLabels::getAttributeLabel('price_in'),
@@ -55,6 +55,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'price_out',
                 'label' => AttributesLabels::getAttributeLabel('price_out'),
+            ],
+            [
+                'attribute' => 'first_discount',
+                'label' => AttributesLabels::getAttributeLabel('first_discount'),
+            ],
+            [
+                'attribute' => 'major_discount',
+                'label' => AttributesLabels::getAttributeLabel('major_discount'),
             ],
         ],
     ]) ?>

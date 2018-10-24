@@ -4,9 +4,9 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Shop */
+/* @var $model common\models\Stock */
 
-$this->title = Yii::t('app', 'Agregar artículo');
+$this->title = Yii::t('app', 'Agregar dispositivo');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tienda'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

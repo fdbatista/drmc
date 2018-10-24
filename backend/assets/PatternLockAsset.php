@@ -4,14 +4,15 @@ namespace backend\assets;
 
 use yii\web\AssetBundle;
 
-class SignaturePadAsset extends AssetBundle {
+class PatternLockAsset extends AssetBundle {
 
     public $sourcePath = '@app/../common/assets';
     public $css = [
+        'plugins/pattern-lock/patternLock.css',
     ];
     public $js = [
-        'plugins/signature_pad/signature_pad.min.js',
-        'plugins/signature_pad/init.js',
+        'plugins/pattern-lock/patternLock.js',
+        'plugins/pattern-lock/init.js',
     ];
     public $depends = [
         'backend\assets\GifEncoderAsset',

@@ -18,7 +18,7 @@ class m181015_131651_init_rbac extends Migration {
         $adminRole->description = 'Administrador general de la aplicación';
         $auth->add($adminRole);
         
-        $techRole = $auth->createRole('technician');
+        $techRole = $auth->createRole('tech');
         $techRole->description = 'Técnico de reparaciones';
         $auth->add($techRole);
         

@@ -4,17 +4,16 @@ namespace backend\assets;
 
 use yii\web\AssetBundle;
 
-class SignaturePadAsset extends AssetBundle {
+class Html2CanvasAsset extends AssetBundle {
 
     public $sourcePath = '@app/../common/assets';
     public $css = [
     ];
     public $js = [
-        'plugins/signature_pad/signature_pad.min.js',
-        'plugins/signature_pad/init.js',
+        'plugins/html2canvas/html2canvas.min.js',
     ];
     public $depends = [
-        'backend\assets\GifEncoderAsset',
+        'yii\web\JqueryAsset',
     ];
 
 }

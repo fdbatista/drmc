@@ -56,6 +56,7 @@ class WorkshopController extends GenericController {
     public function actionCreate() {
         $model = new Workshop();
         $model->receiver_id = Yii::$app->user->identity->id;
+        $post = Yii::$app->request->post();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }

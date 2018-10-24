@@ -4,7 +4,7 @@
 
 
 use common\models\DeviceType;
-use common\models\Shop;
+use common\models\Stock;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use kartik\widgets\Select2;
@@ -14,7 +14,7 @@ use yii\helpers\Html;
 use yii\web\View;
 
 /* @var $this View */
-/* @var $model Shop */
+/* @var $model Stock */
 /* @var $form ActiveForm */
 
 ?>
@@ -34,7 +34,7 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-6">
                                 <?=
-                                $form->field($model, 'type_id')->widget(Select2::classname(), [
+                                $form->field($model, 'device_type_id')->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
@@ -47,7 +47,7 @@ use yii\web\View;
 
                             <div class="col-sm-6">
                                 <?=
-                                $form->field($model, 'model_id')->widget(Select2::classname(), [
+                                $form->field($model, 'brand_model_id')->widget(Select2::classname(), [
                                     'data' => StaticMembers::getModelsAndBrand(),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
@@ -60,9 +60,6 @@ use yii\web\View;
                         </div>
 
                         <div class="row">
-                            <!--<div class="col-sm-4">
-                            <?= $form->field($model, 'inventory', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('inventory') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
-                            </div>-->
                             <div class="col-sm-4">
                                 <?= $form->field($model, 'code', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('code') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>

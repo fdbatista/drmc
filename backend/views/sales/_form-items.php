@@ -46,7 +46,8 @@ use yii\web\View;
                                 <?=
                                 $form->field($model, 'model_id')->widget(DepDrop::classname(), [
                                     'type' => DepDrop::TYPE_SELECT2,
-                                    'data' => [],
+                                    'data' => StaticMembers::getBrandModelsForSale($model->type_id),
+                                    'value' => $model->model_id,
                                     'language' => 'es',
                                     'options' => ['onchange' =>'updatePriceWithDiscounts();', 'id' => 'model-id', 'placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
                                     'select2Options' => ['pluginOptions' => ['allowClear' => true]],
@@ -66,13 +67,13 @@ use yii\web\View;
                             <div class="col-sm-4">
                                 <div class="form-group label-floating">
                                     <label class="control-label">Precio por unidad</label>
-                                    <?= Html::input('text', null, '0', ['id' => 'public-price', 'readonly' => true, 'class' => 'form-control']) ?>
+                                    <?= Html::input('text', null, $model->price_out, ['id' => 'public-price', 'readonly' => true, 'class' => 'form-control']) ?>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group label-floating">
                                     <label class="control-label">Importe total</label>
-                                    <?= Html::input('text', null, '0', ['id' => 'total-price', 'readonly' => true, 'class' => 'form-control']) ?>
+                                    <?= Html::input('text', null, $model->items * $model->price_out, ['id' => 'total-price', 'readonly' => true, 'class' => 'form-control']) ?>
                                 </div>
                             </div>
                         </div>
@@ -80,8 +81,8 @@ use yii\web\View;
                         <div class="row" style="margin-top: 10px;">
                             <div class="col-sm-12">
                                 <p style="color: gray;">
-                                    Descuento inicial: <code id="first-discount">$0.00</code>, importe: <code id="first-discount-price">$0.00</code><br/>
-                                    Descuento mayor: <code id="major-discount">$0.00</code>, importe: <code id="major-discount-price">$0.00</code>
+                                    Descuento inicial: <code id="first-discount"><?= round(0.3 * ($model->price_out - $model->price_in), 2) ?></code>, importe: <code id="first-discount-price"><?= round(($model->items * $model->price_out) - (0.3 * ($model->price_out - $model->price_in)), 2) ?></code><br/>
+                                    Descuento mayor: <code id="major-discount"><?= round(0.6 * ($model->price_out - $model->price_in), 2) ?></code>, importe: <code id="major-discount-price"><?= round(($model->items * $model->price_out) - (0.6 * ($model->price_out - $model->price_in)), 2) ?></code>
                                 </p>
                             </div>
                         </div>

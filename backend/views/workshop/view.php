@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             [
                 'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
                 'value' => $model->getType()->one()->name
             ],
             [

@@ -5,20 +5,20 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Warehouse;
+use common\models\Stock;
 
 /**
- * WarehouseSearch represents the model behind the search form of `common\models\Warehouse`.
+ * StockSearch represents the model behind the search form of `common\models\Stock`.
  */
-class WarehouseSearch extends Warehouse {
+class StockSearch extends Stock {
 
-    public $type;
-    public $model;
-
+    public $deviceType;
+    public $brandModel;
+    
     public function rules() {
         return [
-                [['price_in', 'price_out'], 'integer'],
-                [['code', 'name', 'items', 'type', 'model'], 'safe'],
+                [['price_in', 'price_out', 'first_discount', 'major_discount'], 'integer'],
+                [['code', 'deviceType', 'brandModel', 'items'], 'safe'],
         ];
     }
 
@@ -38,23 +38,23 @@ class WarehouseSearch extends Warehouse {
      * @return ActiveDataProvider
      */
     public function search($params) {
-        $query = Warehouse::find();
+        $query = Stock::find();
 
         // add conditions that should always apply here
 
-        $query->joinWith(['type']);
-        $query->joinWith(['model']);
+        $query->joinWith(['deviceType']);
+        $query->joinWith(['brandModel']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['type'] = [
+        $dataProvider->sort->attributes['deviceType'] = [
             'asc' => ['device_type.name' => SORT_ASC],
             'desc' => ['device_type.name' => SORT_DESC],
         ];
-
-        $dataProvider->sort->attributes['model'] = [
+        
+        $dataProvider->sort->attributes['brandModel'] = [
             'asc' => ['brand_model.name' => SORT_ASC],
             'desc' => ['brand_model.name' => SORT_DESC],
         ];
@@ -69,15 +69,17 @@ class WarehouseSearch extends Warehouse {
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'stock_type_id' => $this->stock_type_id,
             'price_in' => $this->price_in,
             'price_out' => $this->price_out,
-            'items' => $this->items,
+            'first_discount' => $this->first_discount,
+            'major_discount' => $this->major_discount,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
-                ->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'device_type.name', $this->type])
-                ->andFilterWhere(['like', 'brand_model.name', $this->model]);
+                ->andFilterWhere(['like', 'items', $this->items])
+                ->andFilterWhere(['like', 'device_type.name', $this->deviceType])
+                ->andFilterWhere(['like', 'brand_model.name', $this->brandModel]);
 
         return $dataProvider;
     }

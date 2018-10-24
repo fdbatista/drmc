@@ -16,7 +16,7 @@ class AttributesLabels {
         'app_title' => 'Nombre de la aplicación',
         'about' => 'Acerca de',
         'address' => 'Dirección',
-        'type' => 'Tipo',
+        'device_type' => 'Tipo de dispositivo',
         'model' => 'Modelo',
         'inventory' => 'Inventario',
         'code' => 'Código',

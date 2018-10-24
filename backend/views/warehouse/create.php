@@ -4,16 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Warehouse */
+/* @var $model common\models\Stock */
 
-$this->title = Yii::t('app', 'Agregar artículo');
+$this->title = Yii::t('app', 'Agregar dispositivo');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Almacén'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="warehouse-create">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
+<div class="shop-create">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-<?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Artículo'), ['create'], ['class' => 'btn btn-info']) ?>
+<?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Dispositivo'), ['create'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
                 [
                 'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
                 'value' => 'type.name'
             ],
                 [

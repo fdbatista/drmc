@@ -1,7 +1,10 @@
 <?php
 
+//use kartik\select2\Select2;
+
+
 use common\models\DeviceType;
-use common\models\Warehouse;
+use common\models\Stock;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use kartik\widgets\Select2;
@@ -11,8 +14,9 @@ use yii\helpers\Html;
 use yii\web\View;
 
 /* @var $this View */
-/* @var $model Warehouse */
+/* @var $model Stock */
 /* @var $form ActiveForm */
+
 ?>
 
 <div class="content">
@@ -30,7 +34,7 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-6">
                                 <?=
-                                $form->field($model, 'type_id')->widget(Select2::classname(), [
+                                $form->field($model, 'device_type_id')->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
@@ -40,10 +44,10 @@ use yii\web\View;
                                 ])->label(false)
                                 ?>
                             </div>
-                            
+
                             <div class="col-sm-6">
                                 <?=
-                                $form->field($model, 'model_id')->widget(Select2::classname(), [
+                                $form->field($model, 'brand_model_id')->widget(Select2::classname(), [
                                     'data' => StaticMembers::getModelsAndBrand(),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
@@ -55,24 +59,30 @@ use yii\web\View;
                             </div>
                         </div>
 
-                        <!--<div class="row">
-                            <div class="col-sm-12">
-                                <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
-                            </div>
-                        </div>-->
-                        
                         <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <?= $form->field($model, 'code', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('code') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <?= $form->field($model, 'items', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('items') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
-                            <div class="col-sm-3">
-                                <?= $form->field($model, 'price_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_in') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'price_in', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_in') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'onchange' => 'updateDiscounts()'])->label(false) ?>
                             </div>
-                            <div class="col-sm-3">
-                                <?= $form->field($model, 'price_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_out') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'price_out', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('price_out') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'onchange' => 'updateDiscounts()'])->label(false) ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'first_discount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('first_discount') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'major_discount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('major_discount') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
                             </div>
                         </div>
 
@@ -86,4 +96,13 @@ use yii\web\View;
             </div>
         </div>
     </div>
+    <script>
+        function updateDiscounts() {
+            var price_in = $('#<?= Html::getInputId($model, 'price_in') ?>').val();
+            var price_out = $('#<?= Html::getInputId($model, 'price_out') ?>').val();
+            $('#<?= Html::getInputId($model, 'first_discount') ?>').val((0.3 * (price_out - price_in)).toFixed(2));
+            $('#<?= Html::getInputId($model, 'major_discount') ?>').val((0.6 * (price_out - price_in)).toFixed(2));
+        }
+    </script>
 </div>
+

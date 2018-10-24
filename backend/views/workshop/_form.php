@@ -1,6 +1,6 @@
 <?php
 
-use backend\assets\SignaturePadAsset;
+use backend\assets\PatternLockAsset;
 use common\models\DeviceType;
 use common\models\Workshop;
 use common\utils\AttributesLabels;
@@ -11,11 +11,13 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
 
-SignaturePadAsset::register($this);
+PatternLockAsset::register($this);
 
 /* @var $this View */
 /* @var $model Workshop */
 /* @var $form ActiveForm */
+
+$this->registerJs("setLockPattern('" . $model->pattern . "')");
 ?>
 
 <div class="content">
@@ -78,19 +80,21 @@ SignaturePadAsset::register($this);
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <?= Select2::widget([
-                                    'id' => 'passwordOrPattern',
-                                    'name' => 'passwordOrPattern',
-                                    'data' => [1 => 'Contraseña', 2 => 'Patrón'],
-                                    'value' => $passwordOrPattern,
-                                    'pluginEvents' => [
-                                        "select2:select" => 'function() {if ($(this).val() === "1") {$("#password-container").removeClass("hidden");$("#pattern-container").addClass("hidden");} else {$("#pattern-container").removeClass("hidden");$("#password-container").addClass("hidden");}}',
+                                    <?=
+                                    Select2::widget([
+                                        'id' => 'passwordOrPattern',
+                                        'name' => 'passwordOrPattern',
+                                        'data' => [1 => 'Contraseña', 2 => 'Patrón'],
+                                        'value' => $passwordOrPattern,
+                                        'pluginEvents' => [
+                                            "select2:select" => 'function() {if ($(this).val() === "1") {$("#password-container").removeClass("hidden");$("#pattern-container").addClass("hidden");} else {$("#pattern-container").removeClass("hidden");$("#password-container").addClass("hidden");}}',
                                         ]
-                                ]) ?>
+                                    ])
+                                    ?>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div id="password-container" class="row <?= $passwordOrPattern === 1 ? '' : 'hidden' ?>">
                             <div class="col-sm-4">
                                 <div class="form-group">
@@ -98,14 +102,13 @@ SignaturePadAsset::register($this);
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div id="pattern-container" class="row <?= $passwordOrPattern === 1 ? 'hidden' : '' ?>">
                             <div class="col-sm-8">
-                                <div class="form-group label-floating">
-                                    <?= $form->field($model, 'pattern')->hiddenInput(['id' => 'workshop-pattern'])->label(false) ?>
-                                    <canvas id="canvas" ondragend="test" ></canvas><br/>
-                                    <button id="clear-canvas" type="button" class="btn btn-xs btn-danger"><i class="material-icons">delete</i> Limpiar</button>
-                                </div>
+                                <div id="patternHolder" style="width: 100%;"></div>
+                                <?= Html::hiddenInput('Workshop[pattern]', $model->pattern, ['id' => 'workshop-pattern']) ?>
+                                <span style="font-size: 20px; font-stretch: expanded;" id="pattern-numbers"></span><br/>
+                                <button id="clear-pattern" type="button" class="btn btn-xs btn-danger"><i class="material-icons">delete</i> Limpiar</button>
                             </div>
                         </div>
 

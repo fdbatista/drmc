@@ -2,14 +2,15 @@
 
 namespace backend\controllers;
 
+use common\models\BrandModel;
 use common\models\Customer;
 use common\models\DeviceType;
 use common\models\Sale;
 use common\models\SaleItem;
 use common\models\search\SaleItemSearch;
 use common\models\search\SaleSearch;
-use common\models\Shop;
-use common\models\Warehouse;
+use common\models\Stock;
+use common\utils\StaticMembers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -171,26 +172,16 @@ class SalesController extends GenericController {
         $model = new SaleItem();
         $model->sale_id = $id;
         $model->items = 0;
+        $model->price_out = 0;
 
         if ($model->load(Yii::$app->request->post())) {
-            $found = false;
-            $stock = Shop::findOne(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
+            $stock = Stock::findOne(['device_type_id' => $model->type_id, 'brand_model_id' => $model->model_id]);
             if ($stock) {
-                $found = true;
                 if ($stock->items < $model->items) {
                     $model->addError('items', 'Solo existen ' . $stock->items . ' unidades de este producto en la tienda.');
                 }
             } else {
-                $stock = Warehouse::findOne(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
-                if ($stock) {
-                    $found = true;
-                    if ($stock->items < $model->items) {
-                        $model->addError('items', 'Solo existen ' . $stock->items . ' unidades de este producto en la tienda.');
-                    }
-                }
-            }
-            if (!$found) {
-                $model->addError('type_id', 'No existen artículos en tienda o almacén con ese tipo/modelo');
+                $model->addError('type_id', 'No existen dispositivos en tienda o almacén con ese tipo/modelo');
             }
             if (!$model->hasErrors()) {
                 $model->price_in = $stock->price_in;
@@ -222,10 +213,7 @@ class SalesController extends GenericController {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view-items', 'id' => $model->id]);
         }
-
-        return $this->render('update-items', [
-                    'model' => $model,
-        ]);
+        return $this->render('update-items', ['model' => $model]);
     }
 
     /**
@@ -261,20 +249,8 @@ class SalesController extends GenericController {
         $response = Yii::$app->response;
         $response->format = Response::FORMAT_JSON;
         $post = Yii::$app->request->post();
-        $res = [];
-        $typeId = $post['depdrop_parents'][0];
-        $deviceType = DeviceType::findOne($typeId);
-
-        if ($deviceType) {
-            $res[$deviceType->name] = [];
-            $shopItems = Shop::findAll(['type_id' => $typeId]);
-            $warehouseItems = Warehouse::findAll(['type_id' => $typeId]);
-            $allItems = array_merge($shopItems, $warehouseItems);
-            foreach ($allItems as $item) {
-                $model = $item->getModel()->one();
-                $res[$deviceType->name][] = ['id' => $model->id, 'name' => $model->name];
-            }
-        }
+        $deviceTypeId = $post['depdrop_parents'][0];
+        $res = StaticMembers::getBrandModelsByDeviceType($deviceTypeId);
         $response->data = ['output' => $res, 'selected' => []];
         return $response;
     }
@@ -283,14 +259,11 @@ class SalesController extends GenericController {
         $response = Yii::$app->response;
         $response->format = Response::FORMAT_JSON;
         $post = Yii::$app->request->post();
-        $type = \common\models\DeviceType::findOne($post['type_id']);
-        $model = \common\models\BrandModel::findOne($post['model_id']);
+        $type = DeviceType::findOne($post['type_id']);
+        $model = BrandModel::findOne($post['model_id']);
         $res = [];
         if ($type && $model) {
-            $item = Shop::findOne(['type_id' => $type->id, 'model_id' => $model->id]);
-            if (!$item) {
-                $item = Warehouse::findOne(['type_id' => $type->id, 'model_id' => $model->id]);
-            }
+            $item = Stock::findOne(['device_type_id' => $type->id, 'brand_model_id' => $model->id]);
             if ($item) {
                 $items = $post['items'];
                 $priceDiff = $item->price_out - $item->price_in;

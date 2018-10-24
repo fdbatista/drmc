@@ -14,12 +14,12 @@ $this->title = 'Detalles';
 $parent = $model->getSale()->one();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta'), 'url' => ['view', 'id' => $parent->id]];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Artículos'), 'url' => ['index-items', 'id' => $parent->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Dispositivos'), 'url' => ['index-items', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = $this->title;?>
 <div class="sale-item-view">
 
     <p>
-        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update-items', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;?>
         'attributes' => [
             [
                 'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
                 'value' => $model->getType()->one()->name
             ],
             [

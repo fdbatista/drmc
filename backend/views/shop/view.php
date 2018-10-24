@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Shop;
+use common\models\Stock;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use yii\helpers\Html;
@@ -31,14 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
-                'value' => $model->getType()->one()->name
+                'attribute' => 'deviceType',
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
+                'value' => $model->getDeviceType()->one()->name
             ],
             [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
+                'value' => StaticMembers::getModelAndBrandName($model->getBrandModel()->one())
             ],
             [
                 'attribute' => 'code',
@@ -55,6 +55,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'price_out',
                 'label' => AttributesLabels::getAttributeLabel('price_out'),
+            ],
+            [
+                'attribute' => 'first_discount',
+                'label' => AttributesLabels::getAttributeLabel('first_discount'),
+            ],
+            [
+                'attribute' => 'major_discount',
+                'label' => AttributesLabels::getAttributeLabel('major_discount'),
             ],
         ],
     ]) ?>

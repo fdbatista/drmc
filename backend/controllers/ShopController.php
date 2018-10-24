@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\search\ShopSearch;
-use common\models\Shop;
+use common\models\search\StockSearch;
+use common\models\Stock;
 use common\models\Warehouse;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 /**
- * ShopController implements the CRUD actions for Shop model.
+ * ShopController implements the CRUD actions for Stock model.
  */
 class ShopController extends GenericController {
 
@@ -24,7 +24,8 @@ class ShopController extends GenericController {
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new ShopSearch();
+        $searchModel = new StockSearch();
+        $searchModel->stock_type_id = 1;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
@@ -52,19 +53,13 @@ class ShopController extends GenericController {
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Shop();
+        $model = new Stock();
+        $model->stock_type_id = 1;
         $model->first_discount = 0.00;
         $model->major_discount = 0.00;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $warehouse = Warehouse::findAll(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
-            if (count($warehouse) === 0) {
-                if ($model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-            } else {
-                $model->addError('type_id', 'Ese tipo de dispositivo y modelo ya existe en el almacén.');
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
         return $this->render('create', [
                     'model' => $model,
@@ -106,7 +101,6 @@ class ShopController extends GenericController {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
@@ -118,7 +112,7 @@ class ShopController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Shop::findOne($id)) !== null) {
+        if (($model = Stock::findOne($id)) !== null) {
             return $model;
         }
 

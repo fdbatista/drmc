@@ -1,6 +1,6 @@
 <?php
 
-use common\models\search\WarehouseSearch;
+use common\models\search\StockSearch;
 use common\utils\AttributesLabels;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
@@ -8,20 +8,19 @@ use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\Pjax;
 /* @var $this View */
-/* @var $searchModel WarehouseSearch */
+/* @var $searchModel StockSearch */
 /* @var $dataProvider ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Almacén');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="warehouse-index">
+<div class="shop-index">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Artículo'), ['create'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Dispositivo'), ['create'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= GridView::widget([
@@ -30,28 +29,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
 
             [
-                'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
-                'value' => 'type.name'
+                'attribute' => 'deviceType',
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
+                'value' => 'deviceType.name'
             ],
             [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => 'model.name'
+                'value' => 'brandModel.name'
             ],
             [
                 'attribute' => 'code',
                 'label' => AttributesLabels::getAttributeLabel('code'),
             ],
             [
-                'attribute' => 'name',
-                'label' => AttributesLabels::getAttributeLabel('name'),
-            ],
-            [
                 'attribute' => 'items',
                 'label' => AttributesLabels::getAttributeLabel('items'),
             ],
-            
+
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',

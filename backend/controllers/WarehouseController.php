@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\search\WarehouseSearch;
-use common\models\Shop;
+use common\models\search\StockSearch;
+use common\models\Stock;
 use common\models\Warehouse;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 /**
- * WarehouseController implements the CRUD actions for Warehouse model.
+ * ShopController implements the CRUD actions for Stock model.
  */
 class WarehouseController extends GenericController {
 
@@ -20,11 +20,12 @@ class WarehouseController extends GenericController {
     }
 
     /**
-     * Lists all Warehouse models.
+     * Lists all Shop models.
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new WarehouseSearch();
+        $searchModel = new StockSearch();
+        $searchModel->stock_type_id = 2;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
@@ -35,7 +36,7 @@ class WarehouseController extends GenericController {
     }
 
     /**
-     * Displays a single Warehouse model.
+     * Displays a single Shop model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -47,31 +48,26 @@ class WarehouseController extends GenericController {
     }
 
     /**
-     * Creates a new Warehouse model.
+     * Creates a new Shop model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Warehouse();
+        $model = new Stock();
+        $model->stock_type_id = 2;
+        $model->first_discount = 0.00;
+        $model->major_discount = 0.00;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $shop = Shop::findAll(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
-            if (count($shop) === 0) {
-                if ($model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-            } else {
-                $model->addError('type_id', 'Ese tipo de dispositivo y modelo ya existe en la tienda.');
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('create', [
                     'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Warehouse model.
+     * Updates an existing Shop model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -81,13 +77,13 @@ class WarehouseController extends GenericController {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $shop = Shop::findAll(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
-            if (count($shop) === 0) {
+            $warehouse = Warehouse::findAll(['type_id' => $model->type_id, 'model_id' => $model->model_id]);
+            if (count($warehouse) === 0) {
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } else {
-                $model->addError('type_id', 'Ese tipo de dispositivo y modelo ya existe en la tienda.');
+                $model->addError('type_id', 'Ese tipo de dispositivo y modelo ya existe en el almacén.');
             }
         }
 
@@ -97,7 +93,7 @@ class WarehouseController extends GenericController {
     }
 
     /**
-     * Deletes an existing Warehouse model.
+     * Deletes an existing Shop model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -105,19 +101,18 @@ class WarehouseController extends GenericController {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Warehouse model based on its primary key value.
+     * Finds the Shop model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Warehouse the loaded model
+     * @return Shop the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Warehouse::findOne($id)) !== null) {
+        if (($model = Stock::findOne($id)) !== null) {
             return $model;
         }
 

@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'index-items' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-shopping-cart"></span>', $url, [
-                                    'title' => Yii::t('yii', 'Artículos'),
+                                    'title' => Yii::t('yii', 'Dispositivos'),
                                     'data-toggle' => 'tooltip',
                                     'data-placement' => 'top',
                                     'data-pjax' => 0,

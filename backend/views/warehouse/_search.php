@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\search\WarehouseSearch */
+/* @var $model common\models\search\StockSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="warehouse-search">
+<div class="shop-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,13 +20,17 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'device_id') ?>
 
-    <?= $form->field($model, 'code') ?>
+    <?= $form->field($model, 'inventory') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'code') ?>
 
     <?= $form->field($model, 'price_in') ?>
 
     <?= $form->field($model, 'price_out') ?>
+
+    <?php // echo $form->field($model, 'first_discount') ?>
+
+    <?php // echo $form->field($model, 'major_discount') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

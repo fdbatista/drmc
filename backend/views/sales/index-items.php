@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel SaleItemSearch */
 /* @var $dataProvider ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Artículos');
+$this->title = Yii::t('app', 'Dispositivos');
 $parent = $searchModel->getSale()->one();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta'), 'url' => ['view', 'id' => $parent->id]];
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-<?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar artículo'), ['create-items', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
+<?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar dispositivo'), ['create-items', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
                 [
                 'attribute' => 'type',
-                'label' => AttributesLabels::getAttributeLabel('type'),
+                'label' => AttributesLabels::getAttributeLabel('device_type'),
                 'value' => 'type.name'
             ],
                 [
