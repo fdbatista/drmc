@@ -46,6 +46,21 @@ class StaticMembers {
         }
         return $res;
     }
+    
+    public static function getWarehouseItemsByBrandModel($brandModelId) {
+        $res = [];
+        $brandModel = BrandModel::findOne($brandModelId);
+
+        if ($brandModel) {
+            $res[$brandModel->name] = [];
+            $stockItems = Stock::findAll(['stock_type_id' => 2, 'brand_model_id' => $brandModelId]);
+            foreach ($stockItems as $item) {
+                $model = $item->getDeviceType()->one();
+                $res[$brandModel->name][] = ['id' => $model->id, 'name' => $model->name . ' (max: ' . $item->items . ')'];
+            }
+        }
+        return $res;
+    }
 
     public static function getBrandModelsForSale($deviceTypeId) {
         $brandModels = [];

@@ -22,6 +22,13 @@ class m181008_221626_create_device_type_table extends Migration
         $this->insert('device_type', ['name' => 'Cámara digital']);
         $this->insert('device_type', ['name' => 'PC de escritorio']);
         $this->insert('device_type', ['name' => 'Tablet']);
+        $this->insert('device_type', ['name' => 'Cámara frontal']);
+        $this->insert('device_type', ['name' => 'Cámara trasera']);
+        $this->insert('device_type', ['name' => 'Pantalla']);
+        $this->insert('device_type', ['name' => 'Táctil']);
+        $this->insert('device_type', ['name' => 'Cargador']);
+        $this->insert('device_type', ['name' => 'Cable de alimentación']);
+        $this->insert('device_type', ['name' => 'Mica']);
         
     }
 

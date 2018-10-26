@@ -57,6 +57,7 @@ class m181015_131651_init_rbac extends Migration {
             }
         }
         $this->addPermission($authManager, "view-dashboard", "Ver panel de control", 'admin');
+        $this->addPermission($authManager, "finish-repair-workshop", "Ver panel de control", 'admin');
     }
 
     private function addRole(ManagerInterface $authManager, $name, $description) {

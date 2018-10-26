@@ -1,6 +1,6 @@
-var encoder = new GIFEncoder();
+/*var encoder = new GIFEncoder();
 encoder.setRepeat(0);
-encoder.setDelay(0);
+encoder.setDelay(0);*/
 var grabber = 0;
 var canvasArray = [];
 
@@ -27,7 +27,7 @@ $('#clear-pattern').on('click', function () {
     $('#pattern-numbers').html('');
 });
 
-$('#patternHolder').on('mousedown', function () {
+/*$('#patternHolder').on('mousedown', function () {
     var grabRate = 10;
     canvasArray = [];
     encoder = new GIFEncoder();
@@ -53,8 +53,4 @@ $('#patternHolder').on('mouseup', function () {
     var binary_gif = encoder.stream().getData();
     var data_url = 'data:image/gif;base64,' + encode64(binary_gif);
     $('#workshop-pattern-gif').val(data_url);
-    /*console.log(data_url);
-    var img = document.createElement('img');
-    img.src = data_url;
-    document.body.appendChild(img);*/
-});
+});*/

@@ -12,8 +12,8 @@ use yii\data\ActiveDataProvider;
  */
 class WorkshopSearch extends Workshop {
 
-    public $type;
-    public $model;
+    public $deviceType;
+    public $brandModel;
 
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class WorkshopSearch extends Workshop {
     public function rules() {
         return [
                 [['effort', 'receiver_id'], 'integer'],
-                [['type', 'model', 'pre_diagnosis', 'password', 'observations', 'signature_in', 'signature_out'], 'safe'],
+                [['deviceType', 'brandModel', 'password', 'observations', 'signature_in', 'signature_out', 'status'], 'safe'],
         ];
     }
 
@@ -45,19 +45,19 @@ class WorkshopSearch extends Workshop {
 
         // add conditions that should always apply here
 
-        $query->joinWith(['type']);
-        $query->joinWith(['model']);
+        $query->joinWith(['deviceType']);
+        $query->joinWith(['brandModel']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['type'] = [
+        $dataProvider->sort->attributes['deviceType'] = [
             'asc' => ['device_type.name' => SORT_ASC],
             'desc' => ['device_type.name' => SORT_DESC],
         ];
 
-        $dataProvider->sort->attributes['model'] = [
+        $dataProvider->sort->attributes['brandModel'] = [
             'asc' => ['brand_model.name' => SORT_ASC],
             'desc' => ['brand_model.name' => SORT_DESC],
         ];
@@ -74,15 +74,15 @@ class WorkshopSearch extends Workshop {
         $query->andFilterWhere([
             'effort' => $this->effort,
             'receiver_id' => $this->receiver_id,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'pre_diagnosis', $this->pre_diagnosis])
-                ->andFilterWhere(['like', 'password', $this->password])
+        $query->andFilterWhere(['like', 'password', $this->password])
                 ->andFilterWhere(['like', 'observations', $this->observations])
                 ->andFilterWhere(['like', 'signature_in', $this->signature_in])
                 ->andFilterWhere(['like', 'signature_out', $this->signature_out])
-                ->andFilterWhere(['like', 'device_type.name', $this->type])
-                ->andFilterWhere(['like', 'brand_model.name', $this->model]);
+                ->andFilterWhere(['like', 'device_type.name', $this->deviceType])
+                ->andFilterWhere(['like', 'brand_model.name', $this->brandModel]);
 
         return $dataProvider;
     }

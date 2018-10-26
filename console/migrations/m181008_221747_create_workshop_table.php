@@ -14,22 +14,31 @@ class m181008_221747_create_workshop_table extends Migration
     {
         $this->createTable('workshop', [
             'id' => $this->primaryKey(),
-            'pre_diagnosis' => $this->string(250)->notNull(),
             'password' => $this->string(50),
             'pattern' => $this->string(),
             'pattern_gif' => $this->getDb()->getSchema()->createColumnSchemaBuilder('longtext'),
             'observations' => $this->string(500),
             'signature_in' => $this->string(50),
             'signature_out' => $this->string(50),
+            'date_received' => $this->dateTime()->notNull(),
+            'date_closed' => $this->dateTime(),
+            'warranty_until' => $this->dateTime(),
+            'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'serial_number' => $this->string()->notNull(),
-            'effort' => $this->integer(),
+            'customer_name' => $this->string(),
+            'customer_telephone' => $this->string(),
+            'folio_number' => $this->integer(),
+            'discount_applied' => $this->double(),
+            'final_price' => $this->double(),
+            'effort' => $this->double()->notNull(),
+            'status' => $this->integer(2)->notNull()->defaultValue(0),
             'receiver_id' => $this->integer(),
-            'type_id' => $this->integer()->notNull(),
-            'model_id' => $this->integer()->notNull(),
+            'device_type_id' => $this->integer()->notNull(),
+            'brand_model_id' => $this->integer()->notNull(),
             'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
-        $this->addForeignKey('fk_workshop_type', 'workshop', 'type_id', 'device_type', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_workshop_model', 'workshop', 'model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_workshop_devicetype', 'workshop', 'device_type_id', 'device_type', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk_workshop_brandmodel', 'workshop', 'brand_model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_workshop_receiver', 'workshop', 'receiver_id', 'user', 'id', 'SET NULL', 'CASCADE');
     }
 

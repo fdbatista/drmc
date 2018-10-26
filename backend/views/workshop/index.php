@@ -17,12 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-index">
 
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
     <?php Pjax::begin(); ?>
-<?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-<?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Dispositivo'), ['create'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Dispositivo'), ['create'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=
@@ -31,18 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
                 [
-                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('status'),
+                'attribute' => 'status',
+                'content' => function ($searchModel) {
+                    return $searchModel->status === 1 ? 'Cerrada' : 'Pendiente';
+                },
+                'filter' => [0 => 'Pendiente', 1 => 'Cerrada']
+            ],
+                [
+                'attribute' => 'deviceType',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
-                'value' => 'type.name'
+                'value' => 'deviceType.name'
             ],
                 [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => 'model.name'
-            ],
-                [
-                'attribute' => 'pre_diagnosis',
-                'label' => AttributesLabels::getAttributeLabel('pre_diagnosis'),
+                'value' => 'brandModel.name'
             ],
                 [
                 'attribute' => 'observations',

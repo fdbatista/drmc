@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">credit_card</i> ' . Yii::t('app', 'Cotizaciones'), ['index-payments', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">healing</i> ' . Yii::t('app', 'Cerrar reparación'), ['finish-repair', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -34,25 +35,20 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
-                'value' => $model->getType()->one()->name
+                'value' => $model->deviceType->name
             ],
             [
                 'attribute' => 'model',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
-            ],
-            [
-                'attribute' => 'pre_diagnosis',
-                'label' => AttributesLabels::getAttributeLabel('pre_diagnosis'),
+                'value' => StaticMembers::getModelAndBrandName($model->brandModel)
             ],
             [
                 'attribute' => 'password',
                 'label' => AttributesLabels::getAttributeLabel('password'),
             ],
             [
-                'attribute' => 'pattern_gif',
+                'attribute' => 'pattern',
                 'label' => AttributesLabels::getAttributeLabel('pattern'),
-                'format' => ['image', ['height' => '100']],
                 
             ],
             [

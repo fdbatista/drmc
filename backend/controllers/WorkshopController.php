@@ -4,10 +4,13 @@ namespace backend\controllers;
 
 use common\models\search\WorkshopPaymentSearch;
 use common\models\search\WorkshopSearch;
+use common\models\Stock;
 use common\models\Workshop;
 use common\models\WorkshopPayment;
+use common\utils\StaticMembers;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * WorkshopController implements the CRUD actions for Workshop model.
@@ -56,8 +59,28 @@ class WorkshopController extends GenericController {
     public function actionCreate() {
         $model = new Workshop();
         $model->receiver_id = Yii::$app->user->identity->id;
-        $post = Yii::$app->request->post();
+        $model->date_received = date('Y-m-d');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $preDiagnosisItems = json_decode(Yii::$app->request->post()['pre-diagnosis-items'], true);
+            foreach ($preDiagnosisItems as $preDiagnosisItem) {
+                $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
+                if ($stockModel) {
+                    if ($preDiagnosisItem['items'] <= $stockModel->items) {
+                        $workshopPreDiagnosis = new \common\models\WorkshopPreDiagnosis();
+                        $workshopPreDiagnosis->items = $preDiagnosisItem['items'];
+                        $workshopPreDiagnosis->workshop_id = $model->id;
+                        $workshopPreDiagnosis->device_type_id = $stockModel->device_type_id;
+                        $workshopPreDiagnosis->save();
+                        $stockModel->items -= $preDiagnosisItem['items'];
+                        if ($stockModel->items > 0) {
+                            $stockModel->save();
+                        } else {
+                            $stockModel->delete();
+                        }
+                    }
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
         return $this->render('create', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
@@ -73,6 +96,40 @@ class WorkshopController extends GenericController {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $currentPreDiagnosisItems = $model->workshopPreDiagnoses;
+            foreach ($currentPreDiagnosisItems as $currentPreDiagnosisItem) {
+                $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+                if (!$stockModel) {
+                    $stockModel = new Stock(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id, 'items' => $currentPreDiagnosisItem->items]);
+                } else {
+                    $stockModel->items += $currentPreDiagnosisItem->items;
+                }
+                $stockModel->save();
+                $currentPreDiagnosisItem->delete();
+            }
+
+            $preDiagnosisItems = json_decode(Yii::$app->request->post()['pre-diagnosis-items'], true);
+            if ($preDiagnosisItems) {
+                foreach ($preDiagnosisItems as $preDiagnosisItem) {
+                    $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
+                    if ($stockModel) {
+                        if ($preDiagnosisItem['items'] <= $stockModel->items) {
+                            $workshopPreDiagnosis = new \common\models\WorkshopPreDiagnosis();
+                            $workshopPreDiagnosis->items = $preDiagnosisItem['items'];
+                            $workshopPreDiagnosis->workshop_id = $model->id;
+                            $workshopPreDiagnosis->device_type_id = $stockModel->device_type_id;
+                            $workshopPreDiagnosis->save();
+                            $stockModel->items -= $preDiagnosisItem['items'];
+                            if ($stockModel->items > 0) {
+                                $stockModel->save();
+                            } else {
+                                $stockModel->delete();
+                            }
+                        }
+                    }
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
         return $this->render('update', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
@@ -200,6 +257,61 @@ class WorkshopController extends GenericController {
             return $model;
         }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionGetPreDiagnosisItems() {
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $params = Yii::$app->request->get();
+        $modelId = $params['model_id'];
+        $preDiagnosis = [];
+        //$warehouseDevices = [];
+        $model = Workshop::findOne($modelId);
+        if ($model) {
+            $array = $model->workshopPreDiagnoses;
+            foreach ($array as $preDiagnose) {
+                $preDiagnosis[] = ['id' => $preDiagnose->deviceType->id, 'name' => $preDiagnose->deviceType->name, 'items' => $preDiagnose->items];
+            }
+            //$warehouseDevices = StaticMembers::getWarehouseItemsByBrandModel($model->brand_model_id);
+        }
+        //$response->data = ['pre_diagnosis' => $preDiagnosis, 'warehouse_devices' => $warehouseDevices];
+        $response->data = $preDiagnosis;
+        return $response;
+    }
+
+    public function actionGetWarehouseItemsByBrandModel() {
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $post = Yii::$app->request->post();
+        $brandModelId = $post['depdrop_parents'][0];
+        $res = StaticMembers::getWarehouseItemsByBrandModel($brandModelId);
+        $response->data = ['output' => $res, 'selected' => []];
+        return $response;
+    }
+
+    public function actionFinishRepair($id) {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post())) {
+            if (!$model->customer_name) {
+                $model->addError('customer_name', 'Este dato es obligatorio');
+            }
+            if (!$model->customer_telephone) {
+                $model->addError('customer_telephone', 'Este dato es obligatorio');
+            }
+            if (!$model->warranty_until) {
+                $model->addError('warranty_until', 'Este dato es obligatorio');
+            }
+            if (!$model->final_price) {
+                $model->addError('final_price', 'Este dato es obligatorio');
+            }
+            
+            if (!$model->hasErrors()) {
+                $model->status = 1;
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+        return $this->render('finish-repair', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
     }
 
 }

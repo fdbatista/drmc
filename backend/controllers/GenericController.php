@@ -25,7 +25,7 @@ class GenericController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            if (in_array($action->id, ['get-brand-models-for-sale', 'calculate-price-with-discounts'])) {
+                            if (in_array($action->id, ['get-brand-models-for-sale', 'calculate-price-with-discounts', 'get-warehouse-items-by-brand-model', 'get-pre-diagnosis-items'])) {
                                 return true;
                             }
                             $permissionName = "$action->id-$this->entityId";

@@ -3,6 +3,7 @@
 /* @var $content string */
 
 use backend\assets\FontAwesomeAsset;
+use kartik\depdrop\DepDrop;
 use ramosisw\CImaterial\web\MaterialAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -20,10 +21,11 @@ if (!isset($this->params['active'])) {
     $this->params['active'] = 'index';
 }
 FontAwesomeAsset::register($this);
-$this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector: \'[data-toggle="tooltip"]\'}); });');
+
+$this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector: \'[data-toggle="tooltip"]\'});  $(\'.js-example-basic-single\').select2();  });');
 ?>
 <?php $this->beginPage() ?>
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>">
@@ -52,13 +54,13 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                     if (!Yii::$app->user->isGuest) {
                         ?>
                         <ul class="nav">
-                            <?php if (Yii::$app->user->can('view-dashboard')) {?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-brands')) {?><li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-device-types')) {?><li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-shop')) {?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-warehouse')) {?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-workshop')) {?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-sales')) {?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('view-dashboard')) { ?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-brands')) { ?><li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-device-types')) { ?><li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-shop')) { ?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-warehouse')) { ?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-workshop')) { ?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-sales')) { ?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
                         </ul>
                         <?php
                     }
@@ -84,17 +86,17 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                             ?>
                             <div class="collapse navbar-collapse">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <?php if (Yii::$app->user->can('index-app-config')) {?><li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li> <?php } ?>
-                                    <?php if (Yii::$app->user->can('index-users') || Yii::$app->user->can('index-roles')) {?>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="material-icons">security</i> Seguridad
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <?php if (Yii::$app->user->can('index-users')) {?><li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li> <?php } ?>
-                                            <?php if (Yii::$app->user->can('index-roles')) {?><li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">content_paste</i> Roles</a></li> <?php } ?>
-                                        </ul>
-                                    </li> <?php } ?>
+                                    <?php if (Yii::$app->user->can('index-app-config')) { ?><li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li> <?php } ?>
+                                    <?php if (Yii::$app->user->can('index-users') || Yii::$app->user->can('index-roles')) { ?>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i class="material-icons">security</i> Seguridad
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <?php if (Yii::$app->user->can('index-users')) { ?><li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li> <?php } ?>
+                                                <?php if (Yii::$app->user->can('index-roles')) { ?><li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">content_paste</i> Roles</a></li> <?php } ?>
+                                            </ul>
+                                        </li> <?php } ?>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <i class="material-icons">notifications</i>
@@ -151,6 +153,52 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                         </p>
                     </div>
                 </footer>
+            </div>
+
+            <div class="modal fade" id="modal-pre-diagnosis" tabindex="-1" role="dialog" aria-labelledby="PreDiag" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Agregar componente</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <?=
+                                    DepDrop::widget([
+                                        'type' => DepDrop::TYPE_SELECT2,
+                                        'data' => [],
+                                        'language' => 'es',
+                                        'name' => 'devices-by-brand-list',
+                                        'options' => ['placeholder' => 'Seleccione un tipo de dispositivo', 'class' => 'form-control', 'id' => 'devices-by-brand-list'],
+                                        'select2Options' => ['pluginOptions' => ['allowClear' => true]],
+                                        'pluginOptions' => [
+                                            'placeholder' => 'Seleccione un tipo',
+                                            'depends' => ['brand_model_id'],
+                                            'url' => Url::to(['/workshop/get-warehouse-items-by-brand-model']),
+                                        ],
+                                        'pluginEvents' => [
+                                            "change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem));  }",
+                                        ]
+                                    ]);
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <?= Html::input('text', 'new-pre-diagnosis-items', null, ['id' => 'new-pre-diagnosis-items', 'class' => 'form-control', 'placeholder' => 'Cantidad']) ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button onclick="addPreDiagnosisItem()" type="button" class="btn btn-primary">Agregar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

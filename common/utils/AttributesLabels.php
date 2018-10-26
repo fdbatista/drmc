@@ -45,6 +45,12 @@ class AttributesLabels {
         'role' => 'Rol',
         'sex' => 'Sexo',
         'password_repeat' => 'Repetir contraseña',
+        'date_received' => 'Fecha de entrada',
+        'customer_name' => 'Nombre del cliente',
+        'customer_telephone' => 'Teléfono del cliente',
+        'warranty_until' => 'Fin de la garantía',
+        'discount_applied' => 'Descuento real',
+        'final_price' => 'Precio final',
     ];
     
     public static function getAttributeLabel($name) {

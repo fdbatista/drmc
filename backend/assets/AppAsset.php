@@ -20,6 +20,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/material-demo.js',
+        'js/pre-diagnosis-helper.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

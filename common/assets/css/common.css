@@ -15,3 +15,20 @@ canvas {
     margin-top: 10px;
     width: 100%;
 }
+.table-header {
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+}
+
+button.close {
+    margin-top: -25px!important;
+    font-size: large!important;
+}
+
+.pre-diagnosis-info {
+    color: #9c27b0;
+}
+
+.btn-remove-pre-diagnosis {
+    margin-top: -5px;
+}

@@ -8,24 +8,33 @@ use Yii;
  * This is the model class for table "workshop".
  *
  * @property int $id
- * @property string $pre_diagnosis
  * @property string $password
  * @property string $pattern
  * @property string $pattern_gif
  * @property string $observations
  * @property string $signature_in
  * @property string $signature_out
- * @property string $serial_number
- * @property int $effort
- * @property int $receiver_id
- * @property int $type_id
- * @property int $model_id
+ * @property string $date_received
+ * @property string $date_closed
+ * @property string $warranty_until
  * @property string $updated_at
+ * @property string $serial_number
+ * @property string $customer_name
+ * @property string $customer_telephone
+ * @property int $folio_number
+ * @property double $discount_applied
+ * @property double $final_price
+ * @property double $effort
+ * @property int $status
+ * @property int $receiver_id
+ * @property int $device_type_id
+ * @property int $brand_model_id
  *
- * @property BrandModel $model
+ * @property BrandModel $brandModel
+ * @property DeviceType $deviceType
  * @property User $receiver
- * @property DeviceType $type
  * @property WorkshopPayment[] $workshopPayments
+ * @property WorkshopPreDiagnosis[] $workshopPreDiagnoses
  */
 class Workshop extends \yii\db\ActiveRecord
 {
@@ -43,17 +52,17 @@ class Workshop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pre_diagnosis', 'serial_number', 'type_id', 'model_id'], 'required'],
             [['pattern_gif'], 'string'],
-            [['effort', 'receiver_id', 'type_id', 'model_id'], 'integer'],
-            [['updated_at'], 'safe'],
-            [['pre_diagnosis'], 'string', 'max' => 250],
+            [['date_received', 'serial_number', 'effort', 'device_type_id', 'brand_model_id'], 'required'],
+            [['date_received', 'date_closed', 'warranty_until', 'updated_at'], 'safe'],
+            [['folio_number', 'status', 'receiver_id', 'device_type_id', 'brand_model_id'], 'integer'],
+            [['discount_applied', 'final_price', 'effort'], 'number'],
             [['password', 'signature_in', 'signature_out'], 'string', 'max' => 50],
-            [['pattern', 'serial_number'], 'string', 'max' => 255],
+            [['pattern', 'serial_number', 'customer_name', 'customer_telephone'], 'string', 'max' => 255],
             [['observations'], 'string', 'max' => 500],
-            [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
+            [['brand_model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['brand_model_id' => 'id']],
+            [['device_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['device_type_id' => 'id']],
             [['receiver_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['receiver_id' => 'id']],
-            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -63,29 +72,45 @@ class Workshop extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'pre_diagnosis' => Yii::t('app', 'Pre Diagnosis'),
-            'password' => Yii::t('app', 'Password'),
-            'pattern' => Yii::t('app', 'Pattern'),
-            'pattern_gif' => Yii::t('app', 'Pattern Gif'),
-            'observations' => Yii::t('app', 'Observations'),
-            'signature_in' => Yii::t('app', 'Signature In'),
-            'signature_out' => Yii::t('app', 'Signature Out'),
-            'serial_number' => Yii::t('app', 'Serial Number'),
-            'effort' => Yii::t('app', 'Effort'),
-            'receiver_id' => Yii::t('app', 'Receiver ID'),
-            'type_id' => Yii::t('app', 'Type ID'),
-            'model_id' => Yii::t('app', 'Model ID'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'id' => 'ID',
+            'password' => 'Password',
+            'pattern' => 'Pattern',
+            'pattern_gif' => 'Pattern Gif',
+            'observations' => 'Observations',
+            'signature_in' => 'Signature In',
+            'signature_out' => 'Signature Out',
+            'date_received' => 'Date Received',
+            'date_closed' => 'Date Closed',
+            'warranty_until' => 'Warranty Until',
+            'updated_at' => 'Updated At',
+            'serial_number' => 'Serial Number',
+            'customer_name' => 'Customer Name',
+            'customer_telephone' => 'Customer Telephone',
+            'folio_number' => 'Folio Number',
+            'discount_applied' => 'Discount Applied',
+            'final_price' => 'Final Price',
+            'effort' => 'Effort',
+            'status' => 'Status',
+            'receiver_id' => 'Receiver ID',
+            'device_type_id' => 'Device Type ID',
+            'brand_model_id' => 'Brand Model ID',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getModel()
+    public function getBrandModel()
     {
-        return $this->hasOne(BrandModel::className(), ['id' => 'model_id']);
+        return $this->hasOne(BrandModel::className(), ['id' => 'brand_model_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeviceType()
+    {
+        return $this->hasOne(DeviceType::className(), ['id' => 'device_type_id']);
     }
 
     /**
@@ -99,16 +124,16 @@ class Workshop extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getType()
+    public function getWorkshopPayments()
     {
-        return $this->hasOne(DeviceType::className(), ['id' => 'type_id']);
+        return $this->hasMany(WorkshopPayment::className(), ['workshop_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getWorkshopPayments()
+    public function getWorkshopPreDiagnoses()
     {
-        return $this->hasMany(WorkshopPayment::className(), ['workshop_id' => 'id']);
+        return $this->hasMany(WorkshopPreDiagnosis::className(), ['workshop_id' => 'id']);
     }
 }
