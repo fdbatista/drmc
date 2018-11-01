@@ -44,11 +44,11 @@ class AppConfig extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'app_title' => Yii::t('app', 'App Title'),
-            'about' => Yii::t('app', 'About'),
-            'address' => Yii::t('app', 'Address'),
-            'email' => Yii::t('app', 'Email'),
-            'phone' => Yii::t('app', 'Phone'),
+            'app_title' => Yii::t('app', 'Nombre de la aplicación'),
+            'about' => Yii::t('app', 'Acerca de'),
+            'address' => Yii::t('app', 'Dirección'),
+            'email' => Yii::t('app', 'Correo electrónico'),
+            'phone' => Yii::t('app', 'Teléfono'),
         ];
     }
 }

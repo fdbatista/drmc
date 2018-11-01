@@ -7,6 +7,7 @@ use common\models\search\WorkshopSearch;
 use common\models\Stock;
 use common\models\Workshop;
 use common\models\WorkshopPayment;
+use common\models\WorkshopPreDiagnosis;
 use common\utils\StaticMembers;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -50,6 +51,11 @@ class WorkshopController extends GenericController {
                     'model' => $this->findModel($id),
         ]);
     }
+    
+    private function updateFolioNumber(Workshop $model) {
+        $newId = Yii::$app->db->createCommand('select coalesce(max(`id`), 0) + 1 as `count` from `workshop`')->queryScalar();
+        $model->folio_number = str_pad($newId, 11, '0', STR_PAD_LEFT);
+    }
 
     /**
      * Creates a new Workshop model.
@@ -60,6 +66,7 @@ class WorkshopController extends GenericController {
         $model = new Workshop();
         $model->receiver_id = Yii::$app->user->identity->id;
         $model->date_received = date('Y-m-d');
+        $this->updateFolioNumber($model);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $preDiagnosisItems = json_decode(Yii::$app->request->post()['pre-diagnosis-items'], true);
@@ -67,10 +74,11 @@ class WorkshopController extends GenericController {
                 $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
                 if ($stockModel) {
                     if ($preDiagnosisItem['items'] <= $stockModel->items) {
-                        $workshopPreDiagnosis = new \common\models\WorkshopPreDiagnosis();
+                        $workshopPreDiagnosis = new WorkshopPreDiagnosis();
                         $workshopPreDiagnosis->items = $preDiagnosisItem['items'];
                         $workshopPreDiagnosis->workshop_id = $model->id;
                         $workshopPreDiagnosis->device_type_id = $stockModel->device_type_id;
+                        $workshopPreDiagnosis->price_per_unit = $stockModel->price_out;
                         $workshopPreDiagnosis->save();
                         $stockModel->items -= $preDiagnosisItem['items'];
                         if ($stockModel->items > 0) {
@@ -115,10 +123,11 @@ class WorkshopController extends GenericController {
                     $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
                     if ($stockModel) {
                         if ($preDiagnosisItem['items'] <= $stockModel->items) {
-                            $workshopPreDiagnosis = new \common\models\WorkshopPreDiagnosis();
+                            $workshopPreDiagnosis = new WorkshopPreDiagnosis();
                             $workshopPreDiagnosis->items = $preDiagnosisItem['items'];
                             $workshopPreDiagnosis->workshop_id = $model->id;
                             $workshopPreDiagnosis->device_type_id = $stockModel->device_type_id;
+                            $workshopPreDiagnosis->price_per_unit = $stockModel->price_out;
                             $workshopPreDiagnosis->save();
                             $stockModel->items -= $preDiagnosisItem['items'];
                             if ($stockModel->items > 0) {
@@ -291,20 +300,18 @@ class WorkshopController extends GenericController {
 
     public function actionFinishRepair($id) {
         $model = $this->findModel($id);
+        $model->final_price = $model->effort;
+        $preDiagnosisItems = $model->workshopPreDiagnoses;
+        foreach ($preDiagnosisItems as $preDiagnosisItem) {
+            $model->final_price += ($preDiagnosisItem->price_per_unit * $preDiagnosisItem->items);
+        }
+        
         if ($model->load(Yii::$app->request->post())) {
-            if (!$model->customer_name) {
-                $model->addError('customer_name', 'Este dato es obligatorio');
-            }
-            if (!$model->customer_telephone) {
-                $model->addError('customer_telephone', 'Este dato es obligatorio');
-            }
             if (!$model->warranty_until) {
                 $model->addError('warranty_until', 'Este dato es obligatorio');
+            } elseif (!is_numeric($model->discount_applied) || $model->discount_applied < 0) {
+                $model->addError('discount_applied', 'Este dato es obligatorio');
             }
-            if (!$model->final_price) {
-                $model->addError('final_price', 'Este dato es obligatorio');
-            }
-            
             if (!$model->hasErrors()) {
                 $model->status = 1;
                 $model->save();

@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {delete} {index-items}',
+                'template' => '{view} {update} {index-items} {delete}',
                 'buttons' =>
                     [
                     'view' => function ($key) {

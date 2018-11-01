@@ -19,6 +19,7 @@ class m181022_171556_create_customer_table extends Migration
             'telephone' => $this->string(25),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         $this->addForeignKey('fk_sale_customer', 'sale', 'customer_id', 'customer', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx_customer_nametelephone', 'customer', 'name, telephone', true);
     }
 
     /**

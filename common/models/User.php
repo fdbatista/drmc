@@ -35,7 +35,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public $password;
     public $password_repeat;
-    public $role;
+    //public $role;
 
     /**
      * {@inheritdoc}
@@ -71,7 +71,8 @@ class User extends ActiveRecord implements IdentityInterface {
                 ['email', 'email'],
                 ['status', 'in', 'range' => [self::STATUS_DELETED, self::STATUS_ACTIVE]],
                 ['status', 'required'],
-                ['password', 'compare'],
+      //          ['password', 'compare'],
+                [['password', 'password_repeat'], 'safe'],
         ];
     }
 
@@ -80,6 +81,12 @@ class User extends ActiveRecord implements IdentityInterface {
         if ($this->getIsNewRecord()) {
             if (!$this->password) {
                 $this->addError('password', 'Debe especificar una contraseña');
+            } elseif ($this->password !== $this->password_repeat) {
+                $this->addError('password_repeat', 'Las contraseñas no coinciden');
+            }
+        } else {
+            if ($this->password && $this->password !== $this->password_repeat) {
+                $this->addError('password_repeat', 'Las contraseñas no coinciden');
             }
         }
     }

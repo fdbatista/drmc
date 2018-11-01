@@ -33,8 +33,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             [
                 'attribute' => 'customer_id',
-                'label' => AttributesLabels::getAttributeLabel('customer_id'),
-                'value' => $model->getCustomer()->one()->code,
+                'label' => 'Código del cliente',
+                'value' => $model->customer->code,
+            ],
+            [
+                'attribute' => 'customer_id',
+                'label' => 'Nombre',
+                'value' => $model->customer->name,
+            ],
+            [
+                'attribute' => 'customer_id',
+                'label' => 'Teléfono',
+                'value' => $model->customer->telephone,
             ],
             [
                 'attribute' => 'date',

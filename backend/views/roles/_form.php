@@ -42,6 +42,10 @@ $this->registerJsFile('@web/js/roles-form-helper.js', ['depends' => 'backend\ass
                 </div>
             </div>
         </div>
+        
+        <?php
+        if ($model->name !== 'admin') {
+        ?>
 
         <div class="row">
             <div class="col-md-12">
@@ -106,6 +110,12 @@ $this->registerJsFile('@web/js/roles-form-helper.js', ['depends' => 'backend\ass
                 </div>
             </div>
         </div>
+        
+        <?php
+        }
+        ?>
+        
+        
         <?php ActiveForm::end(); ?>
     </div>
 </div>

@@ -10,11 +10,11 @@ $(document).on('click', '.btn-remove-pre-diagnosis', function () {
 $(document).ready(function () {
     var model_id = $('#workshop-id').val();
     var baseUrl = $('#base-url').val();
-    
+
     if (model_id && baseUrl) {
-        
+
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
-        
+
         $.ajax({
             url: baseUrl + '/workshop/get-pre-diagnosis-items',
             data: {model_id: model_id, _csrf: csrfToken, XDEBUG_SESSION_START: 'netbeans-xdebug'},
@@ -23,11 +23,11 @@ $(document).ready(function () {
             success: function (response) {
                 preDiagnosisItems = response;
                 /*preDiagnosisItems = response.pre_diagnosis;
-                for (var i in response.warehouse_devices) {
-                    var item = response.warehouse_devices[i];
-                    var newOption = new Option(item.name, item.id, false, false);
-                    $('#devices-by-brand-list').append(newOption).trigger('change');
-                }*/
+                 for (var i in response.warehouse_devices) {
+                 var item = response.warehouse_devices[i];
+                 var newOption = new Option(item.name, item.id, false, false);
+                 $('#devices-by-brand-list').append(newOption).trigger('change');
+                 }*/
                 updatePreDiagnosisItemsContainer();
             },
             error: function (jqXHR, status, error) {
@@ -65,14 +65,15 @@ function addPreDiagnosisItem() {
                 if (!found) {
                     if (newItem.items <= maxItems) {
                         preDiagnosisItems.push(newItem);
+                        $('#devices-by-brand-list').val(null).trigger('change');
+                        $('#new-pre-diagnosis-items').val('');
                     } else {
                         error = true;
                         alert('La cantidad no puede ser mayor de ' + maxItems);
                     }
                 }
-                $('#modal-pre-diagnosis').modal('hide');
+                //$('#modal-pre-diagnosis').modal('hide');
                 updatePreDiagnosisItemsContainer();
-                console.log(preDiagnosisItems);
             }
         } else {
             alert('Debe introducir una cantidad correcta.');
@@ -84,12 +85,29 @@ function addPreDiagnosisItem() {
     }
 }
 
-function showPreDiagnosisItemDlg() {
-    $('#devices-by-brand-list').val(null).trigger('change');
-    $('#new-pre-diagnosis-items').val('');
+function clearPreDiagnosisItems() {
+    preDiagnosisItems = [];
+    updatePreDiagnosisItemsContainer();
+}
+
+function showPreDiagnosisForm() {
+    /*$('#devices-by-brand-list').val(null).trigger('change');
+     $('#new-pre-diagnosis-items').val('');*/
     /*var newOption = new Option('Hola', 33, false, false);
      $('#devices-by-brand-list').append(newOption).trigger('change');*/
-    $('#modal-pre-diagnosis').modal('show');
+    /*$('#modal-pre-diagnosis').modal('show');*/
+    var btn = $('#toggle-pre-diagnosis-form-status');
+    if (btn.attr('data-status') === '0') {
+        btn.html('<i style="font-size: 12px;" class="fa fa-arrow-up"></i> Ocultar formulario');
+        $('#pre-diagnosis-form-container').removeClass('fadeOut hidden').addClass('fadeIn');
+    } else {
+        btn.html('<i style="font-size: 12px;" class="fa fa-arrow-down"></i> Mostrar formulario');
+        $('#pre-diagnosis-form-container').removeClass('fadeIn').addClass('fadeOut');
+        setTimeout(function () {
+            $('#pre-diagnosis-form-container').addClass('hidden');
+        }, 500);
+    }
+    btn.attr('data-status', (btn.attr('data-status') === '1') ? '0' : '1');
 }
 
 function showSnackbar(color, message) {
@@ -108,6 +126,12 @@ function hideSnackbar() {
     var snack = $('#snackbar');
     clearTimeout(timeout);
     snack.removeClass('show');
+}
+
+function updateFinalPrice() {
+    var discount = $('#workshop-discount_applied').val();
+    var finalPrice = $('#workshop-final_price-hidden').val();
+    $('#workshop-final_price').val(finalPrice - discount);
 }
 
 function updatePreDiagnosisItemsContainer() {

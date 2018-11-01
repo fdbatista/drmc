@@ -32,6 +32,8 @@ DateTimePickerAsset::register($this);
                             <div class="col-sm-6">
                                 <?= $form->field($model, 'date', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('date') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'datetimepicker form-control', 'readonly' => 'readonly'])->label(false) ?>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <?=
@@ -67,11 +69,25 @@ DateTimePickerAsset::register($this);
                         </div>
 
                         <div class="row <?= $clientType === 1 ? '' : 'hidden' ?>" id="new-client">
-                            <div class="col-sm-6">
-                                <?= Html::textInput('Sale[client-code]', null, ['id' => 'txt-new-code', 'class' => 'form-control', 'placeholder' => 'Código', 'readonly' => true]) ?>
-                            </div>
-                            <div class="col-sm-6">
-                                <button onclick="test()" id="btn-new-code" class="btn btn-info" type="button"><i class="material-icons">refresh</i> Nuevo c&oacute;digo</button>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <?= Html::textInput('Sale[client-name]', null, ['id' => 'txt-new-name', 'class' => 'form-control', 'placeholder' => 'Nombre']) ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <?= Html::textInput('Sale[client-telephone]', null, ['id' => 'txt-new-telephone', 'class' => 'form-control', 'placeholder' => 'Teléfono']) ?>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <?= Html::textInput('Sale[client-code]', null, ['id' => 'txt-new-code', 'class' => 'form-control', 'placeholder' => 'Código', 'readonly' => true]) ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-sm-offset-5">
+                                        <button onclick="generateNewCustomer()" id="btn-new-code" class="btn btn-xs btn-info" type="button"><i class="material-icons">refresh</i> Nuevo c&oacute;digo</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -86,26 +102,33 @@ DateTimePickerAsset::register($this);
         </div>
     </div>
     <script type="text/javascript">
-        function test() {
+        function generateNewCustomer() {
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
-            $('#btn-new-code').prop('disabled', true);
-            $.ajax({
-                url: '<?= Url::to(['customers/generate-new-customer']) ?>',
-                data: {_csrf: csrfToken, XDEBUG_SESSION_START: 'netbeans-xdebug'},
-                type: 'GET',
-                dataType: 'json',
-                success: function (json) {
-                    $('#txt-new-code').val(json);
-                    $('#btn-new-code').html('Código generado');
-                    $('#btn-new-code').removeClass('btn-info').addClass('btn-danger');
-                },
-                error: function (jqXHR, status, error) {
-                    $('#btn-new-code').prop('disabled', false);
-                },
-                complete: function (jqXHR, status) {
-                    
-                }
-            });
+            var name = $('#txt-new-name').val();
+            var telephone = $('#txt-new-telephone').val();
+            if (name && telephone) {
+                $('#btn-new-code').prop('disabled', true);
+                $.ajax({
+                    url: '<?= Url::to(['customers/generate-new-customer']) ?>',
+                    data: {_csrf: csrfToken, name: name, telephone: telephone, XDEBUG_SESSION_START: 'netbeans-xdebug'},
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (json) {
+                        $('#txt-new-code').val(json);
+                        $('#btn-new-code').html('Código generado');
+                        $('#btn-new-code').removeClass('btn-info').addClass('btn-danger');
+                    },
+                    error: function (jqXHR, status, error) {
+                        alert(jqXHR.responseJSON.message);
+                        $('#btn-new-code').prop('disabled', false);
+                    },
+                    complete: function (jqXHR, status) {
+
+                    }
+                });
+            } else {
+                alert('Debe introducir un nombre y un teléfono');
+            }
         }
     </script>
 </div>

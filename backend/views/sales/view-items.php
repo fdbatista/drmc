@@ -33,14 +33,14 @@ $this->params['breadcrumbs'][] = $this->title;?>
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'type',
+                'attribute' => 'deviceType',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
-                'value' => $model->getType()->one()->name
+                'value' => $model->deviceType->name
             ],
             [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => StaticMembers::getModelAndBrandName($model->getModel()->one())
+                'value' => StaticMembers::getModelAndBrandName($model->brandModel)
             ],
             [
                 'attribute' => 'price_in',
@@ -53,6 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;?>
             [
                 'attribute' => 'price_out',
                 'label' => AttributesLabels::getAttributeLabel('price_out'),
+            ],
+            [
+                'attribute' => 'discount_applied',
+                'label' => AttributesLabels::getAttributeLabel('discount_applied'),
+            ],
+            [
+                'attribute' => 'final_price',
+                'label' => AttributesLabels::getAttributeLabel('final_price'),
             ],
             [
                 'attribute' => 'updated_at',

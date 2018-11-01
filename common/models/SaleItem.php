@@ -11,14 +11,16 @@ use Yii;
  * @property double $price_in
  * @property double $price_out
  * @property int $items
- * @property int $type_id
- * @property int $model_id
+ * @property double $discount_applied
+ * @property double $final_price
+ * @property int $device_type_id
+ * @property int $brand_model_id
  * @property int $sale_id
  * @property string $updated_at
  *
- * @property BrandModel $model
+ * @property BrandModel $brandModel
+ * @property DeviceType $deviceType
  * @property Sale $sale
- * @property DeviceType $type
  */
 class SaleItem extends \yii\db\ActiveRecord
 {
@@ -36,13 +38,13 @@ class SaleItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['items', 'type_id', 'model_id', 'sale_id'], 'required'],
-            [['price_in', 'price_out'], 'number'],
-            [['items', 'type_id', 'model_id', 'sale_id'], 'integer'],
+            [['price_in', 'price_out', 'items', 'device_type_id', 'brand_model_id', 'sale_id'], 'required'],
+            [['price_in', 'price_out', 'discount_applied', 'final_price'], 'number'],
+            [['items', 'device_type_id', 'brand_model_id', 'sale_id'], 'integer'],
             [['updated_at'], 'safe'],
-            [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['model_id' => 'id']],
+            [['brand_model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['brand_model_id' => 'id']],
+            [['device_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['device_type_id' => 'id']],
             [['sale_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sale::className(), 'targetAttribute' => ['sale_id' => 'id']],
-            [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
 
@@ -56,8 +58,10 @@ class SaleItem extends \yii\db\ActiveRecord
             'price_in' => Yii::t('app', 'Price In'),
             'price_out' => Yii::t('app', 'Price Out'),
             'items' => Yii::t('app', 'Items'),
-            'type_id' => Yii::t('app', 'Type ID'),
-            'model_id' => Yii::t('app', 'Model ID'),
+            'discount_applied' => Yii::t('app', 'Discount Applied'),
+            'final_price' => Yii::t('app', 'Final Price'),
+            'device_type_id' => Yii::t('app', 'Device Type ID'),
+            'brand_model_id' => Yii::t('app', 'Brand Model ID'),
             'sale_id' => Yii::t('app', 'Sale ID'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
@@ -66,9 +70,17 @@ class SaleItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getModel()
+    public function getBrandModel()
     {
-        return $this->hasOne(BrandModel::className(), ['id' => 'model_id']);
+        return $this->hasOne(BrandModel::className(), ['id' => 'brand_model_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeviceType()
+    {
+        return $this->hasOne(DeviceType::className(), ['id' => 'device_type_id']);
     }
 
     /**
@@ -77,13 +89,5 @@ class SaleItem extends \yii\db\ActiveRecord
     public function getSale()
     {
         return $this->hasOne(Sale::className(), ['id' => 'sale_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getType()
-    {
-        return $this->hasOne(DeviceType::className(), ['id' => 'type_id']);
     }
 }

@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">credit_card</i> ' . Yii::t('app', 'Cotizaciones'), ['index-payments', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('<i class="material-icons">healing</i> ' . Yii::t('app', 'Cerrar reparación'), ['finish-repair', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<i class="material-icons">print</i> ' . Yii::t('app', 'Imprimir comprobante'), ['print', 'id' => $model->id], ['class' => 'btn btn-success', 'disabled' => $model->status === 0]) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -47,6 +48,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('password'),
             ],
             [
+                'attribute' => 'customer_name',
+                'label' => AttributesLabels::getAttributeLabel('customer_name'),
+            ],
+            [
+                'attribute' => 'customer_telephone',
+                'label' => AttributesLabels::getAttributeLabel('customer_telephone'),
+            ],
+            [
+                'attribute' => 'folio_number',
+                'label' => AttributesLabels::getAttributeLabel('folio_number'),
+            ],
+            [
                 'attribute' => 'pattern',
                 'label' => AttributesLabels::getAttributeLabel('pattern'),
                 
@@ -66,6 +79,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'effort',
                 'label' => AttributesLabels::getAttributeLabel('effort'),
+            ],
+            [
+                'attribute' => 'discount_applied',
+                'label' => AttributesLabels::getAttributeLabel('discount_applied'),
+            ],
+            [
+                'attribute' => 'final_price',
+                'label' => AttributesLabels::getAttributeLabel('final_price'),
+            ],
+            [
+                'attribute' => 'warranty_until',
+                'label' => AttributesLabels::getAttributeLabel('warranty_until'),
             ],
             [
                 'attribute' => 'receiver_id',

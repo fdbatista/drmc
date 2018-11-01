@@ -30,10 +30,10 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-10">
                                 <?=
-                                $form->field($model, 'type_id')->widget(Select2::classname(), [
+                                $form->field($model, 'device_type_id')->widget(Select2::classname(), [
                                     'data' => StaticMembers::getDevicesForSale(),
                                     'language' => 'es',
-                                    'options' => ['onchange' =>'updatePriceWithDiscounts();', 'id' => 'type-id', 'placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
+                                    'options' => ['onchange' => 'updatePriceWithDiscounts();', 'id' => 'type-id', 'placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
                                     'pluginOptions' => [
                                         'allowClear' => true
                                     ],
@@ -44,12 +44,12 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-10">
                                 <?=
-                                $form->field($model, 'model_id')->widget(DepDrop::classname(), [
+                                $form->field($model, 'brand_model_id')->widget(DepDrop::classname(), [
                                     'type' => DepDrop::TYPE_SELECT2,
-                                    'data' => StaticMembers::getBrandModelsForSale($model->type_id),
-                                    'value' => $model->model_id,
+                                    'data' => StaticMembers::getBrandModelsForSale($model->device_type_id),
+                                    'value' => $model->brand_model_id,
                                     'language' => 'es',
-                                    'options' => ['onchange' =>'updatePriceWithDiscounts();', 'id' => 'model-id', 'placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
+                                    'options' => ['onchange' => 'updatePriceWithDiscounts();', 'id' => 'model-id', 'placeholder' => 'Seleccione un modelo', 'class' => 'form-control'],
                                     'select2Options' => ['pluginOptions' => ['allowClear' => true]],
                                     'pluginOptions' => [
                                         'depends' => ['type-id'],
@@ -64,17 +64,17 @@ use yii\web\View;
                             <div class="col-sm-2">
                                 <?= $form->field($model, 'items', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('items') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control', 'onblur' => 'updatePriceWithDiscounts()'])->label(false)->error(false) ?>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="form-group label-floating">
                                     <label class="control-label">Precio por unidad</label>
                                     <?= Html::input('text', null, $model->price_out, ['id' => 'public-price', 'readonly' => true, 'class' => 'form-control']) ?>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Importe total</label>
-                                    <?= Html::input('text', null, $model->items * $model->price_out, ['id' => 'total-price', 'readonly' => true, 'class' => 'form-control']) ?>
-                                </div>
+                            <div class="col-sm-2">
+                                <?= $form->field($model, 'discount_applied', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('discount_applied') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control', 'onblur' => 'updatePriceWithDiscounts()'])->label(false)->error(false) ?>
+                            </div>
+                            <div class="col-sm-3">
+                                <?= $form->field($model, 'final_price', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('final_price') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'id' => 'total-price', 'readonly' => true, 'class' => 'form-control'])->label(false)->error(false) ?>
                             </div>
                         </div>
 
@@ -99,22 +99,18 @@ use yii\web\View;
     </div>
 
     <script type="text/javascript">
-        function resetForm() {
-            alert(123);
-        }
         function updatePriceWithDiscounts() {
             var items = $('#<?= Html::getInputId($model, 'items') ?>').val();
+            var discountApplied = $('#<?= Html::getInputId($model, 'discount_applied') ?>').val();
             var type_id = $('#type-id').select2("val");
             var model_id = $('#model-id').select2("val");
             var csrfToken = $('meta[name="csrf-token"]').attr("content");
             console.clear();
-            console.log(type_id);
-            console.log(model_id);
 
             if (items && type_id && model_id && items && items > 0) {
                 $.ajax({
                     url: '<?= Url::to(['sales/calculate-price-with-discounts']) ?>',
-                    data: {items: items, type_id: type_id, model_id: model_id, _csrf: csrfToken, XDEBUG_SESSION_START: 'netbeans-xdebug'},
+                    data: {items: items, discount_applied: discountApplied, type_id: type_id, model_id: model_id, _csrf: csrfToken, XDEBUG_SESSION_START: 'netbeans-xdebug'},
                     type: 'POST',
                     dataType: 'json',
                     success: function (response) {
@@ -142,6 +138,7 @@ use yii\web\View;
                 $('#first-discount-price').html('$0.00');
                 $('#major-discount-price').html('$0.00');
             }
-        };
+        }
+        ;
     </script>
 </div>

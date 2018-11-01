@@ -12,16 +12,16 @@ use common\models\SaleItem;
  */
 class SaleItemSearch extends SaleItem {
 
-    public $type;
-    public $model;
+    public $deviceType;
+    public $brandModel;
 
     /**
      * {@inheritdoc}
      */
     public function rules() {
         return [
-                [['id', 'price_in', 'price_out', 'items', 'type_id', 'model_id', 'sale_id'], 'integer'],
-                [['type', 'model', 'updated_at'], 'safe'],
+                [['id', 'price_in', 'price_out', 'items', 'device_type_id', 'brand_model_id', 'sale_id'], 'integer'],
+                [['deviceType', 'brandModel', 'updated_at'], 'safe'],
         ];
     }
 
@@ -45,19 +45,19 @@ class SaleItemSearch extends SaleItem {
 
         // add conditions that should always apply here
 
-        $query->joinWith(['type']);
-        $query->joinWith(['model']);
+        $query->joinWith(['deviceType']);
+        $query->joinWith(['brandModel']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['type'] = [
+        $dataProvider->sort->attributes['deviceType'] = [
             'asc' => ['device_type.name' => SORT_ASC],
             'desc' => ['device_type.name' => SORT_DESC],
         ];
 
-        $dataProvider->sort->attributes['model'] = [
+        $dataProvider->sort->attributes['brandModel'] = [
             'asc' => ['brand_model.name' => SORT_ASC],
             'desc' => ['brand_model.name' => SORT_DESC],
         ];
@@ -76,13 +76,13 @@ class SaleItemSearch extends SaleItem {
                     'price_in' => $this->price_in,
                     'price_out' => $this->price_out,
                     'items' => $this->items,
-                    'type_id' => $this->type_id,
-                    'model_id' => $this->model_id,
+                    'device_type_id' => $this->device_type_id,
+                    'brand_model_id' => $this->brand_model_id,
                     'sale_id' => $this->sale_id,
                     'updated_at' => $this->updated_at,
                 ])
-                ->andFilterWhere(['like', 'device_type.name', $this->type])
-                ->andFilterWhere(['like', 'brand_model.name', $this->model]);
+                ->andFilterWhere(['like', 'device_type.name', $this->deviceType])
+                ->andFilterWhere(['like', 'brand_model.name', $this->brandModel]);
 
         return $dataProvider;
     }

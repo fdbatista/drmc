@@ -51,6 +51,7 @@ class AttributesLabels {
         'warranty_until' => 'Fin de la garantía',
         'discount_applied' => 'Descuento real',
         'final_price' => 'Precio final',
+        'folio_number' => 'Número de folio',
     ];
     
     public static function getAttributeLabel($name) {

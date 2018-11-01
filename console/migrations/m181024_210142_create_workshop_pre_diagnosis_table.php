@@ -16,6 +16,7 @@ class m181024_210142_create_workshop_pre_diagnosis_table extends Migration
             'id' => $this->primaryKey(),
             'workshop_id' => $this->integer()->notNull(),
             'device_type_id' => $this->integer()->notNull(),
+            'price_per_unit' => $this->double()->notNull(),
             'items' => $this->integer()->notNull(),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         $this->addForeignKey('fk_workshopprediagnosis_workshop', 'workshop_pre_diagnosis', 'workshop_id', 'workshop', 'id', 'CASCADE', 'CASCADE');

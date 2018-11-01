@@ -33,14 +33,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
                 [
-                'attribute' => 'type',
+                'attribute' => 'deviceType',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
-                'value' => 'type.name'
+                'value' => 'deviceType.name'
             ],
                 [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => 'model.name'
+                'value' => 'brandModel.name'
             ],
                 [
                 'attribute' => 'items',

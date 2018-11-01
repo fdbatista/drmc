@@ -21,7 +21,7 @@ use Yii;
  * @property string $serial_number
  * @property string $customer_name
  * @property string $customer_telephone
- * @property int $folio_number
+ * @property string $folio_number
  * @property double $discount_applied
  * @property double $final_price
  * @property double $effort
@@ -53,13 +53,14 @@ class Workshop extends \yii\db\ActiveRecord
     {
         return [
             [['pattern_gif'], 'string'],
-            [['date_received', 'serial_number', 'effort', 'device_type_id', 'brand_model_id'], 'required'],
+            [['date_received', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number', 'effort', 'device_type_id', 'brand_model_id'], 'required'],
             [['date_received', 'date_closed', 'warranty_until', 'updated_at'], 'safe'],
-            [['folio_number', 'status', 'receiver_id', 'device_type_id', 'brand_model_id'], 'integer'],
             [['discount_applied', 'final_price', 'effort'], 'number'],
+            [['status', 'receiver_id', 'device_type_id', 'brand_model_id'], 'integer'],
             [['password', 'signature_in', 'signature_out'], 'string', 'max' => 50],
-            [['pattern', 'serial_number', 'customer_name', 'customer_telephone'], 'string', 'max' => 255],
+            [['pattern', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number'], 'string', 'max' => 255],
             [['observations'], 'string', 'max' => 500],
+            [['folio_number'], 'unique'],
             [['brand_model_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandModel::className(), 'targetAttribute' => ['brand_model_id' => 'id']],
             [['device_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['device_type_id' => 'id']],
             [['receiver_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['receiver_id' => 'id']],
@@ -72,28 +73,28 @@ class Workshop extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'password' => 'Password',
-            'pattern' => 'Pattern',
-            'pattern_gif' => 'Pattern Gif',
-            'observations' => 'Observations',
-            'signature_in' => 'Signature In',
-            'signature_out' => 'Signature Out',
-            'date_received' => 'Date Received',
-            'date_closed' => 'Date Closed',
-            'warranty_until' => 'Warranty Until',
-            'updated_at' => 'Updated At',
-            'serial_number' => 'Serial Number',
-            'customer_name' => 'Customer Name',
-            'customer_telephone' => 'Customer Telephone',
-            'folio_number' => 'Folio Number',
-            'discount_applied' => 'Discount Applied',
-            'final_price' => 'Final Price',
-            'effort' => 'Effort',
-            'status' => 'Status',
-            'receiver_id' => 'Receiver ID',
-            'device_type_id' => 'Device Type ID',
-            'brand_model_id' => 'Brand Model ID',
+            'id' => Yii::t('app', 'ID'),
+            'password' => Yii::t('app', 'Password'),
+            'pattern' => Yii::t('app', 'Pattern'),
+            'pattern_gif' => Yii::t('app', 'Pattern Gif'),
+            'observations' => Yii::t('app', 'Observations'),
+            'signature_in' => Yii::t('app', 'Signature In'),
+            'signature_out' => Yii::t('app', 'Signature Out'),
+            'date_received' => Yii::t('app', 'Date Received'),
+            'date_closed' => Yii::t('app', 'Date Closed'),
+            'warranty_until' => Yii::t('app', 'Warranty Until'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'serial_number' => Yii::t('app', 'Serial Number'),
+            'customer_name' => Yii::t('app', 'Customer Name'),
+            'customer_telephone' => Yii::t('app', 'Customer Telephone'),
+            'folio_number' => Yii::t('app', 'Folio Number'),
+            'discount_applied' => Yii::t('app', 'Discount Applied'),
+            'final_price' => Yii::t('app', 'Final Price'),
+            'effort' => Yii::t('app', 'Effort'),
+            'status' => Yii::t('app', 'Status'),
+            'receiver_id' => Yii::t('app', 'Receiver ID'),
+            'device_type_id' => Yii::t('app', 'Device Type ID'),
+            'brand_model_id' => Yii::t('app', 'Brand Model ID'),
         ];
     }
 

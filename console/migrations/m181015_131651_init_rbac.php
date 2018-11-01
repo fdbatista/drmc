@@ -35,7 +35,6 @@ class m181015_131651_init_rbac extends Migration {
             'payments-workshop' => 'cotizaciones del taller',
             'sales' => 'ventas',
             'items-sales' => 'productos de las ventas',
-            'app-config' => 'configuración general',
             'users' => 'usuarios',
             'roles-users' => 'roles de los usuarios',
             'roles' => 'roles',
@@ -57,7 +56,10 @@ class m181015_131651_init_rbac extends Migration {
             }
         }
         $this->addPermission($authManager, "view-dashboard", "Ver panel de control", 'admin');
-        $this->addPermission($authManager, "finish-repair-workshop", "Ver panel de control", 'admin');
+        $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'admin');
+        $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'tech');
+        $this->addPermission($authManager, "index-app-config", "Ver configuración general", 'admin');
+        $this->addPermission($authManager, "update-app-config", "Actualizar configuración general", 'admin');
     }
 
     private function addRole(ManagerInterface $authManager, $name, $description) {

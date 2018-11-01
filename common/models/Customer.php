@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $code
+ * @property string $name
+ * @property string $telephone
  *
  * @property Sale[] $sales
  */
@@ -29,7 +31,10 @@ class Customer extends \yii\db\ActiveRecord
     {
         return [
             [['code'], 'string', 'max' => 15],
+            [['name'], 'string', 'max' => 150],
+            [['telephone'], 'string', 'max' => 25],
             [['code'], 'unique'],
+            [['name', 'telephone'], 'unique', 'targetAttribute' => ['name', 'telephone']],
         ];
     }
 
@@ -41,6 +46,8 @@ class Customer extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'code' => Yii::t('app', 'Code'),
+            'name' => Yii::t('app', 'Name'),
+            'telephone' => Yii::t('app', 'Telephone'),
         ];
     }
 

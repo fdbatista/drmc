@@ -155,7 +155,7 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                 </footer>
             </div>
 
-            <div class="modal fade" id="modal-pre-diagnosis" tabindex="-1" role="dialog" aria-labelledby="PreDiag" aria-hidden="true" data-backdrop="static">
+            <!--<div class="modal fade" id="modal-pre-diagnosis" tabindex="-1" role="dialog" aria-labelledby="PreDiag" aria-hidden="true" data-backdrop="static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -199,7 +199,7 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <?php $this->endBody() ?>

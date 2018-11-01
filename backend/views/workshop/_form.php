@@ -6,10 +6,12 @@ use common\models\DeviceType;
 use common\models\Workshop;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
+use kartik\depdrop\DepDrop;
 use kartik\widgets\Select2;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\View;
 
 PatternLockAsset::register($this);
@@ -43,7 +45,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
                                     'pluginOptions' => [
-                                        'allowClear' => true
+                                        'allowClear' => false
                                     ],
                                 ])->label(false)
                                 ?>
@@ -55,10 +57,10 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un modelo', 'class' => 'form-control', 'id' => 'brand_model_id'],
                                     'pluginOptions' => [
-                                        'allowClear' => true
+                                        'allowClear' => false
                                     ],
                                     'pluginEvents' => [
-                                        "select2:change" => 'function(){ $("#curr_brand_model_id").val($(this).val()); }',
+                                        "select2:select" => 'function(){ clearPreDiagnosisItems(); $("#toggle-pre-diagnosis-form-status").removeAttr("disabled"); }',
                                     ]
                                 ])->label(false)
                                 ?>
@@ -73,7 +75,38 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                     <?= Html::hiddenInput('new-pre-diagnosis-item', null, ['id' => 'new-pre-diagnosis-item']) ?>
                                     <?= Html::hiddenInput('pre-diagnosis-items', null, ['id' => 'pre-diagnosis-items']) ?>
                                     <label>Pre diagn&oacute;stico</label><br />
-                                    <button onclick="showPreDiagnosisItemDlg()" type="button" class="btn btn-xs btn-info">Agregar</button>
+                                    <button id="toggle-pre-diagnosis-form-status" data-status="0" onclick="showPreDiagnosisForm()" type="button" class="btn btn-xs btn-info" disabled><i style="font-size: 12px;" class="fa fa-arrow-down"></i> Mostrar formulario</button>
+                                    <div class="row animated hidden" id="pre-diagnosis-form-container">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <?=
+                                                    DepDrop::widget([
+                                                        'type' => DepDrop::TYPE_SELECT2,
+                                                        'data' => [],
+                                                        'language' => 'es',
+                                                        'name' => 'devices-by-brand-list',
+                                                        'options' => ['placeholder' => 'Seleccione un tipo de dispositivo', 'class' => 'form-control', 'id' => 'devices-by-brand-list'],
+                                                        'select2Options' => ['pluginOptions' => ['allowClear' => true]],
+                                                        'pluginOptions' => [
+                                                            'placeholder' => 'Seleccione un tipo',
+                                                            'depends' => ['brand_model_id'],
+                                                            'url' => Url::to(['/workshop/get-warehouse-items-by-brand-model']),
+                                                        ],
+                                                        'pluginEvents' => [
+                                                            "change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem));  }",
+                                                        ]
+                                                    ]);
+                                                    ?>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <?= Html::input('text', 'new-pre-diagnosis-items', null, ['id' => 'new-pre-diagnosis-items', 'class' => 'form-control', 'placeholder' => 'Cantidad']) ?>
+                                                </div>
+                                            </div>
+                                            <button onclick="addPreDiagnosisItem()" type="button" class="btn btn-xs btn-primary"><i style="font-size: 10px; top: 0;" class="fa fa-plus"></i> Agregar</button>
+                                            <button onclick="clearPreDiagnosisItems()" type="button" class="btn btn-xs btn-danger"><i style="font-size: 10px; top: 0;" class="fa fa-trash-alt"></i> Eliminar todos</button>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
@@ -82,6 +115,8 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                                 <div class="col-sm-4"><span class="table-header">Acciones</span></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12" id="pre-diagnosis-items-container" style="padding-left: 20px;"></div>
                                     </div>
                                 </div>
@@ -97,6 +132,18 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                             </div>
                             <div class="col-md-4">
                                 <?= $form->field($model, 'date_received', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('date_received') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'datetimepicker form-control', 'readonly' => 'readonly'])->label(false) ?>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'customer_name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('customer_name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'customer_telephone', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('customer_telephone') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?= $form->field($model, 'folio_number', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('folio_number') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control', 'readonly' => 'readonly'])->label(false) ?>
                             </div>
                         </div>
 

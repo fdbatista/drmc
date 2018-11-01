@@ -173,12 +173,17 @@ class SalesController extends GenericController {
         $model->sale_id = $id;
         $model->items = 0;
         $model->price_out = 0;
+        $model->discount_applied = 0;
+        $model->final_price = 0;
 
         if ($model->load(Yii::$app->request->post())) {
-            $stock = Stock::findOne(['device_type_id' => $model->type_id, 'brand_model_id' => $model->model_id]);
+            $stock = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stock) {
                 if ($stock->items < $model->items) {
                     $model->addError('items', 'Solo existen ' . $stock->items . ' unidades de este producto en la tienda.');
+                }
+                if ($model->discount_applied > $stock->major_discount * $model->items) {
+                    $model->addError('discount_applied', 'El descuento excede el máximo permitido.');
                 }
             } else {
                 $model->addError('type_id', 'No existen dispositivos en tienda o almacén con ese tipo/modelo');
@@ -264,8 +269,8 @@ class SalesController extends GenericController {
         $res = [];
         if ($type && $model) {
             $item = Stock::findOne(['device_type_id' => $type->id, 'brand_model_id' => $model->id]);
-            if ($item) {
-                $items = $post['items'];
+            $items = $post['items'];
+            if ($item && $items && $item->items >= $items) {
                 $priceDiff = $item->price_out - $item->price_in;
                 $publicPrice = $item->price_out;
                 $overallPrice = $item->price_out * $items;
@@ -273,6 +278,8 @@ class SalesController extends GenericController {
                 $majorDiscount = round((0.6 * $priceDiff * $items), 2);
                 $priceWithFirstDiscount = $overallPrice - $firstDiscount;
                 $priceWithMajorDiscount = $overallPrice - $majorDiscount;
+                $discountApplied = isset($post['discount_applied']) ? $post['discount_applied'] : 0;
+                $overallPrice -= is_numeric($discountApplied) ? $discountApplied : 0;
                 $res = [
                     'publicPrice' => $publicPrice,
                     'overallPrice' => $overallPrice,

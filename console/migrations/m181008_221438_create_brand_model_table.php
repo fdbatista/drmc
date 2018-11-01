@@ -39,7 +39,7 @@ class m181008_221438_create_brand_model_table extends Migration {
         $this->insert('brand_model', ['name' => 'Studio X5', 'brand_id' => 5]);
 
         //Acer
-        $this->insert('brand_model', ['name' => 'Aspire', 'brand_id' => 5]);
+        $this->insert('brand_model', ['name' => 'Aspire', 'brand_id' => 6]);
     }
 
     /**

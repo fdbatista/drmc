@@ -41,7 +41,7 @@ class StaticMembers {
             $stockItems = Stock::findAll(['device_type_id' => $deviceTypeId]);
             foreach ($stockItems as $item) {
                 $model = $item->getBrandModel()->one();
-                $res[$deviceType->name][] = ['id' => $model->id, 'name' => $model->name];
+                $res[$deviceType->name][] = ['id' => $model->id, 'name' => $model->brand->name . ' ' . $model->name];
             }
         }
         return $res;
@@ -104,7 +104,7 @@ class StaticMembers {
             'items-sales' => 'Dispositivos de las ventas',
             'users' => 'Usuarios',
             'roles' => 'Roles',
-            'app-config' => 'Configuración general',
+            //'app-config' => 'Configuración general',
         ];
         $perms = [
                 ['id' => 'index', 'name' => 'Listar contenido'],
@@ -124,6 +124,12 @@ class StaticMembers {
                 $res[$entityValue]['perms'][$permFullKey] = [
                     'name' => $perm['name'],
                     'value' => $authManager->hasChild($role, $authManager->getPermission($permFullKey))
+                ];
+            }
+            if ($entityKey === 'workshop') {
+                $res[$entityValue]['perms']['finish-repair-workshop'] = [
+                    'name' => 'Cerrar reparación',
+                    'value' => $authManager->hasChild($role, $authManager->getPermission('finish-repair-workshop'))
                 ];
             }
         }
