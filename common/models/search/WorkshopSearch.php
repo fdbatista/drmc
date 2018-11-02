@@ -21,7 +21,7 @@ class WorkshopSearch extends Workshop {
     public function rules() {
         return [
                 [['effort', 'receiver_id'], 'integer'],
-                [['deviceType', 'brandModel', 'password', 'observations', 'signature_in', 'signature_out', 'status'], 'safe'],
+                [['deviceType', 'brandModel', 'password', 'observations', 'status'], 'safe'],
         ];
     }
 

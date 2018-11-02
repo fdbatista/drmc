@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="material-icons">credit_card</i> ' . Yii::t('app', 'Cotizaciones'), ['index-payments', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('<i class="material-icons">healing</i> ' . Yii::t('app', 'Cerrar reparación'), ['finish-repair', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a('<i class="material-icons">print</i> ' . Yii::t('app', 'Imprimir comprobante'), ['print', 'id' => $model->id], ['class' => 'btn btn-success', 'disabled' => $model->status === 0]) ?>
+        <?= Html::a('<i class="material-icons">print</i> ' . Yii::t('app', 'Imprimir'), ['print', 'id' => $model->id], ['class' => 'btn btn-success', 'disabled' => $model->status === 0]) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -34,18 +34,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'type',
+                'label' => AttributesLabels::getAttributeLabel('status'),
+                'value' => $model->status === 1 ? 'Cerrada' : 'Pendiente'
+            ],
+            [
+                'attribute' => 'deviceType',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
                 'value' => $model->deviceType->name
             ],
             [
-                'attribute' => 'model',
+                'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => StaticMembers::getModelAndBrandName($model->brandModel)
+                'value' => StaticMembers::getModelAndBrandName($model->brandModel),
             ],
             [
-                'attribute' => 'password',
-                'label' => AttributesLabels::getAttributeLabel('password'),
+                'attribute' => 'serial_number',
+                'label' => AttributesLabels::getAttributeLabel('serial_number'),
             ],
             [
                 'attribute' => 'customer_name',
@@ -60,6 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('folio_number'),
             ],
             [
+                'attribute' => 'password',
+                'label' => AttributesLabels::getAttributeLabel('password'),
+            ],
+            [
                 'attribute' => 'pattern',
                 'label' => AttributesLabels::getAttributeLabel('pattern'),
                 
@@ -67,14 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'observations',
                 'label' => AttributesLabels::getAttributeLabel('observations'),
-            ],
-            [
-                'attribute' => 'signature_in',
-                'label' => AttributesLabels::getAttributeLabel('signature_in'),
-            ],
-            [
-                'attribute' => 'signature_out',
-                'label' => AttributesLabels::getAttributeLabel('signature_out'),
             ],
             [
                 'attribute' => 'effort',

@@ -177,28 +177,24 @@ class SalesController extends GenericController {
         $model->final_price = 0;
 
         if ($model->load(Yii::$app->request->post())) {
-            $stock = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
-            if ($stock) {
-                if ($stock->items < $model->items) {
-                    $model->addError('items', 'Solo existen ' . $stock->items . ' unidades de este producto en la tienda.');
+            $stockModel = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+            if ($stockModel) {
+                if ($stockModel->items < $model->items) {
+                    $model->addError('items', 'Solo existen ' . $stockModel->items . ' unidades disponibles de este producto.');
                 }
-                if ($model->discount_applied > $stock->major_discount * $model->items) {
-                    $model->addError('discount_applied', 'El descuento excede el máximo permitido.');
+                if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
+                    $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
                 }
             } else {
-                $model->addError('type_id', 'No existen dispositivos en tienda o almacén con ese tipo/modelo');
+                $model->addError('type_id', 'No existen dispositivos disponibles con ese tipo/modelo');
             }
             if (!$model->hasErrors()) {
-                $model->price_in = $stock->price_in;
-                $model->price_out = $stock->price_out;
+                $model->price_in = $stockModel->price_in;
+                $model->price_out = $stockModel->price_out;
                 $model->save();
-                $stock->items -= $model->items;
-                if ($stock->items === 0) {
-                    $stock->delete();
-                } else {
-                    $stock->save();
-                }
-                return $this->redirect(['view', 'id' => $id]);
+                $stockModel->items -= $model->items;
+                $stockModel->save();
+                return $this->redirect(['view-items', 'id' => $model->id]);
             }
         }
 
@@ -215,8 +211,19 @@ class SalesController extends GenericController {
     public function actionUpdateItems($id) {
         $model = $this->findItemsModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-items', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $stockModel = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+            if ($stockModel) {
+                if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
+                    $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
+                }
+            } else {
+                $model->addError('type_id', 'No existen dispositivos disponibles con ese tipo/modelo');
+            }
+            if (!$model->hasErrors()) {
+                $model->save();
+                return $this->redirect(['view-items', 'id' => $model->id]);
+            }
         }
         return $this->render('update-items', ['model' => $model]);
     }
@@ -230,6 +237,14 @@ class SalesController extends GenericController {
      */
     public function actionDeleteItems($id) {
         $model = $this->findItemsModel($id);
+        $stockModel = Stock::findOne(['brand_model_id' => $model->brand_model_id, 'device_type_id' => $model->device_type_id]);
+        /* if (!$stockModel) {
+          $stockModel = new Stock(['brand_model_id' => $model->brand_model_id, 'device_type_id' => $model->device_type_id, 'items' => 0, 'stock_type_id' => $model->deviceType->stock_type_id]);
+          } */
+        if ($stockModel) {
+            $stockModel->items += $model->items;
+            $stockModel->save();
+        }
         $parent_id = $model->sale_id;
         $model->delete();
         return $this->actionIndexItems($parent_id);

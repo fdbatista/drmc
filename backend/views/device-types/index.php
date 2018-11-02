@@ -29,11 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-                [
+            [
                 'attribute' => 'name',
                 'label' => AttributesLabels::getAttributeLabel('name'),
             ],
-                [
+            [
+                'attribute' => 'stockType',
+                'label' => AttributesLabels::getAttributeLabel('stock_type_id'),
+                'value' => 'stockType.name',
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],

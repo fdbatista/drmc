@@ -52,6 +52,8 @@ class AttributesLabels {
         'discount_applied' => 'Descuento real',
         'final_price' => 'Precio final',
         'folio_number' => 'Número de folio',
+        'stock_type_id' => 'Destino',
+        'date_closed' => 'Fecha del cierre',
     ];
     
     public static function getAttributeLabel($name) {

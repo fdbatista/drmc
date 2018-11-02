@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $date
  * @property int $customer_id
+ * @property int $status
  * @property string $updated_at
  *
  * @property Customer $customer
@@ -33,7 +34,7 @@ class Sale extends \yii\db\ActiveRecord
         return [
             [['date'], 'required'],
             [['date', 'updated_at'], 'safe'],
-            [['customer_id'], 'integer'],
+            [['customer_id', 'status'], 'integer'],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
@@ -47,6 +48,7 @@ class Sale extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'date' => Yii::t('app', 'Date'),
             'customer_id' => Yii::t('app', 'Customer ID'),
+            'status' => Yii::t('app', 'Status'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }

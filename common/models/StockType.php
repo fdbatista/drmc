@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name
  *
+ * @property DeviceType[] $deviceTypes
  * @property Stock[] $stocks
  */
 class StockType extends \yii\db\ActiveRecord
@@ -43,6 +44,14 @@ class StockType extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeviceTypes()
+    {
+        return $this->hasMany(DeviceType::className(), ['stock_type_id' => 'id']);
     }
 
     /**

@@ -16,6 +16,7 @@ class m181012_183456_create_sale_table extends Migration
             'id' => $this->primaryKey(),
             'date' => $this->dateTime()->notNull(),
             'customer_id' => $this->integer(),
+            'status' => $this->integer(2)->notNull()->defaultValue(0),
             'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
     }

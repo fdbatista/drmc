@@ -12,6 +12,7 @@ use common\models\DeviceType;
  */
 class DeviceTypeSearch extends DeviceType
 {
+    public $stockType;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +20,7 @@ class DeviceTypeSearch extends DeviceType
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'stockType', 'stock_type_id'], 'safe'],
         ];
     }
 
@@ -42,12 +43,19 @@ class DeviceTypeSearch extends DeviceType
     public function search($params)
     {
         $query = DeviceType::find();
+        
+        $query->joinWith('stockType');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        
+        $dataProvider->sort->attributes['stockType'] = [
+            'asc' => ['stock_type.name' => SORT_ASC],
+            'desc' => ['stock_type.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -60,9 +68,11 @@ class DeviceTypeSearch extends DeviceType
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'stock_type_id' => $this->stock_type_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'stock_type.name', $this->stockType]);
 
         return $dataProvider;
     }

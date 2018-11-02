@@ -51,7 +51,7 @@ class WorkshopController extends GenericController {
                     'model' => $this->findModel($id),
         ]);
     }
-    
+
     private function updateFolioNumber(Workshop $model) {
         $newId = Yii::$app->db->createCommand('select coalesce(max(`id`), 0) + 1 as `count` from `workshop`')->queryScalar();
         $model->folio_number = str_pad($newId, 11, '0', STR_PAD_LEFT);
@@ -298,19 +298,33 @@ class WorkshopController extends GenericController {
         return $response;
     }
 
+    public function actionPrint($id) {
+        $model = $this->findModel($id);
+        return $this->render('print', ['model' => $model]);
+    }
+    
     public function actionFinishRepair($id) {
         $model = $this->findModel($id);
         $model->final_price = $model->effort;
+        $model->date_closed = date('Y-m-d');
+        $minDiscount = 0;
+        $maxDiscount = 0;
         $preDiagnosisItems = $model->workshopPreDiagnoses;
         foreach ($preDiagnosisItems as $preDiagnosisItem) {
             $model->final_price += ($preDiagnosisItem->price_per_unit * $preDiagnosisItem->items);
+            $stockModel = Stock::findOne(['device_type_id' => $preDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+            if ($stockModel) {
+                $minDiscount += ($stockModel->first_discount * $preDiagnosisItem->items);
+                $maxDiscount += ($stockModel->major_discount * $preDiagnosisItem->items);
+            }
         }
-        
+
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->warranty_until) {
                 $model->addError('warranty_until', 'Este dato es obligatorio');
-            } elseif (!is_numeric($model->discount_applied) || $model->discount_applied < 0) {
-                $model->addError('discount_applied', 'Este dato es obligatorio');
+            }
+            if ($model->discount_applied !== '0' && ($model->discount_applied < $minDiscount || $model->discount_applied > $maxDiscount)) {
+                $model->addError('discount_applied', "El descuento aplicado debe estar entre $minDiscount y $maxDiscount.");
             }
             if (!$model->hasErrors()) {
                 $model->status = 1;

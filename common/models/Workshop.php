@@ -52,12 +52,12 @@ class Workshop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pattern_gif'], 'string'],
+            [['pattern_gif', 'signature_in', 'signature_out'], 'string'],
             [['date_received', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number', 'effort', 'device_type_id', 'brand_model_id'], 'required'],
             [['date_received', 'date_closed', 'warranty_until', 'updated_at'], 'safe'],
             [['discount_applied', 'final_price', 'effort'], 'number'],
             [['status', 'receiver_id', 'device_type_id', 'brand_model_id'], 'integer'],
-            [['password', 'signature_in', 'signature_out'], 'string', 'max' => 50],
+            [['password'], 'string', 'max' => 50],
             [['pattern', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number'], 'string', 'max' => 255],
             [['observations'], 'string', 'max' => 500],
             [['folio_number'], 'unique'],

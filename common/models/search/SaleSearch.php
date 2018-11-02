@@ -22,7 +22,7 @@ class SaleSearch extends Sale
     {
         return [
             [['id', 'customer_id'], 'integer'],
-            [['date', 'updated_at', 'customer'], 'safe'],
+            [['date', 'updated_at', 'customer', 'status'], 'safe'],
         ];
     }
 
@@ -71,6 +71,7 @@ class SaleSearch extends Sale
         $query->andFilterWhere([
             'id' => $this->id,
             'date' => $this->date,
+            'status' => $this->status,
             'customer_id' => $this->customer_id,
             'updated_at' => $this->updated_at,
         ]);

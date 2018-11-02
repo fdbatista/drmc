@@ -1,10 +1,11 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\SaleItem;
+use yii\web\View;
 
 
-/* @var $this yii\web\View */
-/* @var $model common\models\SaleItem */
+/* @var $this View */
+/* @var $model SaleItem */
 
 $this->title = Yii::t('app', 'Agregar dispositivo');
 $parent = $model->getSale()->one();

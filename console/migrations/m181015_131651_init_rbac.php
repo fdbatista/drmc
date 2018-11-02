@@ -57,6 +57,8 @@ class m181015_131651_init_rbac extends Migration {
         }
         $this->addPermission($authManager, "view-dashboard", "Ver panel de control", 'admin');
         $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'admin');
+        $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'tech');
+        $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'admin');
         $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'tech');
         $this->addPermission($authManager, "index-app-config", "Ver configuración general", 'admin');
         $this->addPermission($authManager, "update-app-config", "Actualizar configuración general", 'admin');

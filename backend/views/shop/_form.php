@@ -35,7 +35,7 @@ use yii\web\View;
                             <div class="col-sm-6">
                                 <?=
                                 $form->field($model, 'device_type_id')->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
+                                    'data' => ArrayHelper::map(DeviceType::findAll(['stock_type_id' => 1]), 'id', 'name'),
                                     'language' => 'es',
                                     'options' => ['placeholder' => 'Seleccione un tipo', 'class' => 'form-control'],
                                     'pluginOptions' => [

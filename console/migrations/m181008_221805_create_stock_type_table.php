@@ -19,6 +19,8 @@ class m181008_221805_create_stock_type_table extends Migration
     
         $this->insert('stock_type', ['name' => 'Tienda']);
         $this->insert('stock_type', ['name' => 'Almacén']);
+        
+        $this->addForeignKey('fk_devicetype_stock', 'device_type', 'stock_type_id', 'stock_type', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

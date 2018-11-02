@@ -29,7 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-                [
+            [
+                'label' => AttributesLabels::getAttributeLabel('status'),
+                'attribute' => 'status',
+                'content' => function ($searchModel) {
+                    return $searchModel->status === 1 ? 'Cerrada' : 'Abierta';
+                },
+                'filter' => [0 => 'Abierta', 1 => 'Cerrada']
+            ],
+                        [
                 'attribute' => 'date',
                 'label' => AttributesLabels::getAttributeLabel('date'),
             ],

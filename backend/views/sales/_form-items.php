@@ -61,7 +61,7 @@ use yii\web\View;
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                                 <?= $form->field($model, 'items', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('items') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control', 'onblur' => 'updatePriceWithDiscounts()'])->label(false)->error(false) ?>
                             </div>
                             <div class="col-sm-3">
@@ -70,7 +70,9 @@ use yii\web\View;
                                     <?= Html::input('text', null, $model->price_out, ['id' => 'public-price', 'readonly' => true, 'class' => 'form-control']) ?>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
                                 <?= $form->field($model, 'discount_applied', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('discount_applied') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'form-control', 'onblur' => 'updatePriceWithDiscounts()'])->label(false)->error(false) ?>
                             </div>
                             <div class="col-sm-3">
@@ -81,8 +83,8 @@ use yii\web\View;
                         <div class="row" style="margin-top: 10px;">
                             <div class="col-sm-12">
                                 <p style="color: gray;">
-                                    Descuento inicial: <code id="first-discount"><?= round(0.3 * ($model->price_out - $model->price_in), 2) ?></code>, importe: <code id="first-discount-price"><?= round(($model->items * $model->price_out) - (0.3 * ($model->price_out - $model->price_in)), 2) ?></code><br/>
-                                    Descuento mayor: <code id="major-discount"><?= round(0.6 * ($model->price_out - $model->price_in), 2) ?></code>, importe: <code id="major-discount-price"><?= round(($model->items * $model->price_out) - (0.6 * ($model->price_out - $model->price_in)), 2) ?></code>
+                                    Descuento inicial: <code id="first-discount">$<?= round(0.3 * ($model->price_out - $model->price_in) * $model->items, 2) ?></code>, importe: <code id="first-discount-price">$<?= round(($model->items * $model->price_out) - (0.3 * ($model->price_out - $model->price_in) * $model->items), 2) ?></code><br/>
+                                    Descuento mayor: <code id="major-discount">$<?= round(0.6 * ($model->price_out - $model->price_in) * $model->items, 2) ?></code>, importe: <code id="major-discount-price">$<?= round(($model->items * $model->price_out) - (0.6 * ($model->price_out - $model->price_in) * $model->items), 2) ?></code>
                                 </p>
                             </div>
                         </div>

@@ -69,7 +69,7 @@ class StockSearch extends Stock {
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'stock_type_id' => $this->stock_type_id,
+            'stock.stock_type_id' => $this->stock_type_id,
             'price_in' => $this->price_in,
             'price_out' => $this->price_out,
             'first_discount' => $this->first_discount,

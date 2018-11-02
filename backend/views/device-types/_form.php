@@ -1,8 +1,11 @@
 <?php
 
 use common\models\DeviceType;
+use common\models\StockType;
 use common\utils\AttributesLabels;
+use kartik\widgets\Select2;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
 
@@ -26,6 +29,20 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-8">
                                 <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <?=
+                                $form->field($model, 'stock_type_id')->widget(Select2::classname(), [
+                                    'data' => ArrayHelper::map(StockType::find()->all(), 'id', 'name'),
+                                    'language' => 'es',
+                                    'options' => ['placeholder' => 'Seleccione un destino', 'class' => 'form-control'],
+                                    'pluginOptions' => [
+                                        'allowClear' => false
+                                    ],
+                                ])->label(false)
+                                ?>
                             </div>
                         </div>
 
