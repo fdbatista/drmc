@@ -32,6 +32,7 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
+        <link href="<?= Url::to('@web/css/print.css') ?>" rel="stylesheet" type="text/css" media="print">
         <link rel="shortcut icon" type=image/png href="<?= Url::to('@web/img/favicon.png') ?>">
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
@@ -41,7 +42,7 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
 
         <div class="wrapper">
 
-            <div class="sidebar" data-color="purple" data-image="<?= Url::to('@web/img/sidebar.jpg') ?>">
+            <div class="sidebar non-printable" data-color="purple" data-image="<?= Url::to('@web/img/sidebar.jpg') ?>">
 
                 <div class="logo">
                     <a href="<?= Yii::$app->getHomeUrl() ?>" class="simple-text">
@@ -70,7 +71,7 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
 
             <div class="main-panel">
 
-                <nav class="navbar navbar-transparent navbar-absolute">
+                <nav class="navbar navbar-transparent navbar-absolute non-printable">
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse">
@@ -138,15 +139,17 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                 <div class="content">
                     <div class="container-fluid" style="padding: 0 20px;">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 non-printable">
                                 <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
+                            </div>
+                            <div class="col-lg-12">
                                 <?= $content ?>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <footer class="footer">
+                <footer class="footer non-printable">
                     <div class="container-fluid">
                         <p class="copyright pull-right">
                             &copy; <?= date('Y') ?> <a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>

@@ -300,9 +300,17 @@ class WorkshopController extends GenericController {
 
     public function actionPrint($id) {
         $model = $this->findModel($id);
-        return $this->render('print', ['model' => $model]);
+        $preDiagnoses = $model->workshopPreDiagnoses;
+        $preDiagnosisStr = '';
+        foreach ($preDiagnoses as $preDiagnose) {
+            $preDiagnosisStr .= ($preDiagnose->deviceType->name . ' (' . $preDiagnose->items . '), ');
+        }
+        return $this->render('print', [
+                    'model' => $model,
+                    'preDiagnosis' => trim($preDiagnosisStr, ", ")
+        ]);
     }
-    
+
     public function actionFinishRepair($id) {
         $model = $this->findModel($id);
         $model->final_price = $model->effort;
@@ -318,6 +326,7 @@ class WorkshopController extends GenericController {
                 $maxDiscount += ($stockModel->major_discount * $preDiagnosisItem->items);
             }
         }
+        $model->final_price -= $model->discount_applied;
 
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->warranty_until) {

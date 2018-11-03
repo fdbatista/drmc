@@ -1,13 +1,13 @@
 <?php
 
-use backend\assets\DatePickerAsset;
+use backend\assets\DateTimePickerAsset;
 use common\models\WorkshopPayment;
 use common\utils\AttributesLabels;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
 
-DatePickerAsset::register($this);
+DateTimePickerAsset::register($this);
 
 /* @var $this View */
 /* @var $model WorkshopPayment */

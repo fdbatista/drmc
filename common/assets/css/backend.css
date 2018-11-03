@@ -180,3 +180,15 @@ a .material-icons {
 table tbody tr th {
     width: 25%;
 }
+
+.data-content {
+    text-decoration: underline;
+}
+
+.data-row {
+    margin-top: 20px;
+}
+
+#logo-print {
+    background-color: #383838; height: 80px; color: #fff; padding-top: 30px; text-align: center; font-family: Verdana; font-size: 48px; font-weight: 700;
+}

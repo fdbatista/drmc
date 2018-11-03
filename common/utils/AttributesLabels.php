@@ -33,7 +33,7 @@ class AttributesLabels {
         'signature_out' => 'Firma de salida',
         'first_discount' => 'Primer descuento',
         'major_discount' => 'Descuento mayor',
-        'receiver_id' => 'Receptor',
+        'receiver_id' => 'Persona que recibe',
         'updated_at' => 'Actualizado',
         'amount' => 'Cantidad',
         'date' => 'Fecha',
@@ -54,6 +54,7 @@ class AttributesLabels {
         'folio_number' => 'Número de folio',
         'stock_type_id' => 'Destino',
         'date_closed' => 'Fecha del cierre',
+        'device' => 'Dispositivo',
     ];
     
     public static function getAttributeLabel($name) {

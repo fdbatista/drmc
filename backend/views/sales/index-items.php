@@ -21,10 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="sale-item-index">
 
     <?php Pjax::begin(); ?>
-<?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-<?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar dispositivo'), ['create-items', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar dispositivo'), ['create-items', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=
@@ -47,15 +47,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('items'),
             ],
                 [
-                'attribute' => 'price_in',
-                'label' => AttributesLabels::getAttributeLabel('price_in'),
-            ],
-                [
                 'attribute' => 'price_out',
                 'label' => AttributesLabels::getAttributeLabel('price_out'),
             ],
-            
-            [
+                [
+                'attribute' => 'discount_applied',
+                'label' => AttributesLabels::getAttributeLabel('discount_applied'),
+            ],
+                [
+                'attribute' => 'final_price',
+                'label' => AttributesLabels::getAttributeLabel('final_price'),
+            ],
+                [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],

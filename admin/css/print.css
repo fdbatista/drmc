@@ -1,0 +1,12 @@
+.non-printable {
+    visibility:hidden;
+    display: none;
+}
+
+#logo-print {
+    background-color: #383838; height: 80px; color: #fff; padding-top: 30px; text-align: center; font-family: Verdana; font-size: 48px; font-weight: 700;
+}
+
+.content {
+    margin-top: -100px;
+}

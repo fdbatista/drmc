@@ -24,9 +24,12 @@ class m181012_185456_create_sale_item_table extends Migration
             'sale_id' => $this->integer()->notNull(),
             'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
+        
         $this->addForeignKey('fk_saleitem_devicetype', 'sale_item', 'device_type_id', 'device_type', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_saleitem_brandmodel', 'sale_item', 'brand_model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_saleitem_sale', 'sale_item', 'sale_id', 'sale', 'id', 'CASCADE', 'CASCADE');
+        
+        $this->createIndex('idx_sale_devmodelsale', 'sale_item', 'device_type_id, brand_model_id, sale_id', true);
     }
 
     /**

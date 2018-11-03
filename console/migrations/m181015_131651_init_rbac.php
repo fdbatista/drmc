@@ -40,6 +40,13 @@ class m181015_131651_init_rbac extends Migration {
             'roles' => 'roles',
         ];
 
+        /*$this->addPermission($authManager, "index-brands", "Ver lista de marcas", 'admin');
+        $this->addPermission($authManager, "view-brands", "Ver detalles de marcas", 'admin');
+        $this->addPermission($authManager, "create-brands", "Agregar marcas", 'admin');
+        $this->addPermission($authManager, "update-brands", "Actualizar marcas", 'admin');
+        $this->addPermission($authManager, "delete-brands", "Eliminar marcas", 'admin');*/
+
+
         foreach ($entities as $key => $value) {
             $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'admin');
             $this->addPermission($authManager, "view-$key", "Ver detalles de $value", 'admin');
@@ -59,6 +66,10 @@ class m181015_131651_init_rbac extends Migration {
         $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'admin');
         $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'tech');
         $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'admin');
+
+        $this->addPermission($authManager, "print-sales", "Imprimir venta", 'tech');
+        $this->addPermission($authManager, "print-sales", "Imprimir venta", 'admin');
+
         $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'tech');
         $this->addPermission($authManager, "index-app-config", "Ver configuración general", 'admin');
         $this->addPermission($authManager, "update-app-config", "Actualizar configuración general", 'admin');

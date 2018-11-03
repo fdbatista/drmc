@@ -191,10 +191,12 @@ class SalesController extends GenericController {
             if (!$model->hasErrors()) {
                 $model->price_in = $stockModel->price_in;
                 $model->price_out = $stockModel->price_out;
-                $model->save();
-                $stockModel->items -= $model->items;
-                $stockModel->save();
-                return $this->redirect(['view-items', 'id' => $model->id]);
+                $model->final_price = ($stockModel->price_out * $model->items) - $model->discount_applied;
+                if ($model->save()) {
+                    $stockModel->items -= $model->items;
+                    $stockModel->save();
+                    return $this->redirect(['view-items', 'id' => $model->id]);
+                }
             }
         }
 
@@ -221,6 +223,7 @@ class SalesController extends GenericController {
                 $model->addError('type_id', 'No existen dispositivos disponibles con ese tipo/modelo');
             }
             if (!$model->hasErrors()) {
+                $model->final_price = ($stockModel->price_out * $model->items) - $model->discount_applied;
                 $model->save();
                 return $this->redirect(['view-items', 'id' => $model->id]);
             }
@@ -316,6 +319,24 @@ class SalesController extends GenericController {
         }
         $response->data = $res;
         return $response;
+    }
+
+    public function actionPrint($id) {
+        $model = $this->findModel($id);
+        $model->status = 1;
+        $model->save();
+        $saleItems = $model->saleItems;
+        $saleItemsCount = 0;
+        $saleItemsAmount = 0;
+        foreach ($saleItems as $saleItem) {
+            $saleItemsCount += $saleItem->items;
+            $saleItemsAmount += $saleItem->final_price;
+        }
+        return $this->render('print', [
+                    'model' => $model,
+                    'saleItemsCount' => $saleItemsCount,
+                    'saleItemsAmount' => $saleItemsAmount,
+        ]);
     }
 
 }

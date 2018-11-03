@@ -1,7 +1,7 @@
 <?php
 
 use backend\assets\DatePickerAsset;
-use common\models\Workshop;
+use common\models\Sale;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use yii\bootstrap\ActiveForm;
@@ -10,7 +10,7 @@ use yii\web\View;
 DatePickerAsset::register($this);
 
 /* @var $this View */
-/* @var $model Workshop */
+/* @var $model Sale */
 /* @var $form ActiveForm */
 
 $this->title = Yii::t('app', 'Imprimir comprobante');
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                 </p>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-sm-8">
                 <div class="row">
@@ -64,17 +64,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
             <div class="row data-row">
                 <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <span class="data-name"><?= AttributesLabels::getAttributeLabel('folio_number') ?>: </span>
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="data-content"><?= $model->folio_number ?></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span><span class="data-content"><?= $model->date_closed ?></span>
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span><span class="data-content"><?= $model->date ?></span>
                 </div>
             </div>
 
@@ -85,7 +75,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('name') ?>: </span>
                 </div>
                 <div class="col-sm-10">
-                    <span class="data-content"><?= $model->customer_name ?></span>
+                    <span class="data-content"><?= $model->customer->name ?></span>
                 </div>
             </div>
 
@@ -94,25 +84,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('telephone') ?>: </span>
                 </div>
                 <div class="col-sm-10">
-                    <span class="data-content"><?= $model->customer_telephone ?></span>
-                </div>
-            </div>
-
-            <div class="row data-row">
-                <div class="col-sm-2">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('device') ?>: </span>
-                </div>
-                <div class="col-sm-10">
-                    <span class="data-content"><?= $model->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($model->brandModel) ?></span>
-                </div>
-            </div>
-
-            <div class="row data-row">
-                <div class="col-sm-2">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('pre_diagnosis') ?>: </span>
-                </div>
-                <div class="col-sm-10">
-                    <span class="data-content"><?= $preDiagnosis ?></span>
+                    <span class="data-content"><?= $model->customer->telephone ?></span>
                 </div>
             </div>
 
@@ -121,68 +93,66 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('receiver_id') ?>: </span>
                 </div>
                 <div class="col-sm-10">
-                    <span class="data-content"><?= $model->receiver->fullName ?></span>
+                    <span class="data-content"><?= Yii::$app->user->identity->fullName ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
-                    <span class="data-name">Contrase&ntilde;a de la Nube: </span>
-                </div>
-                <div class="col-sm-10">
-                    <span class="data-content"><?= $model->password ? $model->password : $model->pattern ?></span>
-                </div>
-            </div>
-
-            <div class="row data-row">
-                <div class="col-sm-2">
-                    <span class="data-name">Cotizaci&oacute;n: </span>
-                </div>
                 <div class="col-sm-4">
-                    <span class="data-content">$<?= $model->final_price ?></span>
+                    <span class="data-content">Art&iacute;culos</span>
+                </div>
+                <div class="col-sm-2">
+                    <span class="data-content">Cantidad</span>
+                </div>
+                <div class="col-sm-3">
+                    <span class="data-content">Precio</span>
                 </div>
             </div>
+            
+            <br />
 
             <?php
-            $items = $model->getWorkshopPayments()->orderBy(['date' => 'asc'])->all();
+            $items = $model->saleItems;
             foreach ($items as $key => $value) {
                 ?>
                 <div class="row">
-                    <div class="col-sm-2" style="padding-left: 50px;">
-                        <span class="data-name">Anticipo <?= $key + 1 ?>: </span>
+                    <div class="col-sm-4" style="padding-left: 50px;">
+                        <span class="data-name"><?= ($key + 1) . '. ' . $value->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($value->brandModel) ?></span>
                     </div>
-                    <div class="col-sm-1">
-                        <span class="data-content">$<?= $value->amount ?></span>
-                    </div>
-                    <div class="col-sm-1">
-                        <span class="data-name">Fecha: </span>
+                    <div class="col-sm-2">
+                        <span class="data-name"><?= $value->items ?></span>
                     </div>
                     <div class="col-sm-3">
-                        <span class="data-content"><?= $value->date ?></span>
+                        <span class="data-name">$<?= $value->final_price ?></span>
                     </div>
                 </div>
                 <?php
             }
             ?>
 
-            <div class="row data-row">
-                <div class="col-sm-2">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('observations') ?>: </span>
+            <div class="row">
+                <div class="col-sm-4" style="padding-left: 50px;">
+                    <span class="data-name">TOTAL</span>
                 </div>
-                <div class="col-sm-4">
-                    <span class="data-content"><?= $model->observations ?></span>
+                <div class="col-sm-2">
+                    <span class="data-name"><?= $saleItemsCount ?></span>
+                </div>
+                <div class="col-sm-3">
+                    <span class="data-name">$<?= $saleItemsAmount ?></span>
                 </div>
             </div>
+            
+            <br /><br />
 
             <div class="row data-row">
                 <div class="col-sm-2">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_in') ?></span>
                 </div>
-                <div class="col-sm-2" style="border-bottom: 1px solid grey;"></div>
+                <div class="col-sm-2" style="border-bottom: 1px solid grey; margin-top: 15px;"></div>
                 <div class="col-sm-2 col-sm-offset-1">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_out') ?></span>
                 </div>
-                <div class="col-sm-2" style="border-bottom: 1px solid grey;"></div>
+                <div class="col-sm-2" style="border-bottom: 1px solid grey; margin-top: 15px;"></div>
             </div>
 
         </div>

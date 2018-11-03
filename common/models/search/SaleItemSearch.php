@@ -21,7 +21,7 @@ class SaleItemSearch extends SaleItem {
     public function rules() {
         return [
                 [['id', 'price_in', 'price_out', 'items', 'device_type_id', 'brand_model_id', 'sale_id'], 'integer'],
-                [['deviceType', 'brandModel', 'updated_at'], 'safe'],
+                [['deviceType', 'brandModel', 'updated_at', 'discount_applied', 'final_price'], 'safe'],
         ];
     }
 
@@ -79,8 +79,12 @@ class SaleItemSearch extends SaleItem {
                     'device_type_id' => $this->device_type_id,
                     'brand_model_id' => $this->brand_model_id,
                     'sale_id' => $this->sale_id,
+                    /*'discount_applied' => $this->discount_applied,
+                    'final_price' => $this->final_price,*/
                     'updated_at' => $this->updated_at,
                 ])
+                ->andFilterWhere(['like', 'discount_applied', $this->discount_applied])
+                ->andFilterWhere(['like', 'final_price', $this->final_price])
                 ->andFilterWhere(['like', 'device_type.name', $this->deviceType])
                 ->andFilterWhere(['like', 'brand_model.name', $this->brandModel]);
 
