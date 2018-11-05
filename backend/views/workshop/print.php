@@ -17,6 +17,7 @@ $this->title = Yii::t('app', 'Imprimir comprobante');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos del dispositivo'), 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
+
 ?>
 
 <div class="content">
@@ -174,7 +175,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                 </div>
             </div>
 
-            <div class="row data-row">
+            <div class="row signature-row">
                 <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_in') ?></span>
                 </div>

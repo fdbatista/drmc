@@ -189,6 +189,21 @@ table tbody tr th {
     margin-top: 20px;
 }
 
+.signature-row {
+    margin-top: 60px;
+}
+
 #logo-print {
-    background-color: #383838; height: 80px; color: #fff; padding-top: 30px; text-align: center; font-family: Verdana; font-size: 48px; font-weight: 700;
+    background-color: #383838!important;
+    height: 80px;
+    color: #fff;
+    padding-top: 30px;
+    text-align: center;
+    font-family: Verdana;
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.footer {
+    height: 72px;
 }

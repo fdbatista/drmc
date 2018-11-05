@@ -32,7 +32,6 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <link href="<?= Url::to('@web/css/print.css') ?>" rel="stylesheet" type="text/css" media="print">
         <link rel="shortcut icon" type=image/png href="<?= Url::to('@web/img/favicon.png') ?>">
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
@@ -70,7 +69,6 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
             </div>
 
             <div class="main-panel">
-
                 <nav class="navbar navbar-transparent navbar-absolute non-printable">
                     <div class="container-fluid">
                         <div class="navbar-header">
@@ -151,58 +149,17 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
 
                 <footer class="footer non-printable">
                     <div class="container-fluid">
-                        <p class="copyright pull-right">
-                            &copy; <?= date('Y') ?> <a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>
-                        </p>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="copyright pull-right">
+                                    &copy; <?= date('Y') ?> <a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </footer>
             </div>
 
-            <!--<div class="modal fade" id="modal-pre-diagnosis" tabindex="-1" role="dialog" aria-labelledby="PreDiag" aria-hidden="true" data-backdrop="static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Agregar componente</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <?=
-                                    DepDrop::widget([
-                                        'type' => DepDrop::TYPE_SELECT2,
-                                        'data' => [],
-                                        'language' => 'es',
-                                        'name' => 'devices-by-brand-list',
-                                        'options' => ['placeholder' => 'Seleccione un tipo de dispositivo', 'class' => 'form-control', 'id' => 'devices-by-brand-list'],
-                                        'select2Options' => ['pluginOptions' => ['allowClear' => true]],
-                                        'pluginOptions' => [
-                                            'placeholder' => 'Seleccione un tipo',
-                                            'depends' => ['brand_model_id'],
-                                            'url' => Url::to(['/workshop/get-warehouse-items-by-brand-model']),
-                                        ],
-                                        'pluginEvents' => [
-                                            "change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem));  }",
-                                        ]
-                                    ]);
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <?= Html::input('text', 'new-pre-diagnosis-items', null, ['id' => 'new-pre-diagnosis-items', 'class' => 'form-control', 'placeholder' => 'Cantidad']) ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button onclick="addPreDiagnosisItem()" type="button" class="btn btn-primary">Agregar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
         </div>
 
         <?php $this->endBody() ?>

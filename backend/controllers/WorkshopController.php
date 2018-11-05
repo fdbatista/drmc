@@ -329,6 +329,7 @@ class WorkshopController extends GenericController {
             }
             if ($model->discount_applied !== '0' && ($model->discount_applied < $minDiscount || $model->discount_applied > $maxDiscount)) {
                 $model->addError('discount_applied', "El descuento aplicado debe estar entre $minDiscount y $maxDiscount.");
+                $model->final_price += $model->discount_applied;
             }
             if (!$model->hasErrors()) {
                 $model->status = 1;

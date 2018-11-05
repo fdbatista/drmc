@@ -16,6 +16,7 @@ class AppAsset extends AssetBundle
         'css/common.css',
         'css/backend.css',
         'css/animate.css',
+        ['css/print.css', 'media' => 'print'],
         'css/material-icons/material-icons.css',
     ];
     public $js = [
