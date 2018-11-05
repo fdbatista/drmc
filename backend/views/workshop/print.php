@@ -63,82 +63,82 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
         <div style="font-size: 16px;">
 
             <div class="row data-row">
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <span class="data-name"><?= AttributesLabels::getAttributeLabel('folio_number') ?>: </span>
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="data-content"><?= $model->folio_number ?></span>
-                        </div>
-                    </div>
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('folio_number') ?>: </span>
                 </div>
-                <div class="col-sm-6">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span><span class="data-content"><?= $model->date_closed ?></span>
+                <div class="col-sm-4">
+                    <span class="data-content"><?= $model->folio_number ?></span>
                 </div>
+                <div class="col-sm-1">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span>
+                </div>
+                <div class="col-sm-2">
+                    <span class="data-content"><?= $model->date_closed ?></span>
+                </div>
+                
             </div>
 
             <br />
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('name') ?>: </span>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <span class="data-content"><?= $model->customer_name ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('telephone') ?>: </span>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <span class="data-content"><?= $model->customer_telephone ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('device') ?>: </span>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <span class="data-content"><?= $model->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($model->brandModel) ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('pre_diagnosis') ?>: </span>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <span class="data-content"><?= $preDiagnosis ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('receiver_id') ?>: </span>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <span class="data-content"><?= $model->receiver->fullName ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name">Contrase&ntilde;a de la Nube: </span>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <span class="data-content"><?= $model->password ? $model->password : $model->pattern ?></span>
                 </div>
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name">Cotizaci&oacute;n: </span>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-9">
                     <span class="data-content">$<?= $model->final_price ?></span>
                 </div>
             </div>
@@ -148,7 +148,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             foreach ($items as $key => $value) {
                 ?>
                 <div class="row">
-                    <div class="col-sm-2" style="padding-left: 50px;">
+                    <div class="col-sm-3" style="padding-left: 30px;">
                         <span class="data-name">Anticipo <?= $key + 1 ?>: </span>
                     </div>
                     <div class="col-sm-1">
@@ -166,7 +166,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             ?>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('observations') ?>: </span>
                 </div>
                 <div class="col-sm-4">
@@ -175,11 +175,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             </div>
 
             <div class="row data-row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_in') ?></span>
                 </div>
                 <div class="col-sm-2" style="border-bottom: 1px solid grey;"></div>
-                <div class="col-sm-2 col-sm-offset-1">
+                <div class="col-sm-3 col-sm-offset-1">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_out') ?></span>
                 </div>
                 <div class="col-sm-2" style="border-bottom: 1px solid grey;"></div>

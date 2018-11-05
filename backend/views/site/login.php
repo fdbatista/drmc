@@ -1,16 +1,15 @@
 <?php
-/* @var $this View */
-/* @var $form ActiveForm */
-/* @var $model LoginForm */
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \common\models\LoginForm */
 
-use common\models\LoginForm;
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-use yii\web\View;
 
 $this->title = 'Acceder';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="user-login-5">
@@ -28,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <p>Bienvenido a su interfaz de administraci&oacute;n.<br />Por favor, introduzca sus datos para continuar:</p>
                     </div>
                 </div>
-                <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+                <?php $form = ActiveForm::begin([]); ?>
                 <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                 <div class="row">
                     <div class="col-xs-6">
@@ -99,17 +98,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<!--
-<div class="site-login">
-    <div class="row">
-        <div class="col-sm-4 col-sm-offset-4" style="border: 1px dashed grey; border-radius: 5px; margin-top: 20px;">
-<?= $form->field($model, 'password')->passwordInput() ?>
-<?= $form->field($model, 'rememberMe')->checkbox() ?>
-                        <div class="form-group">
-
-                        </div>
-
-        </div>
-    </div>
-</div>
--->

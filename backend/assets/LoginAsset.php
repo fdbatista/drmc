@@ -24,7 +24,6 @@ class LoginAsset extends AssetBundle {
         'login-assets/pages/css/login-5.css',
     ];
     public $js = [
-        'login-assets/global/plugins/jquery.min.js',
         'login-assets/global/plugins/bootstrap/js/bootstrap.min.js',
         'login-assets/global/plugins/js.cookie.min.js',
         'login-assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js',
@@ -38,9 +37,8 @@ class LoginAsset extends AssetBundle {
         'login-assets/pages/scripts/login-5.js',
     ];
     public $depends = [
-        /*'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',*/
-        //'backend\assets\FontAwesomeAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 
 }

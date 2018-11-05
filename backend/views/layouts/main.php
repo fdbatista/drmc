@@ -26,7 +26,7 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?= Yii::$app->language ?>" moznomarginboxes mozdisallowselectionprint>
     <head>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => AttributesLabels::getAttributeLabel('amount'),
             ], [
                 'attribute' => 'date',
-                'format' => 'date',
+                'format' => 'datetime',
                 'label' => AttributesLabels::getAttributeLabel('date'),
             ],
         ],

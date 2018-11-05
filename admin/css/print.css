@@ -1,12 +1,32 @@
+body {
+    -webkit-print-color-adjust: exact;
+}
+
 .non-printable {
     visibility:hidden;
     display: none;
 }
 
 #logo-print {
-    background-color: #383838; height: 80px; color: #fff; padding-top: 30px; text-align: center; font-family: Verdana; font-size: 48px; font-weight: 700;
+    background-color: #383838!important;
+    height: 80px;
+    color: #fff;
+    padding-top: 30px;
+    text-align: center;
+    font-family: Verdana;
+    font-size: 48px;
+    font-weight: 700;
+    -webkit-print-color-adjust: exact!important;
 }
 
 .content {
     margin-top: -100px;
+}
+
+@page {
+    size: auto;
+    margin: 0;
+}
+body {
+    margin: 1.6cm;
 }

@@ -11,12 +11,10 @@ use yii\web\View;
 /*
   use yii\dependencies
  */
-//Register class
-if (class_exists('ramosisw\CImaterial\web\MaterialAsset')) {
-    MaterialAsset::register($this);
-}
 
 LoginAsset::register($this);
+MaterialAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
