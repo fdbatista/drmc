@@ -159,7 +159,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                         <span class="data-name">Fecha: </span>
                     </div>
                     <div class="col-sm-3">
-                        <span class="data-content"><?= $value->date ?></span>
+                        <span class="data-content"><?= (new DateTime($value->date))->format('Y-m-d') ?></span>
                     </div>
                 </div>
                 <?php
