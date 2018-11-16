@@ -15,7 +15,7 @@ class PatternLockAsset extends AssetBundle {
         'plugins/pattern-lock/init.js',
     ];
     public $depends = [
-        'backend\assets\GifEncoderAsset',
+        'yii\web\JqueryAsset',
     ];
 
 }

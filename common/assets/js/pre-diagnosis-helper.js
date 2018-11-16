@@ -38,7 +38,9 @@ $(document).ready(function () {
 });
 
 function addPreDiagnosisItem() {
-    var newItem = JSON.parse($('#new-pre-diagnosis-item').val());
+    var newItem = {id: $('#devices-by-brand-list').select2('data')[0].id, name: $('#devices-by-brand-list').select2('data')[0].text};
+    //var newItem = JSON.parse($('#new-pre-diagnosis-item').val());
+    console.log(newItem);
     newItem.id = parseInt(newItem.id);
     if (Number.isInteger(newItem.id)) {
         var items = parseInt($('#new-pre-diagnosis-items').val());

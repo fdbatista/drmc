@@ -16,6 +16,6 @@ class DatePickerAsset extends AssetBundle
         'plugins/datetimepicker/init_date.js',
     ];
     public $depends = [
-        'yii\web\JqueryAsset',
+        
     ];
 }

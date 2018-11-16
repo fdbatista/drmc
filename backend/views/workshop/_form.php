@@ -17,7 +17,6 @@ use yii\web\View;
 PatternLockAsset::register($this);
 DatePickerAsset::register($this);
 
-
 /* @var $this View */
 /* @var $model Workshop */
 /* @var $form ActiveForm */
@@ -72,7 +71,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                 <div class="form-group">
                                     <?= Html::hiddenInput('workshop_id', $model->id, ['id' => 'workshop-id']) ?>
                                     <?= Html::hiddenInput('base_url', Yii::$app->getHomeUrl(), ['id' => 'base-url']) ?>
-                                    <?= Html::hiddenInput('new-pre-diagnosis-item', null, ['id' => 'new-pre-diagnosis-item']) ?>
+                                    <?php /*Html::hiddenInput('new-pre-diagnosis-item', null, ['id' => 'new-pre-diagnosis-item'])*/ ?>
                                     <?= Html::hiddenInput('pre-diagnosis-items', null, ['id' => 'pre-diagnosis-items']) ?>
                                     <label>Pre diagn&oacute;stico</label><br />
                                     <button id="toggle-pre-diagnosis-form-status" data-status="0" onclick="showPreDiagnosisForm()" type="button" class="btn btn-xs btn-info" disabled><i style="font-size: 12px;" class="fa fa-arrow-down"></i> Mostrar formulario</button>
@@ -94,7 +93,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                                             'url' => Url::to(['/workshop/get-warehouse-items-by-brand-model']),
                                                         ],
                                                         'pluginEvents' => [
-                                                            "change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem));  }",
+                                                            //"change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem)); console.log(currItem); }",
                                                         ]
                                                     ]);
                                                     ?>
