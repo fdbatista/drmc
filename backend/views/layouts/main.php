@@ -3,7 +3,6 @@
 /* @var $content string */
 
 use backend\assets\FontAwesomeAsset;
-use kartik\depdrop\DepDrop;
 use ramosisw\CImaterial\web\MaterialAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -22,7 +21,7 @@ if (!isset($this->params['active'])) {
 }
 FontAwesomeAsset::register($this);
 
-$this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector: \'[data-toggle="tooltip"]\'});  $(\'.js-example-basic-single\').select2();  });');
+$this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector: \'[data-toggle="tooltip"]\'});  });');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
