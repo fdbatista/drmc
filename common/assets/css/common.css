@@ -32,3 +32,9 @@ button.close {
 .btn-remove-pre-diagnosis {
     margin-top: -5px;
 }
+
+@media print {
+    html, body {
+        height: 99%;    
+    }
+}

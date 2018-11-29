@@ -8,14 +8,17 @@
     -webkit-print-color-adjust: exact!important;
 }
 
-.content {
-    margin-top: -100px;
-}
-
 @page {
     size: auto;
     margin: 0;
 }
+
 body {
     margin: 1.6cm;
+    height: 85%;
+}
+
+html, body {
+    page-break-after: avoid;
+    page-break-before: avoid;
 }

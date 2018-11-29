@@ -1,6 +1,7 @@
 <?php
 
 use backend\assets\DatePickerAsset;
+use backend\assets\PrintAsset;
 use common\models\Workshop;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
@@ -8,6 +9,7 @@ use yii\bootstrap\ActiveForm;
 use yii\web\View;
 
 DatePickerAsset::register($this);
+PrintAsset::register($this);
 
 /* @var $this View */
 /* @var $model Workshop */
@@ -22,12 +24,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
 <div class="content">
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="print-page">
 
         <div class="row non-printable">
             <div class="col-sm-12">
                 <p class="text-left">
-                    <button onclick="javascript:window.print()" type="button" class="btn btn-xl btn-success"><i class="material-icons">print</i> Imprimir</button>
+                    <button onclick="print('#print-page')" type="button" class="btn btn-xl btn-success"><i class="material-icons">print</i> Imprimir</button>
                 </p>
             </div>
         </div>

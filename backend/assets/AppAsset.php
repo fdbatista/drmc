@@ -20,8 +20,9 @@ class AppAsset extends AssetBundle
         'css/material-icons/material-icons.css',
     ];
     public $js = [
-        'js/material-demo.js',
+                'js/material-demo.js',
         'js/pre-diagnosis-helper.js',
+        'plugins/print/jQuery.print.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

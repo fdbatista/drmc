@@ -1,6 +1,7 @@
 <?php
 
 use backend\assets\DatePickerAsset;
+use backend\assets\PrintAsset;
 use common\models\Sale;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
@@ -8,25 +9,26 @@ use yii\bootstrap\ActiveForm;
 use yii\web\View;
 
 DatePickerAsset::register($this);
+PrintAsset::register($this);
 
 /* @var $this View */
 /* @var $model Sale */
 /* @var $form ActiveForm */
 
 $this->title = Yii::t('app', 'Imprimir comprobante');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos del dispositivo'), 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta'), 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 ?>
 
 <div class="content">
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="print-page">
 
         <div class="row non-printable">
             <div class="col-sm-12">
                 <p class="text-left">
-                    <button onclick="javascript:window.print()" type="button" class="btn btn-xl btn-success"><i class="material-icons">print</i> Imprimir</button>
+                    <button onclick="print('#print-page')" type="button" class="btn btn-xl btn-success"><i class="material-icons">print</i> Imprimir</button>
                 </p>
             </div>
         </div>
@@ -144,12 +146,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             
             <br /><br />
 
-            <div class="row data-row">
-                <div class="col-sm-2">
+            <div class="row data-row signature-row">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_in') ?></span>
                 </div>
                 <div class="col-sm-2" style="border-bottom: 1px solid grey; margin-top: 15px;"></div>
-                <div class="col-sm-2 col-sm-offset-1">
+                <div class="col-sm-3 col-sm-offset-1">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_out') ?></span>
                 </div>
                 <div class="col-sm-2" style="border-bottom: 1px solid grey; margin-top: 15px;"></div>
