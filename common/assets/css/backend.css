@@ -193,7 +193,7 @@ table tbody tr th {
     margin-top: 60px;
 }
 
-#logo-print {
+.img-print {
     background-color: #383838!important;
     height: 80px;
     color: #fff;

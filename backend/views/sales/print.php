@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             <div class="col-sm-8">
                 <div class="row">
                     <div class="col-sm-12">
-                        <p id="logo-print">TECNO - CELL</p>
+                        <p class="img-print">TECNO - CELL</p>
                     </div>
                     <div class="col-sm-12">
                         <p style="text-align: center; font-size: 24px; font-weight: bolder; font-style: italic;">
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                         <p>Av. Ju&aacute;rez 5 Col. Centro<br />Chilpancingo, Gro. Tel: 4716037</p>
                     </div>
                     <div class="col-sm-6">
-                        <p style="margin-top: 10px;"><span style="font-size: 36px; background: #383838; color: #fff; padding: 2px 3px 0 10px; font-weight: 700;">f</span> Tecno - Cell</p>
+                        <p style="margin-top: 10px;"><span class="img-print" style="font-size: 36px; background: #383838; color: #fff; padding: 2px 3px 0 10px; font-weight: 700;">f</span> Tecno - Cell</p>
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             ?>
 
             <div class="row">
-                <div class="col-sm-4" style="padding-left: 50px;">
+                <div class="col-sm-4" style="padding-left: 50px; margin-top: 10px;">
                     <span class="data-name">TOTAL</span>
                 </div>
                 <div class="col-sm-2">
