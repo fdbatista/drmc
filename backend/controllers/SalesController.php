@@ -32,7 +32,6 @@ class SalesController extends GenericController {
      */
     public function actionIndex() {
         $searchModel = new SaleSearch();
-        $pp = Yii::$app->request->queryParams;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['date' => SORT_DESC];
 

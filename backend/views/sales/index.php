@@ -2,6 +2,8 @@
 
 use common\models\search\SaleSearch;
 use common\utils\AttributesLabels;
+use kartik\daterange\DateRangePicker;
+use kartik\r;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -40,6 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'attribute' => 'date',
                 'label' => AttributesLabels::getAttributeLabel('date'),
+                'format' => 'text',
+                'filter' => 
+                DateRangePicker::widget([
+                    'name' => 'SaleSearch[date]',
+                    'pluginOptions' => [
+                        'locale' => [
+                            'separator' => ' al ',
+                        ],
+                        'opens' => 'right'
+                    ]
+                ]),
+                'content' => function($data) {
+                    return Yii::$app->formatter->asDatetime($data['date'], "php:Y-m-d");
+                }
             ],
                 [
                 'attribute' => 'customer',

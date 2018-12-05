@@ -170,6 +170,15 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
             <div class="row data-row">
                 <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('warranty_until') ?>: </span>
+                </div>
+                <div class="col-sm-4">
+                    <span class="data-content"><?= $model->warranty_until ?></span>
+                </div>
+            </div>
+            
+            <div class="row data-row">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('observations') ?>: </span>
                 </div>
                 <div class="col-sm-4">
