@@ -32,11 +32,19 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'name',
                 'label' => AttributesLabels::getAttributeLabel('name'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
             [
                 'attribute' => 'stockType',
                 'label' => AttributesLabels::getAttributeLabel('stock_type_id'),
                 'value' => 'stockType.name',
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

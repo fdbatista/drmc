@@ -3,7 +3,6 @@
 use common\models\search\SaleSearch;
 use common\utils\AttributesLabels;
 use kartik\daterange\DateRangePicker;
-use kartik\r;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -60,7 +59,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'attribute' => 'customer',
                 'label' => AttributesLabels::getAttributeLabel('customer_id'),
-                'value' => 'customer.code'
+                'value' => 'customer.code',
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
                 [
                 'class' => 'yii\grid\ActionColumn',

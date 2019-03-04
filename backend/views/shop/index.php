@@ -31,20 +31,36 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'deviceType',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
-                'value' => 'deviceType.name'
+                'value' => 'deviceType.name',
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
             [
                 'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => 'brandModel.name'
+                'value' => 'brandModel.name',
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
             [
                 'attribute' => 'code',
                 'label' => AttributesLabels::getAttributeLabel('code'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
             [
                 'attribute' => 'items',
                 'label' => AttributesLabels::getAttributeLabel('items'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
 
             [

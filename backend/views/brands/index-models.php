@@ -35,10 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'attribute' => 'name',
                 'label' => AttributesLabels::getAttributeLabel('name'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
                 [
                 'attribute' => 'description',
                 'label' => AttributesLabels::getAttributeLabel('description'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
                 [
                 'class' => 'yii\grid\ActionColumn',

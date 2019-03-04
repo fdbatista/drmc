@@ -35,21 +35,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'content' => function ($searchModel) {
                     return $searchModel->status === 1 ? 'Cerrada' : 'Pendiente';
                 },
-                'filter' => [0 => 'Pendiente', 1 => 'Cerrada']
+                'filter' => [0 => 'Pendiente', 1 => 'Cerrada'],
             ],
                 [
                 'attribute' => 'deviceType',
                 'label' => AttributesLabels::getAttributeLabel('device_type'),
-                'value' => 'deviceType.name'
+                'value' => 'deviceType.name',
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
                 [
                 'attribute' => 'brandModel',
                 'label' => AttributesLabels::getAttributeLabel('model'),
-                'value' => 'brandModel.name'
+                'value' => 'brandModel.name',
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
                 [
                 'attribute' => 'observations',
                 'label' => AttributesLabels::getAttributeLabel('observations'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
             ],
                 [
                 'class' => 'yii\grid\ActionColumn',

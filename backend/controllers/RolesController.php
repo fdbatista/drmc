@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Role;
 use common\utils\StaticMembers;
 use Yii;
+use yii\rbac\Role as Role2;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -34,14 +35,25 @@ class RolesController extends GenericController {
      */
     public function actionCreate() {
         $model = new Role();
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->validateName()) {
-            $authManager = Yii::$app->authManager;
+        $authManager = Yii::$app->authManager;
+        $role = new Role2();
+        $post = Yii::$app->request->post();
+        
+        if ($model->load($post) && $model->validate() && $model->validateName()) {
             $role = $authManager->createRole($model->name);
             $role->description = $model->description;
             $authManager->add($role);
+            unset($post['Role'], $post['_csrf']);
+            foreach ($post as $permIndex => $permName) {
+                $perm = $authManager->getPermission($permIndex);
+                if ($perm) {
+                    $authManager->addChild($role, $perm);
+                }
+            }
             return $this->actionIndex();
         }
-        return $this->render('create', ['model' => $model]);
+        $entitiesAndPerms = StaticMembers::getAuthEntitiesAndPerms($authManager, $role);
+        return $this->render('create', ['model' => $model, 'perms' => $entitiesAndPerms]);
     }
 
     /**

@@ -6,7 +6,9 @@ use common\utils\AttributesLabels;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
+use yii\web\JqueryAsset;
 
+JqueryAsset::register($this);
 DatePickerAsset::register($this);
 
 /* @var $this View */

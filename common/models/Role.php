@@ -33,8 +33,11 @@ class Role extends Model {
             $authManager = Yii::$app->authManager;
             if ($authManager->getRole($this->name)) {
                 $this->addError('name', 'Ya existe un rol con ese nombre');
+                return false;
             }
+            return true;
         }
+        return false;
     }
 
 }
