@@ -11,8 +11,10 @@ use Yii;
  * @property string $date
  * @property int $customer_id
  * @property int $status
+ * @property int $branch_id
  * @property string $updated_at
  *
+ * @property Branch $branch
  * @property Customer $customer
  * @property SaleItem[] $saleItems
  */
@@ -32,9 +34,10 @@ class Sale extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date'], 'required'],
+            [['date', 'branch_id'], 'required'],
             [['date', 'updated_at'], 'safe'],
-            [['customer_id', 'status'], 'integer'],
+            [['customer_id', 'status', 'branch_id'], 'integer'],
+            [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
@@ -45,12 +48,21 @@ class Sale extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'date' => Yii::t('app', 'Date'),
-            'customer_id' => Yii::t('app', 'Customer ID'),
-            'status' => Yii::t('app', 'Status'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'id' => 'ID',
+            'date' => 'Date',
+            'customer_id' => 'Customer ID',
+            'status' => 'Status',
+            'branch_id' => 'Branch ID',
+            'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBranch()
+    {
+        return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
     }
 
     /**

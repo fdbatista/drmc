@@ -1,10 +1,11 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\Brand;
+use yii\web\View;
 
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Brand */
+/* @var $this View */
+/* @var $model Brand */
 
 $this->title = Yii::t('app', 'Agregar marca');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marcas'), 'url' => ['index']];

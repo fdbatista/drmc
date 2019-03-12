@@ -23,13 +23,15 @@ class m181008_221833_create_stock_table extends Migration
             'stock_type_id' => $this->integer()->notNull(),
             'device_type_id' => $this->integer()->notNull(),
             'brand_model_id' => $this->integer()->notNull(),
+            'branch_id' => $this->integer()->notNull(),
             'updated_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], ($this->db->driverName === 'mysql') ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB' : null);
         
         $this->addForeignKey('fk_stock_type', 'stock', 'stock_type_id', 'stock_type', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_stock_devicetype', 'stock', 'device_type_id', 'device_type', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_stock_brandmodel', 'stock', 'brand_model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');
-    
+        $this->addForeignKey('fk_stock_branch', 'stock', 'branch_id', 'branch', 'id', 'CASCADE', 'CASCADE');
+        
         $this->createIndex('idx_stock_codestocktype', 'stock', 'code, stock_type_id', true);
         $this->createIndex('idx_stock_devicemodel', 'stock', 'device_type_id, brand_model_id', true);
     }

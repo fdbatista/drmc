@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\AppConfig */
 
-$this->title = $model->id;
+$this->title = 'Configuración general';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Configuración general'), 'url' => ['index']];
 ?>
 <div class="app-config-view">

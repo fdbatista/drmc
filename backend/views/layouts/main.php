@@ -20,8 +20,9 @@ if (!isset($this->params['active'])) {
     $this->params['active'] = 'index';
 }
 FontAwesomeAsset::register($this);
-
 $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector: \'[data-toggle="tooltip"]\'});  });');
+$isAdmin = isset(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id)['admin']);
+$currBranchId = Yii::$app->session->get('branch_id');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -53,13 +54,11 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                     if (!Yii::$app->user->isGuest) {
                         ?>
                         <ul class="nav">
-                            <?php if (Yii::$app->user->can('view-dashboard')) { ?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-brands')) { ?><li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i>Marcas</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-device-types')) { ?><li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i>Tipos de dispositivos</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-shop')) { ?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-warehouse')) { ?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-workshop')) { ?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-sales')) { ?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('view-dashboard')) { ?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard', 'branch' => $currBranchId]) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-shop')) { ?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop', 'branch' => $currBranchId]) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-warehouse')) { ?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse', 'branch' => $currBranchId]) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-workshop')) { ?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop', 'branch' => $currBranchId]) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-sales')) { ?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales', 'branch' => $currBranchId]) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
                         </ul>
                         <?php
                     }
@@ -84,8 +83,35 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                             ?>
                             <div class="collapse navbar-collapse">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <?php if (Yii::$app->user->can('index-app-config')) { ?><li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i>Configuraci&oacute;n</a></li> <?php } ?>
-                                    <?php if (Yii::$app->user->can('index-users') || Yii::$app->user->can('index-roles')) { ?>
+                                    <?php if ($isAdmin) { ?>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i class="material-icons">group_work</i> Sucursal
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <?php
+                                                $branches = \common\models\Branch::find()->all();
+                                                foreach ($branches as $branch) {
+                                                ?>
+                                                    <li><a href="<?= Url::to(["/branches/set-branch?id=$branch->id"]) ?>"><i class="material-icons"></i> <?= $branch->name ?></a></li>
+                                                    <?php
+                                                }
+                                                ?>
+
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i class="material-icons">security</i> Administrar
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i> Marcas</a></li>
+                                                <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i> Tipos de dispositivos</a></li>
+                                                <li class="divider"></li>
+                                                <li class="<?= $this->params['active'] === 'branches' ? 'active' : '' ?>"><a href="<?= Url::to(['/branches']) ?>"><i class="material-icons">group_work</i> Sucursales</a></li>
+                                                <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i> Configuraci&oacute;n</a></li>
+                                            </ul>
+                                        </li>
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 <i class="material-icons">security</i> Seguridad
@@ -94,7 +120,9 @@ $this->registerJs('$(document).ready(function () { $(\'body\').tooltip({selector
                                                 <?php if (Yii::$app->user->can('index-users')) { ?><li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li> <?php } ?>
                                                 <?php if (Yii::$app->user->can('index-roles')) { ?><li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">content_paste</i> Roles</a></li> <?php } ?>
                                             </ul>
-                                        </li> <?php } ?>
+                                        </li>
+                                    <?php }
+                                    ?>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <i class="material-icons">notifications</i>

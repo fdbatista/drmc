@@ -2,33 +2,49 @@
 
 namespace backend\controllers;
 
-use common\models\search\StockSearch;
-use common\models\Shop;
-use common\models\Stock;
+use common\models\Branch;
+use common\models\search\BranchSearch;
 use Yii;
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 /**
- * ShopController implements the CRUD actions for Stock model.
+ * BranchesController implements the CRUD actions for Branch model.
  */
-class ShopController extends GenericController {
+class BranchesController extends GenericController {
 
     public function beforeAction($action) {
-        $this->entityId = 'shop';
+        $this->entityId = 'branches';
         Yii::$app->view->params['active'] = $this->entityId;
         return parent::beforeAction($action);
     }
 
     /**
-     * Lists all Shop models.
+     * {@inheritdoc}
+     */
+    public function behaviors() {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    public function actionSetBranch($id) {
+        \Yii::$app->session->set('branch_id', $id);
+        return $this->redirect(['/site/index']);
+    }
+
+    /**
+     * Lists all Branch models.
      * @return mixed
      */
-    public function actionIndex($branch) {
-        $searchModel = new StockSearch();
-        $searchModel->branch_id = $branch;
-        $searchModel->stock_type_id = 1;
+    public function actionIndex() {
+        $searchModel = new BranchSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -37,7 +53,7 @@ class ShopController extends GenericController {
     }
 
     /**
-     * Displays a single Shop model.
+     * Displays a single Branch model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -49,27 +65,24 @@ class ShopController extends GenericController {
     }
 
     /**
-     * Creates a new Shop model.
+     * Creates a new Branch model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Stock();
-        $model->stock_type_id = 1;
-        $model->first_discount = 0.00;
-        $model->major_discount = 0.00;
-        $model->branch_id = Yii::$app->session->get('branch_id');
+        $model = new Branch();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
         return $this->render('create', [
                     'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Shop model.
+     * Updates an existing Branch model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -77,7 +90,6 @@ class ShopController extends GenericController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        $model->branch_id = Yii::$app->session->get('branch_id');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -89,7 +101,7 @@ class ShopController extends GenericController {
     }
 
     /**
-     * Deletes an existing Shop model.
+     * Deletes an existing Branch model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -97,22 +109,23 @@ class ShopController extends GenericController {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
+
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Shop model based on its primary key value.
+     * Finds the Branch model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Shop the loaded model
+     * @return Branch the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Stock::findOne($id)) !== null) {
+        if (($model = Branch::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 }

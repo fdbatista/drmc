@@ -28,8 +28,9 @@ class WorkshopController extends GenericController {
      * Lists all Workshop models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex($branch) {
         $searchModel = new WorkshopSearch();
+        $searchModel->branch_id = $branch;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         //$dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
         $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
@@ -66,6 +67,7 @@ class WorkshopController extends GenericController {
         $model = new Workshop();
         $model->receiver_id = Yii::$app->user->identity->id;
         $model->date_received = date('Y-m-d');
+        $model->branch_id = Yii::$app->session->get('branch_id');
         $this->updateFolioNumber($model);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -103,19 +105,14 @@ class WorkshopController extends GenericController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model->branch_id = Yii::$app->session->get('branch_id');
+        if ($model->status === 1) {
+            return $this->actionView($id);
+        }
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            $currentPreDiagnosisItems = $model->workshopPreDiagnoses;
-            foreach ($currentPreDiagnosisItems as $currentPreDiagnosisItem) {
-                $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
-                if (!$stockModel) {
-                    $stockModel = new Stock(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id, 'items' => $currentPreDiagnosisItem->items]);
-                } else {
-                    $stockModel->items += $currentPreDiagnosisItem->items;
-                }
-                $stockModel->save();
-                $currentPreDiagnosisItem->delete();
-            }
+            $this->restoreStockItemsInPreDiagnosis($model);
 
             $preDiagnosisItems = json_decode(Yii::$app->request->post()['pre-diagnosis-items'], true);
             if ($preDiagnosisItems) {
@@ -152,9 +149,26 @@ class WorkshopController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        if ($model->status === 0) {
+            $this->restoreStockItemsInPreDiagnosis($model);
+        }
+        $model->delete();
         return $this->redirect(['index']);
+    }
+    
+    private function restoreStockItemsInPreDiagnosis(Workshop $model) {
+        $currentPreDiagnosisItems = $model->workshopPreDiagnoses;
+            foreach ($currentPreDiagnosisItems as $currentPreDiagnosisItem) {
+                $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+                if (!$stockModel) {
+                    $stockModel = new Stock(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id, 'items' => $currentPreDiagnosisItem->items]);
+                } else {
+                    $stockModel->items += $currentPreDiagnosisItem->items;
+                }
+                $stockModel->save();
+                $currentPreDiagnosisItem->delete();
+            }
     }
 
     /**
@@ -327,8 +341,12 @@ class WorkshopController extends GenericController {
             if (!$model->warranty_until) {
                 $model->addError('warranty_until', 'Este dato es obligatorio');
             }
-            if ($model->discount_applied !== '0' && ($model->discount_applied < $minDiscount || $model->discount_applied > $maxDiscount)) {
-                $model->addError('discount_applied', "El descuento aplicado debe estar entre $minDiscount y $maxDiscount.");
+            /* if ($model->discount_applied !== '0' && ($model->discount_applied < $minDiscount || $model->discount_applied > $maxDiscount)) {
+              $model->addError('discount_applied', "El descuento aplicado debe estar entre $minDiscount y $maxDiscount.");
+              $model->final_price += $model->discount_applied;
+              } */
+            if ($model->discount_applied !== '0' && $model->discount_applied > $maxDiscount) {
+                $model->addError('discount_applied', "El descuento aplicado no debe ser mayor de $maxDiscount.");
                 $model->final_price += $model->discount_applied;
             }
             if (!$model->hasErrors()) {

@@ -1,19 +1,19 @@
 <?php
 
-use common\models\DeviceType;
+use common\models\Branch;
 use common\utils\AttributesLabels;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\DetailView;
 
 /* @var $this View */
-/* @var $model DeviceType */
+/* @var $model Branch */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tipos de dispositivo'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Sucursales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="device-type-view">
+<div class="branch-view">
 
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -32,6 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'name',
                 'label' => AttributesLabels::getAttributeLabel('name'),
+            ],
+            [
+                'attribute' => 'description',
+                'label' => AttributesLabels::getAttributeLabel('description'),
             ],
         ],
     ]) ?>

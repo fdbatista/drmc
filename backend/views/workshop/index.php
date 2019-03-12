@@ -67,25 +67,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {index-payments} {delete}',
+                'template' => '{view} {update} {index-payments} {delete} {print}',
                 'buttons' =>
                     [
                     'view' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     },
-                    'update' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                    'update' => function ($key, $model) {
+                        return $model->status === 0 ? '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>' : '';
                     },
-                    'index-payments' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-credit-card"></span>', $url, [
+                    'index-payments' => function ($url, $searchModel) {
+                        return $searchModel->status === 0 ? Html::a('<span class="glyphicon glyphicon-credit-card"></span>', $url, [
                                     'title' => Yii::t('yii', 'Cotizaciones'),
                                     'data-toggle' => 'tooltip',
                                     'data-placement' => 'top',
                                     'data-pjax' => 0,
-                        ]);
+                                ]) : '';
                     },
-                    'delete' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
+                    'print' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Imprimir"><span class="glyphicon glyphicon-print"></span></a>';
+                    },
+                    'delete' => function ($key, $model) {
+                        return $model->status === 0 ? '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>' : '';
                     },
                 ]
             ],

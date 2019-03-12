@@ -23,8 +23,9 @@ class WarehouseController extends GenericController {
      * Lists all Shop models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex($branch) {
         $searchModel = new StockSearch();
+        $searchModel->branch_id = $branch;
         $searchModel->stock_type_id = 2;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
@@ -57,6 +58,7 @@ class WarehouseController extends GenericController {
         $model->stock_type_id = 2;
         $model->first_discount = 0.00;
         $model->major_discount = 0.00;
+        $model->branch_id = Yii::$app->session->get('branch_id');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,6 +77,7 @@ class WarehouseController extends GenericController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model->branch_id = Yii::$app->session->get('branch_id');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

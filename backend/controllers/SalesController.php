@@ -30,8 +30,9 @@ class SalesController extends GenericController {
      * Lists all Sale models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex($branch) {
         $searchModel = new SaleSearch();
+        $searchModel->branch_id = $branch;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['date' => SORT_DESC];
 
@@ -181,8 +182,11 @@ class SalesController extends GenericController {
                 if ($stockModel->items < $model->items) {
                     $model->addError('items', 'Solo existen ' . $stockModel->items . ' unidades disponibles de este producto.');
                 }
-                if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
+                /*if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
                     $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
+                }*/
+                if ($model->discount_applied > 0 && $model->discount_applied > $stockModel->major_discount * $model->items) {
+                    $model->addError('discount_applied', 'El descuento aplicado no debe ser mayor de ' . $stockModel->major_discount * $model->items . '.');
                 }
             } else {
                 $model->addError('type_id', 'No existen dispositivos disponibles con ese tipo/modelo');
@@ -215,8 +219,11 @@ class SalesController extends GenericController {
         if ($model->load(Yii::$app->request->post())) {
             $stockModel = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stockModel) {
-                if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
+                /*if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
                     $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
+                }*/
+                if ($model->discount_applied > 0 && $model->discount_applied > $stockModel->major_discount * $model->items) {
+                    $model->addError('discount_applied', 'El descuento aplicado no debe ser mayor de ' . $stockModel->major_discount * $model->items . '.');
                 }
             } else {
                 $model->addError('type_id', 'No existen dispositivos disponibles con ese tipo/modelo');
