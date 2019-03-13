@@ -3,6 +3,7 @@
 /* @var $content string */
 
 use backend\assets\FontAwesomeAsset;
+use common\models\Branch;
 use ramosisw\CImaterial\web\MaterialAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -77,7 +78,7 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                 <span class="icon-bar"></span>
                             </button>
                             <span class="navbar-brand" href="">
-                                Bienvenido, <?= Yii::$app->user->identity->username ?><br />
+                                Bienvenido, <?= Yii::$app->user->identity->first_name ?><br />
                                 <?php
                                 if (Yii::$app->session->get('branch_name')) {
                                     ?>
@@ -99,7 +100,7 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <?php
-                                                $branches = \common\models\Branch::find()->all();
+                                                $branches = Branch::find()->all();
                                                 foreach ($branches as $branch) {
                                                     ?>
                                                     <li><a href="<?= Url::to(["/site/set-branch?id=$branch->id"]) ?>"><?= $branch->name ?></a></li>
@@ -110,14 +111,14 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                         </li>
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                <i class="material-icons">security</i> Administrar
+                                                <i class="material-icons">settings</i> Administrar
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <li class="<?= $this->params['active'] === 'brands' ? 'active' : '' ?>"><a href="<?= Url::to(['/brands']) ?>"><i class="material-icons">spa</i> Marcas</a></li>
                                                 <li class="<?= $this->params['active'] === 'device-types' ? 'active' : '' ?>"><a href="<?= Url::to(['/device-types']) ?>"><i class="material-icons">phonelink_setup</i> Tipos de dispositivos</a></li>
                                                 <li class="divider"></li>
                                                 <li class="<?= $this->params['active'] === 'branches' ? 'active' : '' ?>"><a href="<?= Url::to(['/branches']) ?>"><i class="material-icons">group_work</i> Sucursales</a></li>
-                                                <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">settings</i> Configuraci&oacute;n</a></li>
+                                                <li class="<?= $this->params['active'] === 'app-config' ? 'active' : '' ?>"><a href="<?= Url::to(['/settings']) ?>"><i class="material-icons">build</i> Configuraci&oacute;n</a></li>
                                             </ul>
                                         </li>
                                         <li class="dropdown">
@@ -125,8 +126,8 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                                 <i class="material-icons">security</i> Seguridad
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <?php if (Yii::$app->user->can('index-users')) { ?><li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">content_paste</i> Usuarios</a></li> <?php } ?>
-                                                <?php if (Yii::$app->user->can('index-roles')) { ?><li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">content_paste</i> Roles</a></li> <?php } ?>
+                                                <?php if (Yii::$app->user->can('index-users')) { ?><li class="<?= $this->params['active'] === 'users' ? 'active' : '' ?>"><a href="<?= Url::to(['/users']) ?>"><i class="material-icons">people</i> Usuarios</a></li> <?php } ?>
+                                                <?php if (Yii::$app->user->can('index-roles')) { ?><li class="<?= $this->params['active'] === 'roles' ? 'active' : '' ?>"><a href="<?= Url::to(['/roles']) ?>"><i class="material-icons">account_box</i> Roles</a></li> <?php } ?>
                                             </ul>
                                         </li>
                                     <?php }

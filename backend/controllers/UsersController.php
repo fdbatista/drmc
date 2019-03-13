@@ -63,7 +63,7 @@ class UsersController extends GenericController {
             }
         }
 
-        return $this->render('create', ['model' => $model, 'userRole' => 'tech']);
+        return $this->render('create', ['model' => $model, 'userRole' => 'tecnico']);
     }
 
     /**

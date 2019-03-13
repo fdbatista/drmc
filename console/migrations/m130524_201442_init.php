@@ -19,6 +19,7 @@ class m130524_201442_init extends Migration {
             'email' => $this->string(50)->notNull()->unique(),
             'sex' => $this->string(1)->notNull()->defaultValue('M'),
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'branch_id' => $this->integer(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

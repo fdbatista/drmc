@@ -23,6 +23,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $sex
  * @property int $status
+ * @property int $branch_id
  * @property int $created_at
  * @property int $updated_at
  *
@@ -35,6 +36,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public $password;
     public $password_repeat;
+
     //public $role;
 
     /**
@@ -59,7 +61,7 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
                 [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-                [['status', 'created_at', 'updated_at'], 'integer'],
+                [['status', 'branch_id', 'created_at', 'updated_at'], 'integer'],
                 [['username', 'first_name', 'last_name', 'email'], 'string', 'max' => 50],
                 [['auth_key'], 'string', 'max' => 32],
                 [['telephone', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
@@ -71,8 +73,8 @@ class User extends ActiveRecord implements IdentityInterface {
                 ['email', 'email'],
                 ['status', 'in', 'range' => [self::STATUS_DELETED, self::STATUS_ACTIVE]],
                 ['status', 'required'],
-      //          ['password', 'compare'],
-                [['password', 'password_repeat'], 'safe'],
+            //          ['password', 'compare'],
+            [['password', 'password_repeat'], 'safe'],
         ];
     }
 
@@ -220,12 +222,19 @@ class User extends ActiveRecord implements IdentityInterface {
         return $this->hasMany(Workshop::className(), ['receiver_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBranch() {
+        return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
+    }
+
     public function getRole() {
         $roles = Yii::$app->authManager->getRolesByUser($this->id);
         foreach ($roles as $key => $value) {
             return $key;
         }
-        return 'tech';
+        return 'tecnico';
     }
 
     public function getRoleDescription() {

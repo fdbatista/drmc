@@ -55,6 +55,7 @@ class AttributesLabels {
         'stock_type_id' => 'Destino',
         'date_closed' => 'Fecha del cierre',
         'device' => 'Dispositivo',
+        'branch_id' => 'Sucursal',
     ];
     
     public static function getAttributeLabel($name) {

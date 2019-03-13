@@ -54,15 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 'filter' => [0 => 'Inactivo', 10 => 'Activo']
             ],
-            [
-                'attribute' => 'updated_at',
-                'label' => AttributesLabels::getAttributeLabel('updated_at'),
-                'filterInputOptions' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Introduzca un criterio...'
-                ],
-                'format' => ['date', 'php:Y-m-d H:i:s']
-            ],
                             
             [
                 'class' => 'yii\grid\ActionColumn',

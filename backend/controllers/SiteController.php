@@ -14,7 +14,7 @@ use yii\web\Controller;
  * Site controller
  */
 class SiteController extends Controller {
-    
+
     public $layout = 'main';
 
     /**
@@ -34,7 +34,7 @@ class SiteController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                    [
+                        [
                         'actions' => ['set-branch'],
                         'allow' => true,
                         'roles' => ['admin'],
@@ -67,7 +67,7 @@ class SiteController extends Controller {
             ],
         ];
     }
-    
+
     public function actionSetBranch($id) {
         Yii::$app->session->set('branch_id', $id);
         Yii::$app->session->set('branch_name', Branch::findOne($id)->name);
@@ -87,7 +87,7 @@ class SiteController extends Controller {
         Yii::$app->view->params['active'] = 'dashboard';
         return $this->render('dashboard');
     }
-    
+
     public function actionSelectBranch() {
         return $this->render('select-branch');
     }
@@ -111,13 +111,16 @@ class SiteController extends Controller {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $user = Yii::$app->user->identity;
+            $userBranch = $user->branch;
+            if ($userBranch) {
+                Yii::$app->session->set('branch_id', $userBranch->id);
+                Yii::$app->session->set('branch_name', $userBranch->name);
+            }
             return $this->goBack();
         } else {
             $model->password = '';
-
-            return $this->render('login', [
-                        'model' => $model,
-            ]);
+            return $this->render('login', ['model' => $model]);
         }
     }
 

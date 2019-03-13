@@ -67,6 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->updated_at,
                 'format' => 'datetime'
             ],
+            [
+                'label' => AttributesLabels::getAttributeLabel('branch_id'),
+                'value' => $model->branch->name,
+            ],
         ],
     ]) ?>
 
