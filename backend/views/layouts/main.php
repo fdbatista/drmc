@@ -51,14 +51,14 @@ $currBranchId = Yii::$app->session->get('branch_id');
 
                 <div class="sidebar-wrapper">
                     <?php
-                    if (!Yii::$app->user->isGuest) {
+                    if (!Yii::$app->user->isGuest && Yii::$app->session->get('branch_id')) {
                         ?>
                         <ul class="nav">
-                            <?php if (Yii::$app->user->can('view-dashboard')) { ?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard', 'branch' => $currBranchId]) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-shop')) { ?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop', 'branch' => $currBranchId]) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-warehouse')) { ?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse', 'branch' => $currBranchId]) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-workshop')) { ?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop', 'branch' => $currBranchId]) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
-                            <?php if (Yii::$app->user->can('index-sales')) { ?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales', 'branch' => $currBranchId]) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('view-dashboard')) { ?><li class="<?= $this->params['active'] === 'dashboard' ? 'active' : '' ?>"><a href="<?= Url::to(['site/view-dashboard']) ?>"><i class="material-icons">dashboard</i>Panel de control</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-shop')) { ?><li class="<?= $this->params['active'] === 'shop' ? 'active' : '' ?>"><a href="<?= Url::to(['/shop']) ?>"><i class="material-icons">shopping_cart</i>Tienda</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-warehouse')) { ?><li class="<?= $this->params['active'] === 'warehouse' ? 'active' : '' ?>"><a href="<?= Url::to(['/warehouse']) ?>"><i class="material-icons">store</i>Almac&eacute;n</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-workshop')) { ?><li class="<?= $this->params['active'] === 'workshop' ? 'active' : '' ?>"><a href="<?= Url::to(['/workshop']) ?>"><i class="material-icons">android</i>Reparaciones</a></li> <?php } ?>
+                            <?php if (Yii::$app->user->can('index-sales')) { ?><li class="<?= $this->params['active'] === 'sales' ? 'active' : '' ?>"><a href="<?= Url::to(['/sales']) ?>"><i class="material-icons">attach_money</i>Ventas</a></li> <?php } ?>
                         </ul>
                         <?php
                     }
@@ -76,7 +76,16 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <span class="navbar-brand" href="">Bienvenido, <?= Yii::$app->user->identity->username ?></span>
+                            <span class="navbar-brand" href="">
+                                Bienvenido, <?= Yii::$app->user->identity->username ?><br />
+                                <?php
+                                if (Yii::$app->session->get('branch_name')) {
+                                    ?>
+                                    <b>Sucursal <span class="badge" style="background: #00bcd4"><?= Yii::$app->session->get('branch_name') ?></span></b>
+                                    <?php
+                                }
+                                ?>
+                            </span>
                         </div>
                         <?php
                         if (!Yii::$app->user->isGuest) {
@@ -92,12 +101,11 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                                 <?php
                                                 $branches = \common\models\Branch::find()->all();
                                                 foreach ($branches as $branch) {
-                                                ?>
-                                                    <li><a href="<?= Url::to(["/branches/set-branch?id=$branch->id"]) ?>"><i class="material-icons"></i> <?= $branch->name ?></a></li>
+                                                    ?>
+                                                    <li><a href="<?= Url::to(["/site/set-branch?id=$branch->id"]) ?>"><?= $branch->name ?></a></li>
                                                     <?php
                                                 }
                                                 ?>
-
                                             </ul>
                                         </li>
                                         <li class="dropdown">

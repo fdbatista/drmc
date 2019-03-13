@@ -32,8 +32,8 @@ class m181008_221833_create_stock_table extends Migration
         $this->addForeignKey('fk_stock_brandmodel', 'stock', 'brand_model_id', 'brand_model', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk_stock_branch', 'stock', 'branch_id', 'branch', 'id', 'CASCADE', 'CASCADE');
         
-        $this->createIndex('idx_stock_codestocktype', 'stock', 'code, stock_type_id', true);
-        $this->createIndex('idx_stock_devicemodel', 'stock', 'device_type_id, brand_model_id', true);
+        $this->createIndex('idx_stock_codestocktype', 'stock', 'code, stock_type_id, branch_id', true);
+        $this->createIndex('idx_stock_devicemodel', 'stock', 'device_type_id, brand_model_id, branch_id', true);
     }
 
     /**

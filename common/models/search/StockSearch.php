@@ -74,6 +74,7 @@ class StockSearch extends Stock {
             'price_out' => $this->price_out,
             'first_discount' => $this->first_discount,
             'major_discount' => $this->major_discount,
+            'branch_id' => $this->branch_id,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])

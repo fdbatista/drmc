@@ -69,6 +69,7 @@ class SaleSearch extends Sale {
             'status' => $this->status,
             'customer_id' => $this->customer_id,
             'updated_at' => $this->updated_at,
+            'branch_id' => $this->branch_id,
         ]);
         $query->andFilterWhere(['like', 'customer.code', $this->customer]);
 

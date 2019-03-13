@@ -38,7 +38,7 @@ class StaticMembers {
 
         if ($deviceType) {
             $res[$deviceType->name] = [];
-            $stockItems = Stock::findAll(['device_type_id' => $deviceTypeId]);
+            $stockItems = Stock::findAll(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $deviceTypeId]);
             foreach ($stockItems as $item) {
                 if ($item->items > 0) {
                     $model = $item->brandModel;
@@ -55,7 +55,7 @@ class StaticMembers {
 
         if ($brandModel) {
             $res[$brandModel->name] = [];
-            $stockItems = Stock::findAll(['stock_type_id' => 2, 'brand_model_id' => $brandModelId]);
+            $stockItems = Stock::findAll(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 2, 'brand_model_id' => $brandModelId]);
             foreach ($stockItems as $item) {
                 $model = $item->getDeviceType()->one();
                 $res[$brandModel->name][] = ['id' => $model->id, 'name' => $model->name . ' (max: ' . $item->items . ')'];
@@ -66,7 +66,7 @@ class StaticMembers {
 
     public static function getBrandModelsForSale($deviceTypeId) {
         $brandModels = [];
-        $items = Stock::findAll(['device_type_id' => $deviceTypeId]);
+        $items = Stock::findAll(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $deviceTypeId]);
         foreach ($items as $item) {
             $brandModel = $item->getBrandModel()->one();
             if (!isset($brandModels[$brandModel->id])) {
@@ -78,7 +78,7 @@ class StaticMembers {
 
     public static function getDevicesForSale() {
         $deviceTypes = [];
-        $items = Stock::find()->all();
+        $items = Stock::find()->where(['branch_id' => Yii::$app->session->get('branch_id')])->all();
         foreach ($items as $item) {
             $deviceType = $item->getDeviceType()->one();
             if (!isset($deviceTypes[$deviceType->id])) {

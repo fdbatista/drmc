@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Branch;
 use common\models\LoginForm;
 use common\models\User;
 use Yii;
@@ -33,6 +34,11 @@ class SiteController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['set-branch'],
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
                         [
                         'allow' => true,
                         'roles' => ['@'],
@@ -61,6 +67,12 @@ class SiteController extends Controller {
             ],
         ];
     }
+    
+    public function actionSetBranch($id) {
+        Yii::$app->session->set('branch_id', $id);
+        Yii::$app->session->set('branch_name', Branch::findOne($id)->name);
+        return $this->redirect(['/site/index']);
+    }
 
     /**
      * Displays homepage.
@@ -68,12 +80,16 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        return $this->actionViewDashboard();
+        return (Yii::$app->session->get('branch_id')) ? $this->actionViewDashboard() : $this->actionSelectBranch();
     }
 
     public function actionViewDashboard() {
         Yii::$app->view->params['active'] = 'dashboard';
         return $this->render('dashboard');
+    }
+    
+    public function actionSelectBranch() {
+        return $this->render('select-branch');
     }
 
     public function actionProfile() {
@@ -112,7 +128,6 @@ class SiteController extends Controller {
      */
     public function actionLogout() {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 

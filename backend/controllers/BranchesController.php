@@ -33,11 +33,6 @@ class BranchesController extends GenericController {
         ];
     }
 
-    public function actionSetBranch($id) {
-        \Yii::$app->session->set('branch_id', $id);
-        return $this->redirect(['/site/index']);
-    }
-
     /**
      * Lists all Branch models.
      * @return mixed

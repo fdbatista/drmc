@@ -12,7 +12,7 @@ use yii\web\Controller;
 class GenericController extends Controller {
 
     protected $entityId = '';
-
+    
     /**
      * {@inheritdoc}
      */

@@ -75,6 +75,7 @@ class WorkshopSearch extends Workshop {
             'effort' => $this->effort,
             'receiver_id' => $this->receiver_id,
             'status' => $this->status,
+            'branch_id' => $this->branch_id,
         ]);
 
         $query->andFilterWhere(['like', 'password', $this->password])

@@ -30,9 +30,8 @@ class SalesController extends GenericController {
      * Lists all Sale models.
      * @return mixed
      */
-    public function actionIndex($branch) {
-        $searchModel = new SaleSearch();
-        $searchModel->branch_id = $branch;
+    public function actionIndex() {
+        $searchModel = new SaleSearch(['branch_id' => Yii::$app->session->get('branch_id')]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->getSort()->defaultOrder = ['date' => SORT_DESC];
 
@@ -60,7 +59,7 @@ class SalesController extends GenericController {
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Sale();
+        $model = new Sale(['branch_id' => Yii::$app->session->get('branch_id')]);
         $post = Yii::$app->request->post();
         if (count($post) > 0) {
             if (($post['client-type'] === '1' && $post['Sale']['client-code'] === '') || ($post['client-type'] === '2' && $post['Sale']['customer_id'] === '')) {
@@ -127,7 +126,7 @@ class SalesController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Sale::findOne($id)) !== null) {
+        if (($model = Sale::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'id' => $id])) !== null) {
             return $model;
         }
 
@@ -141,8 +140,7 @@ class SalesController extends GenericController {
      * @return mixed
      */
     public function actionIndexItems($id) {
-        $searchModel = new SaleItemSearch();
-        $searchModel->sale_id = $id;
+        $searchModel = new SaleItemSearch(['sale_id' => $id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-items', [
@@ -169,15 +167,10 @@ class SalesController extends GenericController {
      * @return mixed
      */
     public function actionCreateItems($id) {
-        $model = new SaleItem();
-        $model->sale_id = $id;
-        $model->items = 0;
-        $model->price_out = 0;
-        $model->discount_applied = 0;
-        $model->final_price = 0;
+        $model = new SaleItem(['sale_id' => $id, 'items' => 0, 'price_out' => 0, 'discount_applied' => 0, 'final_price' => 0]);
 
         if ($model->load(Yii::$app->request->post())) {
-            $stockModel = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+            $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stockModel) {
                 if ($stockModel->items < $model->items) {
                     $model->addError('items', 'Solo existen ' . $stockModel->items . ' unidades disponibles de este producto.');
@@ -217,7 +210,7 @@ class SalesController extends GenericController {
         $model = $this->findItemsModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $stockModel = Stock::findOne(['device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+            $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stockModel) {
                 /*if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
                     $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
@@ -246,10 +239,8 @@ class SalesController extends GenericController {
      */
     public function actionDeleteItems($id) {
         $model = $this->findItemsModel($id);
-        $stockModel = Stock::findOne(['brand_model_id' => $model->brand_model_id, 'device_type_id' => $model->device_type_id]);
-        /* if (!$stockModel) {
-          $stockModel = new Stock(['brand_model_id' => $model->brand_model_id, 'device_type_id' => $model->device_type_id, 'items' => 0, 'stock_type_id' => $model->deviceType->stock_type_id]);
-          } */
+        $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'brand_model_id' => $model->brand_model_id, 'device_type_id' => $model->device_type_id]);
+        
         if ($stockModel) {
             $stockModel->items += $model->items;
             $stockModel->save();
@@ -292,7 +283,7 @@ class SalesController extends GenericController {
         $model = BrandModel::findOne($post['model_id']);
         $res = [];
         if ($type && $model) {
-            $item = Stock::findOne(['device_type_id' => $type->id, 'brand_model_id' => $model->id]);
+            $item = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $type->id, 'brand_model_id' => $model->id]);
             $items = $post['items'];
             if ($item && $items && $item->items >= $items) {
                 $priceDiff = $item->price_out - $item->price_in;

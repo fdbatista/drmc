@@ -28,11 +28,9 @@ class WorkshopController extends GenericController {
      * Lists all Workshop models.
      * @return mixed
      */
-    public function actionIndex($branch) {
-        $searchModel = new WorkshopSearch();
-        $searchModel->branch_id = $branch;
+    public function actionIndex() {
+        $searchModel = new WorkshopSearch(['branch_id' => Yii::$app->session->get('branch_id')]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //$dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
         $dataProvider->getSort()->defaultOrder = ['updated_at' => SORT_DESC];
 
         return $this->render('index', [
@@ -64,16 +62,13 @@ class WorkshopController extends GenericController {
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Workshop();
-        $model->receiver_id = Yii::$app->user->identity->id;
-        $model->date_received = date('Y-m-d');
-        $model->branch_id = Yii::$app->session->get('branch_id');
+        $model = new Workshop(['branch_id' => Yii::$app->session->get('branch_id'), 'date_received' => date('Y-m-d'), 'receiver_id' => Yii::$app->user->identity->id]);
         $this->updateFolioNumber($model);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $preDiagnosisItems = json_decode(Yii::$app->request->post()['pre-diagnosis-items'], true);
             foreach ($preDiagnosisItems as $preDiagnosisItem) {
-                $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
+                $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
                 if ($stockModel) {
                     if ($preDiagnosisItem['items'] <= $stockModel->items) {
                         $workshopPreDiagnosis = new WorkshopPreDiagnosis();
@@ -117,7 +112,7 @@ class WorkshopController extends GenericController {
             $preDiagnosisItems = json_decode(Yii::$app->request->post()['pre-diagnosis-items'], true);
             if ($preDiagnosisItems) {
                 foreach ($preDiagnosisItems as $preDiagnosisItem) {
-                    $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
+                    $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 2, 'device_type_id' => $preDiagnosisItem['id'], 'brand_model_id' => $model->brand_model_id]);
                     if ($stockModel) {
                         if ($preDiagnosisItem['items'] <= $stockModel->items) {
                             $workshopPreDiagnosis = new WorkshopPreDiagnosis();
@@ -160,9 +155,9 @@ class WorkshopController extends GenericController {
     private function restoreStockItemsInPreDiagnosis(Workshop $model) {
         $currentPreDiagnosisItems = $model->workshopPreDiagnoses;
             foreach ($currentPreDiagnosisItems as $currentPreDiagnosisItem) {
-                $stockModel = Stock::findOne(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+                $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
                 if (!$stockModel) {
-                    $stockModel = new Stock(['stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id, 'items' => $currentPreDiagnosisItem->items]);
+                    $stockModel = new Stock(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 2, 'device_type_id' => $currentPreDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id, 'items' => $currentPreDiagnosisItem->items]);
                 } else {
                     $stockModel->items += $currentPreDiagnosisItem->items;
                 }
@@ -179,7 +174,7 @@ class WorkshopController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Workshop::findOne($id)) !== null) {
+        if (($model = Workshop::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'id' => $id])) !== null) {
             return $model;
         }
 
@@ -329,7 +324,7 @@ class WorkshopController extends GenericController {
         $preDiagnosisItems = $model->workshopPreDiagnoses;
         foreach ($preDiagnosisItems as $preDiagnosisItem) {
             $model->final_price += ($preDiagnosisItem->price_per_unit * $preDiagnosisItem->items);
-            $stockModel = Stock::findOne(['device_type_id' => $preDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
+            $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $preDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stockModel) {
                 $minDiscount += ($stockModel->first_discount * $preDiagnosisItem->items);
                 $maxDiscount += ($stockModel->major_discount * $preDiagnosisItem->items);
