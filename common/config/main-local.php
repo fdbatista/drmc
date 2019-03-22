@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=id8229989_drmc',
-            'username' => 'id8229989_drmc',
-            'password' => 'id8229989_drmc',
+            'dsn' => 'mysql:host=localhost;dbname=u715364900_drmc',
+            'username' => 'u715364900_drmc',
+            'password' => 'u715364900_drmc',
             'charset' => 'utf8',
         ],
         'mailer' => [
