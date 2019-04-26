@@ -22,7 +22,9 @@ use Yii;
  * @property int $branch_id
  * @property int $created_at
  * @property int $updated_at
+ * @property string $user_data
  *
+ * @property Branch $branch
  * @property Workshop[] $workshops
  */
 class UserDB extends \yii\db\ActiveRecord {
@@ -39,8 +41,9 @@ class UserDB extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-                [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
+                [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at', 'user_data'], 'required'],
                 [['status', 'branch_id', 'created_at', 'updated_at'], 'integer'],
+                [['user_data'], 'string'],
                 [['username', 'first_name', 'last_name', 'email'], 'string', 'max' => 50],
                 [['auth_key'], 'string', 'max' => 32],
                 [['telephone', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
@@ -49,6 +52,7 @@ class UserDB extends \yii\db\ActiveRecord {
                 [['username'], 'unique'],
                 [['email'], 'unique'],
                 [['password_reset_token'], 'unique'],
+                [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
         ];
     }
 
@@ -57,28 +61,23 @@ class UserDB extends \yii\db\ActiveRecord {
      */
     public function attributeLabels() {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Username'),
-            'auth_key' => Yii::t('app', 'Auth Key'),
-            'first_name' => Yii::t('app', 'First Name'),
-            'last_name' => Yii::t('app', 'Last Name'),
-            'telephone' => Yii::t('app', 'Telephone'),
-            'address' => Yii::t('app', 'Address'),
-            'password_hash' => Yii::t('app', 'Password Hash'),
-            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
-            'email' => Yii::t('app', 'Email'),
-            'sex' => Yii::t('app', 'Sex'),
-            'status' => Yii::t('app', 'Status'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'id' => 'ID',
+            'username' => 'Username',
+            'auth_key' => 'Auth Key',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'telephone' => 'Telephone',
+            'address' => 'Address',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'email' => 'Email',
+            'sex' => 'Sex',
+            'status' => 'Status',
+            'branch_id' => 'Branch ID',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'user_data' => 'User Data',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorkshops() {
-        return $this->hasMany(Workshop::className(), ['receiver_id' => 'id']);
     }
 
     /**
@@ -86,6 +85,13 @@ class UserDB extends \yii\db\ActiveRecord {
      */
     public function getBranch() {
         return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWorkshops() {
+        return $this->hasMany(Workshop::className(), ['receiver_id' => 'id']);
     }
 
 }

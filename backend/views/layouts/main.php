@@ -82,7 +82,7 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                 <?php
                                 if (Yii::$app->session->get('branch_name')) {
                                     ?>
-                                    <b>Sucursal <span class="badge" style="background: #00bcd4"><?= Yii::$app->session->get('branch_name') ?></span></b>
+                                    <b><span class="badge" style="background: #00bcd4">Sucursal <?= Yii::$app->session->get('branch_name') ?></span></b>
                                     <?php
                                 }
                                 ?>
@@ -103,7 +103,7 @@ $currBranchId = Yii::$app->session->get('branch_id');
                                                 $branches = Branch::find()->all();
                                                 foreach ($branches as $branch) {
                                                     ?>
-                                                    <li><a href="<?= Url::to(["/site/set-branch?id=$branch->id"]) ?>"><?= $branch->name ?></a></li>
+                                                    <li><a href="<?= Url::to(["/site/set-branch?id=$branch->id"]) ?>"><i class="material-icons">group_work</i> <?= $branch->name ?></a></li>
                                                     <?php
                                                 }
                                                 ?>

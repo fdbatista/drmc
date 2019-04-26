@@ -34,7 +34,7 @@ class m181015_131651_init_rbac extends Migration {
             'shop' => 'productos de la tienda',
             'warehouse' => 'productos del almacén',
             'workshop' => 'productos del taller',
-            'payments-workshop' => 'cotizaciones del taller',
+            'payments-workshop' => 'anticipos del taller',
             'sales' => 'ventas',
             'items-sales' => 'productos de las ventas',
             'users' => 'usuarios',

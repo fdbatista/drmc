@@ -11,10 +11,10 @@ use yii\widgets\Pjax;
 /* @var $searchModel WorkshopPaymentSearch */
 /* @var $dataProvider ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Cotizaciones');
+$this->title = Yii::t('app', 'Anticipos');
 $parent = $searchModel->getWorkshop()->one();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos del dispositivo'), 'url' => ['view', 'id' => $parent->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos de la reparación'), 'url' => ['view', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-payment-index">
@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar cotización'), ['create-payments', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Anticipo'), ['create-payments', 'id' => $parent->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= GridView::widget([

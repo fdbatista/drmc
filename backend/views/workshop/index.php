@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
-        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Dispositivo'), ['create'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">add</i> ' . Yii::t('app', 'Agregar Reparación'), ['create'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?=
@@ -56,8 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
                 [
-                'attribute' => 'observations',
-                'label' => AttributesLabels::getAttributeLabel('observations'),
+                'attribute' => 'folio_number',
+                'label' => AttributesLabels::getAttributeLabel('folio_number'),
                 'filterInputOptions' => [
                     'class' => 'form-control',
                     'placeholder' => 'Introduzca un criterio...'
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'index-payments' => function ($url, $searchModel) {
                         return $searchModel->status === 0 ? Html::a('<span class="glyphicon glyphicon-credit-card"></span>', $url, [
-                                    'title' => Yii::t('yii', 'Cotizaciones'),
+                                    'title' => Yii::t('yii', 'Anticipos'),
                                     'data-toggle' => 'tooltip',
                                     'data-placement' => 'top',
                                     'data-pjax' => 0,

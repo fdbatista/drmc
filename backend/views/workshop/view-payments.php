@@ -9,11 +9,11 @@ use yii\widgets\DetailView;
 /* @var $this View */
 /* @var $model WorkshopPayment */
 
-$this->title = Yii::t('app', 'Detalles de la cotización');
+$this->title = Yii::t('app', 'Detalles del anticipo');
 $parent = $model->getWorkshop()->one();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos del dispositivo'), 'url' => ['view', 'id' => $parent->id]];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Cotizaciones'), 'url' => ['index-payments', 'id' => $parent->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos de la reparación'), 'url' => ['view', 'id' => $parent->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Anticipos'), 'url' => ['index-payments', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-payment-view">

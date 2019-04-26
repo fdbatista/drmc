@@ -65,12 +65,10 @@ use yii\web\View;
                         <div class="row">
                             <div class="col-sm-6 col-md-3">
                                 <?=
-                                $form->field($model, 'sex')->widget(Select2::classname(), [
-                                    'data' => ['F' => 'Femenino', 'M' => 'Masculino'],
-                                    'language' => 'es',
+                                $form->field($model, 'sex', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('sex') . '</label>{input}</div>'])->widget(Select2::classname(), [
+                                    'data' => ['M' => 'Masculino', 'F' => 'Femenino'],
                                     'theme' => Select2::THEME_KRAJEE,
-                                    'options' => ['placeholder' => AttributesLabels::getAttributeLabel('sex')],
-                                ])->label(false)
+                                ])->label(false);
                                 ?>
                             </div>
 

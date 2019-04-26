@@ -94,7 +94,27 @@ class SiteController extends Controller {
 
     public function actionProfile() {
         Yii::$app->view->params['active'] = 'profile';
-        return $this->render('profile', ['model' => User::findOne(Yii::$app->user->identity->id)]);
+        $model = User::findOne(Yii::$app->user->identity->id);
+        $zones = timezone_identifiers_list();
+        $locations = [];
+
+        foreach ($zones as $zone) {
+            $zoneExploded = explode('/', $zone);
+            if (isset($zoneExploded[1])) {
+                $area = str_replace('_', ' ', $zoneExploded[1]);
+                if (!empty($zoneExploded[2])) {
+                    $area = $area . ' (' . str_replace('_', ' ', $zoneExploded[2]) . ')';
+                }
+                $locations[$zoneExploded[0]][$zone] = $area; // Creates array(DateTimeZone => 'Friendly name')
+            }
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            $timeZone = \Yii::$app->request->post('time_zone');
+            $model->setUserData('time_zone', $timeZone);
+            $model->save();
+        }
+        return $this->render('profile', ['model' => $model, 'timeZones' => $locations]);
     }
 
     /**

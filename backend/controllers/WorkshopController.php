@@ -219,7 +219,7 @@ class WorkshopController extends GenericController {
         $model = new WorkshopPayment();
         $model->workshop_id = $id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-payments', 'id' => $model->id]);
+            return $this->actionIndexPayments($id);
         }
         $model->date = date('Y-m-d H:i');
         return $this->render('create-payments', ['model' => $model]);

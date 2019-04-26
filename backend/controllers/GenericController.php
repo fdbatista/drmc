@@ -14,6 +14,11 @@ class GenericController extends Controller {
 
     protected $entityId = '';
     
+    public function beforeAction($action) {
+        date_default_timezone_set(\Yii::$app->user->identity->getUserData('time_zone'));
+        return parent::beforeAction($action);
+    }
+    
     /**
      * {@inheritdoc}
      */

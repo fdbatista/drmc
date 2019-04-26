@@ -71,7 +71,7 @@ class DeviceTypeSearch extends DeviceType
             'stock_type_id' => $this->stock_type_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'device_type.name', $this->name]);
         $query->andFilterWhere(['like', 'stock_type.name', $this->stockType]);
 
         return $dataProvider;

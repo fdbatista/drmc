@@ -26,7 +26,9 @@ use yii\web\IdentityInterface;
  * @property int $branch_id
  * @property int $created_at
  * @property int $updated_at
+ * @property string $user_data
  *
+ * @property Branch $branch
  * @property Workshop[] $workshops
  */
 class User extends ActiveRecord implements IdentityInterface {
@@ -73,8 +75,8 @@ class User extends ActiveRecord implements IdentityInterface {
                 ['email', 'email'],
                 ['status', 'in', 'range' => [self::STATUS_DELETED, self::STATUS_ACTIVE]],
                 ['status', 'required'],
-            //          ['password', 'compare'],
-            [['password', 'password_repeat'], 'safe'],
+                [['password', 'password_repeat'], 'safe'],
+                [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
         ];
     }
 
@@ -236,6 +238,14 @@ class User extends ActiveRecord implements IdentityInterface {
         }
         return 'tecnico';
     }
+    
+    public function getRoleObject() {
+        $roles = Yii::$app->authManager->getRolesByUser($this->id);
+        foreach ($roles as $role) {
+            return $role;
+        }
+        return null;
+    }
 
     public function getRoleDescription() {
         $roles = Yii::$app->authManager->getRolesByUser($this->id);
@@ -243,6 +253,21 @@ class User extends ActiveRecord implements IdentityInterface {
             return "$key ($value->description)";
         }
         return null;
+    }
+    
+    public function getUserData($key = null) {
+        $jsonData = json_decode($this->user_data, true);
+        if ($key) {
+            return $jsonData[$key];
+        }
+        return $jsonData;
+    }
+    
+    public function setUserData($key, $value) {
+        $jsonData = $this->getUserData();
+        $jsonData[$key] = $value;
+        $strData = json_encode($jsonData);
+        $this->user_data = $strData;
     }
 
 }

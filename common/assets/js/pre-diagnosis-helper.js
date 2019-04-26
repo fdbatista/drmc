@@ -38,9 +38,8 @@ $(document).ready(function () {
 });
 
 function addPreDiagnosisItem() {
-    var newItem = {id: $('#devices-by-brand-list').select2('data')[0].id, name: $('#devices-by-brand-list').select2('data')[0].text};
-    //var newItem = JSON.parse($('#new-pre-diagnosis-item').val());
-    console.log(newItem);
+    let selectedItem = $('#devices-by-brand-list').select2('data')[0];
+    var newItem = {id: selectedItem.id, name: selectedItem.text, major_discount: selectedItem.element.getAttribute('data-major-discount')};
     newItem.id = parseInt(newItem.id);
     if (Number.isInteger(newItem.id)) {
         var items = parseInt($('#new-pre-diagnosis-items').val());
@@ -48,8 +47,9 @@ function addPreDiagnosisItem() {
             newItem.items = items;
             var itemName = newItem.name;
             newItem.name = newItem.name.substring(0, newItem.name.indexOf('(max: ') - 1);
-            var maxItems = itemName.substring(itemName.indexOf('(max: ') + 6);
-            maxItems = maxItems.substring(0, maxItems.length - 1);
+            var maxItems = selectedItem.element.getAttribute('data-max-items');
+            /*var maxItems = itemName.substring(itemName.indexOf('(max: ') + 6);
+             maxItems = maxItems.substring(0, maxItems.length - 1);*/
             var found = false;
             var error = false;
             for (var i in preDiagnosisItems) {
@@ -79,11 +79,11 @@ function addPreDiagnosisItem() {
             }
         } else {
             alert('Debe introducir una cantidad correcta.');
+            $('#new-pre-diagnosis-items').focus();
             //showSnackbar('warning', 'Debe introducir una cantidad correcta.');
         }
     } else {
-        alert('Debe seleccionar un dispositivo');
-        //showSnackbar('warning', 'Debe seleccionar un dispositivo');
+        alert('Debe seleccionar un dispositivo.');
     }
 }
 
@@ -138,10 +138,16 @@ function updateFinalPrice() {
 
 function updatePreDiagnosisItemsContainer() {
     var content = "";
+    let sumItemsQuantity = 0, sumItemsMajorDiscount = 0;
     for (var i in preDiagnosisItems) {
         var item = preDiagnosisItems[i];
-        content += '<div class="row animated fadeIn"><div class="col-sm-4"><span class="pre-diagnosis-info">' + item.name + '</span></div><div class="col-sm-3"><span class="pre-diagnosis-info">' + item.items + '</span></div><div class="col-sm-4"><button data-id="' + i + '" type="button" class="btn btn-xs btn-danger btn-remove-pre-diagnosis"><i class="material-icons">delete</i></button></div></div>';
+        sumItemsQuantity += parseInt(item.items);
+        sumItemsMajorDiscount += (parseFloat(item.major_discount) * item.items);
+        content += '<div class="row animated fadeIn"><div class="col-sm-4"><span class="pre-diagnosis-info">' + item.name + '</span></div><div class="col-sm-2"><span class="pre-diagnosis-info">' + item.items + '</span></div><div class="col-sm-2"><span class="pre-diagnosis-info">' + item.major_discount + '</span></div><div class="col-sm-2"><button data-id="' + i + '" type="button" class="btn btn-xs btn-danger btn-remove-pre-diagnosis"><i class="material-icons">delete</i></button></div></div>';
     }
+    //sumItemsMajorDiscount = sumItemsMajorDiscount.toFixed(2);
+    sumItemsMajorDiscount = Math.round(sumItemsMajorDiscount * 100) / 100;
+    content += '<div class="row animated fadeIn"><div class="col-sm-4"><span class="pre-diagnosis-info"><b>TOTAL</b></span></div><div class="col-sm-2"><span class="pre-diagnosis-info"><b>' + sumItemsQuantity + '</b></span></div><div class="col-sm-2"><span class="pre-diagnosis-info"><b>' + sumItemsMajorDiscount + '</b></span></div></div>';
     preDiagnosisItemsContainer.html(content);
     $('#pre-diagnosis-items').val(JSON.stringify(preDiagnosisItems));
 }

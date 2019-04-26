@@ -10,7 +10,7 @@ use yii\widgets\DetailView;
 /* @var $this View */
 /* @var $model Workshop */
 
-$this->title = 'Datos del dispositivo';
+$this->title = 'Datos de la reparación';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
         echo Html::a('<i class="material-icons">print</i> ' . Yii::t('app', 'Imprimir'), ['print', 'id' => $model->id], ['class' => 'btn btn-success']);
 
         if ($model->status === 0) {
-            echo Html::a('<i class="material-icons">credit_card</i> ' . Yii::t('app', 'Cotizaciones'), ['index-payments', 'id' => $model->id], ['class' => 'btn btn-info']);
-            echo Html::a('<i class="material-icons">healing</i> ' . Yii::t('app', 'Cerrar reparación'), ['finish-repair', 'id' => $model->id], ['class' => 'btn btn-warning']);
+            echo Html::a('<i class="material-icons">credit_card</i> ' . Yii::t('app', 'Anticipos'), ['index-payments', 'id' => $model->id], ['class' => 'btn btn-info']);
             echo Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+            echo Html::a('<i class="material-icons">healing</i> ' . Yii::t('app', 'Cerrar reparación'), ['finish-repair', 'id' => $model->id], ['class' => 'btn btn-warning']);
             echo Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [

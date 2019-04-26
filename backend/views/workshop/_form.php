@@ -110,8 +110,9 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-sm-4"><span class="table-header">Tipo</span></div>
-                                                <div class="col-sm-3"><span class="table-header">Cantidad</span></div>
-                                                <div class="col-sm-4"><span class="table-header">Acciones</span></div>
+                                                <div class="col-sm-2"><span class="table-header">Cantidad</span></div>
+                                                <div class="col-sm-2"><span class="table-header">Descuento max</span></div>
+                                                <div class="col-sm-2"><span class="table-header">Acciones</span></div>
                                             </div>
                                         </div>
                                     </div>

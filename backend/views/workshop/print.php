@@ -8,7 +8,7 @@ use common\utils\StaticMembers;
 use yii\bootstrap\ActiveForm;
 use yii\web\View;
 
-DatePickerAsset::register($this);
+//DatePickerAsset::register($this);
 PrintAsset::register($this);
 
 /* @var $this View */
@@ -17,7 +17,7 @@ PrintAsset::register($this);
 
 $this->title = Yii::t('app', 'Imprimir comprobante');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos del dispositivo'), 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos de la reparación'), 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
 ?>
@@ -76,9 +76,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span>
                 </div>
                 <div class="col-sm-2">
-                    <span class="data-content"><?= $model->date_closed ?></span>
+                    <span class="data-content"><?= $model->date_received ?></span>
                 </div>
-                
             </div>
 
             <br />
@@ -139,7 +138,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
             <div class="row data-row">
                 <div class="col-sm-3">
-                    <span class="data-name">Cotizaci&oacute;n: </span>
+                    <span class="data-name">Costo de la reparaci&oacute;n: </span>
                 </div>
                 <div class="col-sm-9">
                     <span class="data-content">$<?= $model->final_price ?></span>
