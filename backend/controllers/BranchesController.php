@@ -73,6 +73,9 @@ class BranchesController extends GenericController {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if (Yii::$app->session->get('branch_id') === $id) {
+                Yii::$app->session->set('branch_name', $model->name);
+            }
             return $this->redirect(['index']);
         }
 
