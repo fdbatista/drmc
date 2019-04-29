@@ -66,7 +66,6 @@ class WorkshopController extends GenericController {
         $this->updateFolioNumber($model);
 
         if ($model->load(Yii::$app->request->post())) {
-            $this->validateDiscountApplied($model);
             if ($model->hasErrors()) {
                 return $this->render('create', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
             }

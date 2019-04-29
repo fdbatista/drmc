@@ -20,7 +20,7 @@ class WorkshopPaymentSearch extends WorkshopPayment
         return [
             [['id'], 'integer'],
             [['amount'], 'number'],
-            [['date'], 'safe'],
+            [['date', 'workshop_id'], 'safe'],
         ];
     }
 
@@ -63,6 +63,7 @@ class WorkshopPaymentSearch extends WorkshopPayment
             'id' => $this->id,
             'amount' => $this->amount,
             'date' => $this->date,
+            'workshop_id' => $this->workshop_id,
         ]);
 
         return $dataProvider;
