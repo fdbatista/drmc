@@ -58,7 +58,7 @@ class StaticMembers {
             $stockItems = Stock::findAll(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 2, 'brand_model_id' => $brandModelId]);
             foreach ($stockItems as $item) {
                 $model = $item->getDeviceType()->one();
-                $res[$brandModel->name][] = ['id' => $model->id, 'name' => $model->name . ' (max: ' . $item->items . ')', 'options' => ['data-major-discount' => $item->major_discount, 'data-max-items' => $item->items]];
+                $res[$brandModel->name][] = ['id' => $model->id, 'name' => $model->name . ' (max: ' . $item->items . ')', 'options' => ['data-major-discount' => $item->major_discount, 'data-max-items' => $item->items, 'data-price-out' => $item->price_out]];
             }
         }
         return $res;

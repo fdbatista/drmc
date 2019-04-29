@@ -8,14 +8,15 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 
 /**
- * BrandsController implements the CRUD actions for Modelo.
+ * BrandsController implements the CRUD actions for Model.
  */
 class GenericController extends Controller {
 
     protected $entityId = '';
     
     public function beforeAction($action) {
-        date_default_timezone_set(\Yii::$app->user->identity->getUserData('time_zone'));
+        $timeZone = Yii::$app->user->identity->getUserData('time_zone');
+        date_default_timezone_set($timeZone ? $timeZone : 'America/Havana');
         return parent::beforeAction($action);
     }
     

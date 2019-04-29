@@ -61,4 +61,8 @@ class AttributesLabels {
     public static function getAttributeLabel($name) {
         return isset(self::$labels[$name]) ? self::$labels[$name] : $name;
     }
+    
+    public static function getLabels() {
+        return self::$labels;
+    }
 }

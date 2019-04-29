@@ -39,7 +39,7 @@ $(document).ready(function () {
 
 function addPreDiagnosisItem() {
     let selectedItem = $('#devices-by-brand-list').select2('data')[0];
-    var newItem = {id: selectedItem.id, name: selectedItem.text, major_discount: selectedItem.element.getAttribute('data-major-discount')};
+    var newItem = {id: selectedItem.id, name: selectedItem.text, major_discount: selectedItem.element.getAttribute('data-major-discount'), price_out: selectedItem.element.getAttribute('data-price-out')};
     newItem.id = parseInt(newItem.id);
     if (Number.isInteger(newItem.id)) {
         var items = parseInt($('#new-pre-diagnosis-items').val());
@@ -130,24 +130,44 @@ function hideSnackbar() {
     snack.removeClass('show');
 }
 
-function updateFinalPrice() {
-    var discount = $('#workshop-discount_applied').val();
-    var finalPrice = $('#workshop-final_price-hidden').val();
-    $('#workshop-final_price').val(finalPrice - discount);
+function updatePriceOut() {
+    let sumPriceOut = 0, sumItemsMajorDiscount = 0;
+    for (var i in preDiagnosisItems) {
+        var item = preDiagnosisItems[i];
+        sumPriceOut += (parseInt(item.price_out) * item.items);
+        sumItemsMajorDiscount += (parseFloat(item.major_discount) * item.items);
+    }
+    let effort = parseFloat($('#workshop-effort').val());
+    let discountApplied = parseFloat($('#workshop-discount_applied').val());
+    if (discountApplied < 0) {
+        alert('El descuento no puede ser menor de $0');
+        $('#workshop-discount_applied').val(0);
+        $('#workshop-discount_applied').focus();
+    }
+    else if (discountApplied > sumItemsMajorDiscount) {
+        alert('El descuento no puede ser mayor de $' + sumItemsMajorDiscount);
+        $('#workshop-discount_applied').val(sumItemsMajorDiscount);
+        $('#workshop-discount_applied').focus();
+    } else {
+        sumPriceOut += effort ? effort : 0;
+        sumPriceOut -= discountApplied ? discountApplied : 0;
+        $('#workshop-final_price').val(sumPriceOut);
+    }
 }
 
 function updatePreDiagnosisItemsContainer() {
     var content = "";
-    let sumItemsQuantity = 0, sumItemsMajorDiscount = 0;
+    let sumItemsQuantity = 0, sumItemsMajorDiscount = 0, sumPriceOut = 0;
     for (var i in preDiagnosisItems) {
         var item = preDiagnosisItems[i];
         sumItemsQuantity += parseInt(item.items);
+        sumPriceOut += (parseInt(item.price_out) * item.items);
         sumItemsMajorDiscount += (parseFloat(item.major_discount) * item.items);
         content += '<div class="row animated fadeIn"><div class="col-sm-4"><span class="pre-diagnosis-info">' + item.name + '</span></div><div class="col-sm-2"><span class="pre-diagnosis-info">' + item.items + '</span></div><div class="col-sm-2"><span class="pre-diagnosis-info">' + item.major_discount + '</span></div><div class="col-sm-2"><button data-id="' + i + '" type="button" class="btn btn-xs btn-danger btn-remove-pre-diagnosis"><i class="material-icons">delete</i></button></div></div>';
     }
-    //sumItemsMajorDiscount = sumItemsMajorDiscount.toFixed(2);
     sumItemsMajorDiscount = Math.round(sumItemsMajorDiscount * 100) / 100;
     content += '<div class="row animated fadeIn"><div class="col-sm-4"><span class="pre-diagnosis-info"><b>TOTAL</b></span></div><div class="col-sm-2"><span class="pre-diagnosis-info"><b>' + sumItemsQuantity + '</b></span></div><div class="col-sm-2"><span class="pre-diagnosis-info"><b>' + sumItemsMajorDiscount + '</b></span></div></div>';
     preDiagnosisItemsContainer.html(content);
     $('#pre-diagnosis-items').val(JSON.stringify(preDiagnosisItems));
+    updatePriceOut();
 }

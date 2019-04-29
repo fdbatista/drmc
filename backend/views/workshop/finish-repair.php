@@ -33,19 +33,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Cerrar reparación');
                     <div class="card-content">
                         <?php $form = ActiveForm::begin(); ?>
                         <div class="row">
-                            <div class="col-sm-4">
-                                <?= $form->field($model, 'discount_applied', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('discount_applied') . '</label>{input}</div>'])->textInput(['id' => 'workshop-discount_applied', 'maxlength' => true, 'onblur' => 'updateFinalPrice()'])->label(false) ?>
-                            </div>
-                            <div class="col-sm-4">
-                                <?= $form->field($model, 'final_price', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('final_price') . '</label>{input}</div>'])->textInput(['id' => 'workshop-final_price', 'maxlength' => true, 'readonly' => 'readonly'])->label(false) ?>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-4">
                                 <?= $form->field($model, 'date_closed', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('date_closed') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'datetimepicker form-control', 'readonly' => 'readonly'])->label(false) ?>
                             </div>
                             <div class="col-md-4">
-                                <?= Html::hiddenInput('workshop-final_price-hidden', $model->final_price, ['id' => 'workshop-final_price-hidden']) ?>
                                 <?= $form->field($model, 'warranty_until', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('warranty_until') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'datetimepicker form-control', 'readonly' => 'readonly'])->label(false) ?>
                             </div>
                         </div>

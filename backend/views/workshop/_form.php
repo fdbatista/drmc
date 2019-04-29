@@ -27,7 +27,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header" data-background-color="purple">
                         <h4 class="title"><?= $this->title ?></h4>
@@ -37,7 +37,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                         <?php $form = ActiveForm::begin(); ?>
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <?=
                                 $form->field($model, 'device_type_id')->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(DeviceType::find()->all(), 'id', 'name'),
@@ -49,7 +49,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                 ])->label(false)
                                 ?>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <?=
                                 $form->field($model, 'brand_model_id')->widget(Select2::classname(), [
                                     'data' => StaticMembers::getModelsAndBrand(),
@@ -71,10 +71,10 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                 <div class="form-group">
                                     <?= Html::hiddenInput('workshop_id', $model->id, ['id' => 'workshop-id']) ?>
                                     <?= Html::hiddenInput('base_url', Yii::$app->getHomeUrl(), ['id' => 'base-url']) ?>
-                                    <?php /*Html::hiddenInput('new-pre-diagnosis-item', null, ['id' => 'new-pre-diagnosis-item'])*/ ?>
+                                    <?php /* Html::hiddenInput('new-pre-diagnosis-item', null, ['id' => 'new-pre-diagnosis-item']) */ ?>
                                     <?= Html::hiddenInput('pre-diagnosis-items', null, ['id' => 'pre-diagnosis-items']) ?>
                                     <label>Pre diagn&oacute;stico</label><br />
-                                    <button id="toggle-pre-diagnosis-form-status" data-status="0" onclick="showPreDiagnosisForm()" type="button" class="btn btn-xs btn-info" disabled><i style="font-size: 12px;" class="fa fa-arrow-down"></i> Mostrar formulario</button>
+                                    <button id="toggle-pre-diagnosis-form-status" data-status="0" onclick="showPreDiagnosisForm()" type="button" class="btn btn-xs btn-info"<?= $model->isNewRecord ? ' disabled' : '' ?>><i style="font-size: 12px;" class="fa fa-arrow-down"></i> Mostrar formulario</button>
                                     <div class="row animated hidden" id="pre-diagnosis-form-container">
                                         <div class="col-md-12">
                                             <div class="row">
@@ -93,7 +93,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                                                             'url' => Url::to(['/workshop/get-warehouse-items-by-brand-model']),
                                                         ],
                                                         'pluginEvents' => [
-                                                            //"change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem)); console.log(currItem); }",
+                                                        //"change" => "function() { var currItem = {id: $(this).select2('data')[0].id, name: $(this).select2('data')[0].text}; $('#new-pre-diagnosis-item').val(JSON.stringify(currItem)); console.log(currItem); }",
                                                         ]
                                                     ]);
                                                     ?>
@@ -125,16 +125,26 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
 
                         <div class="row">
                             <div class="col-sm-4">
+                                <?= $form->field($model, 'discount_applied', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('discount_applied') . '</label>{input}</div>'])->textInput(['id' => 'workshop-discount_applied', 'maxlength' => true, 'onblur' => 'updatePriceOut()'])->label(false) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= Html::hiddenInput('workshop-final_price-hidden', $model->final_price, ['id' => 'workshop-final_price-hidden']) ?>
+                                <?= $form->field($model, 'final_price', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('final_price') . '</label>{input}</div>'])->textInput(['id' => 'workshop-final_price', 'maxlength' => true, 'readonly' => 'readonly'])->label(false) ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
                                 <?= $form->field($model, 'serial_number', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('serial_number') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-4">
-                                <?= $form->field($model, 'effort', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('effort') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                                <?= $form->field($model, 'effort', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('effort') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'onblur' => 'updatePriceOut()'])->label(false) ?>
                             </div>
                             <div class="col-md-4">
                                 <?= $form->field($model, 'date_received', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('date_received') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'class' => 'datetimepicker form-control', 'readonly' => 'readonly'])->label(false) ?>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-sm-4">
                                 <?= $form->field($model, 'customer_name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('customer_name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
@@ -189,7 +199,7 @@ $this->registerJs("setLockPattern('" . $model->pattern . "')");
                         </div>
 
                         <div class="form-group">
-                            <?= Html::submitButton(Yii::t('app', '<i class="material-icons">check</i> Aceptar'), ['class' => 'btn btn-primary pull-right']) ?>
+                            <?= Html::submitButton(Yii::t('app', '<i class="material-icons">check</i> Aceptar'), ['id' => 'btn-submit', 'class' => 'btn btn-primary pull-right']) ?>
                         </div>
                         <div class="clearfix"></div>
                         <?php ActiveForm::end(); ?>

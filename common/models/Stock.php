@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\utils\AttributesLabels;
 use Yii;
 
 /**
@@ -60,20 +61,7 @@ class Stock extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
-            'id' => 'ID',
-            'code' => 'Code',
-            'items' => 'Items',
-            'price_in' => 'Price In',
-            'price_out' => 'Price Out',
-            'first_discount' => 'First Discount',
-            'major_discount' => 'Major Discount',
-            'stock_type_id' => 'Stock Type ID',
-            'device_type_id' => 'Device Type ID',
-            'brand_model_id' => 'Brand Model ID',
-            'branch_id' => 'Branch ID',
-            'updated_at' => 'Updated At',
-        ];
+        return AttributesLabels::getLabels();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\utils\AttributesLabels;
 use Yii;
 
 /**
@@ -55,7 +56,7 @@ class Workshop extends \yii\db\ActiveRecord
     {
         return [
             [['pattern_gif', 'signature_in', 'signature_out'], 'string'],
-            [['date_received', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number', 'effort', 'device_type_id', 'brand_model_id', 'branch_id'], 'required'],
+            [['date_received', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number', 'effort', 'device_type_id', 'brand_model_id', 'branch_id', 'discount_applied'], 'required'],
             [['date_received', 'date_closed', 'warranty_until', 'updated_at'], 'safe'],
             [['discount_applied', 'final_price', 'effort'], 'number'],
             [['status', 'receiver_id', 'device_type_id', 'brand_model_id', 'branch_id'], 'integer'],
@@ -75,7 +76,8 @@ class Workshop extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
+        return AttributesLabels::getLabels();
+        /*return [
             'id' => 'ID',
             'password' => 'Password',
             'pattern' => 'Pattern',
@@ -99,7 +101,7 @@ class Workshop extends \yii\db\ActiveRecord
             'device_type_id' => 'Device Type ID',
             'brand_model_id' => 'Brand Model ID',
             'branch_id' => 'Branch ID',
-        ];
+        ];*/
     }
 
     /**
