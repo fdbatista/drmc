@@ -15,7 +15,7 @@ class GenericController extends Controller {
     protected $entityId = '';
     
     public function beforeAction($action) {
-        $timeZone = Yii::$app->user->identity->getUserData('time_zone');
+        $timeZone = Yii::$app->user->isGuest ? null : Yii::$app->user->identity->getUserData('time_zone');
         date_default_timezone_set($timeZone ? $timeZone : 'America/Havana');
         return parent::beforeAction($action);
     }
