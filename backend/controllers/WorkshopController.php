@@ -19,6 +19,9 @@ use yii\web\Response;
 class WorkshopController extends GenericController {
 
     public function beforeAction($action) {
+        if (!Yii::$app->user->isGuest && !Yii::$app->session->get('branch_id')) {
+            return $this->redirect(['/']);
+        }
         $this->entityId = 'workshop';
         Yii::$app->view->params['active'] = $this->entityId;
         return parent::beforeAction($action);
@@ -186,7 +189,6 @@ class WorkshopController extends GenericController {
         if (($model = Workshop::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'id' => $id])) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
@@ -197,6 +199,7 @@ class WorkshopController extends GenericController {
      * @return mixed
      */
     public function actionIndexPayments($id) {
+        $searchModel = $this->findModel($id);
         $searchModel = new WorkshopPaymentSearch();
         $searchModel->workshop_id = $id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -214,8 +217,9 @@ class WorkshopController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionViewPayments($id) {
+        $model = $this->findPaymentModel($id);
         return $this->render('view-payments', [
-                    'model' => $this->findPaymentModel($id),
+                    'model' => $model, 'parent' => $model->workshop
         ]);
     }
 
@@ -225,13 +229,14 @@ class WorkshopController extends GenericController {
      * @return mixed
      */
     public function actionCreatePayments($id) {
+        $parent = $this->findModel($id);
         $model = new WorkshopPayment();
         $model->workshop_id = $id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->actionIndexPayments($id);
         }
         $model->date = date('Y-m-d H:i');
-        return $this->render('create-payments', ['model' => $model]);
+        return $this->render('create-payments', ['model' => $model, 'parent' => $parent]);
     }
 
     /**
@@ -243,13 +248,11 @@ class WorkshopController extends GenericController {
      */
     public function actionUpdatePayments($id) {
         $model = $this->findPaymentModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view-payments', 'id' => $model->id]);
         }
-
         return $this->render('update-payments', [
-                    'model' => $model,
+                    'model' => $model, 'parent' => $model->workshop
         ]);
     }
 
@@ -275,10 +278,15 @@ class WorkshopController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findPaymentModel($id) {
-        if (($model = WorkshopPayment::findOne($id)) !== null) {
+        $model = WorkshopPayment::findOne([$id]);
+        if (!$model) {
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        }
+        $parent = $model->workshop;
+        if ($parent->branch_id == Yii::$app->session->get('branch_id')) {
             return $model;
         }
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'This item does not belong to the current branch.'));
     }
 
     public function actionGetPreDiagnosisItems() {

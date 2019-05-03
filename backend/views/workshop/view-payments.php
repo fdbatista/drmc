@@ -10,16 +10,12 @@ use yii\widgets\DetailView;
 /* @var $model WorkshopPayment */
 
 $this->title = Yii::t('app', 'Detalles del anticipo');
-$parent = $model->getWorkshop()->one();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos de la reparación'), 'url' => ['view', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Anticipos'), 'url' => ['index-payments', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="workshop-payment-view">
-
-    <!--<h3><?= Html::encode($this->title) ?></h3>-->
-
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update-payments', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?=

@@ -21,6 +21,9 @@ use yii\web\Response;
 class SalesController extends GenericController {
 
     public function beforeAction($action) {
+        if (!Yii::$app->user->isGuest && !Yii::$app->session->get('branch_id')) {
+            return $this->redirect(['/']);
+        }
         $this->entityId = 'sales';
         Yii::$app->view->params['active'] = $this->entityId;
         return parent::beforeAction($action);
