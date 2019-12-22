@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => AttributesLabels::getAttributeLabel('branch_id'),
-                'value' => $model->branch->name ? $model->branch->name : '',
+                'value' => $model->branch ? $model->branch->name : '',
             ],
         ],
     ]) ?>
