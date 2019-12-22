@@ -35,7 +35,7 @@ class GenericController extends Controller {
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['select-branch', 'get-brand-models-for-sale', 'calculate-price-with-discounts', 'get-warehouse-items-by-brand-model', 'get-pre-diagnosis-items'],
+                        'actions' => ['select-branch', 'get-brand-models-for-sale', 'calculate-price-with-discounts', 'get-warehouse-items-by-brand-model', 'get-pre-diagnosis-items', 'print'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
