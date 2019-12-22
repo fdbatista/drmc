@@ -1,0 +1,25 @@
+version: '3.2'
+
+services:
+
+#  backend:
+#    build: backend
+#    ports:
+#      - 21080:80
+#    volumes:
+#      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+#      - ./:/app
+
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - ./docker-volumes/db:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_ROOT_PASSWORD=Root123*
+      - MYSQL_DATABASE=u715364900_drmc
+      - MYSQL_USER=u715364900_drmc
+      - MYSQL_PASSWORD=u715364900_drmc*
