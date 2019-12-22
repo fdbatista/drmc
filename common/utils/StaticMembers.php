@@ -135,7 +135,13 @@ class StaticMembers {
                 ];
                 $res[$entityValue]['perms']['print-workshop'] = [
                     'name' => 'Imprimir comprobante',
-                    'value' => $authManager->hasChild($role, $authManager->getPermission('finish-repair-workshop'))
+                    'value' => $authManager->hasChild($role, $authManager->getPermission('print-workshop'))
+                ];
+            }
+            elseif ($entityKey === 'sales') {
+                $res[$entityValue]['perms']['print-sales'] = [
+                    'name' => 'Imprimir comprobante',
+                    'value' => $authManager->hasChild($role, $authManager->getPermission('print-sales'))
                 ];
             }
         }
