@@ -2,7 +2,6 @@
 /* @var $this yii\web\View */
 
 $this->registerJs('demo.initDashboardPageCharts();');
-
     $this->title = 'Administración';
 ?>
 
