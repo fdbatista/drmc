@@ -38,7 +38,7 @@ class RolesController extends GenericController {
         $authManager = Yii::$app->authManager;
         $role = new Role2();
         $post = Yii::$app->request->post();
-        
+
         if ($model->load($post) && $model->validate() && $model->validateName()) {
             $role = $authManager->createRole($model->name);
             $role->description = $model->description;
