@@ -63,6 +63,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => 'Introduzca un criterio...'
                 ],
             ],
+                        [
+                'attribute' => 'final_price',
+                'label' => AttributesLabels::getAttributeLabel('final_price'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+            ],
                 [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
