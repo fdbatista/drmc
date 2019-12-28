@@ -20,11 +20,12 @@ class m181015_131651_init_rbac extends Migration {
 
         $now = time();
         $this->insert('user', ['username' => 'admin', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'admin@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Dannier Rafael', 'last_name' => 'Milanés', 'address' => 'Vivienda, Majibacoa', 'sex' => 'F']);
-        $this->insert('user', ['username' => 'tecnico', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'tech@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Juan Gabriel', 'last_name' => 'Gabriel', 'address' => 'Michoacán']);
+        $this->insert('user', ['username' => 'tecnico', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'tech@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Juan Gabriel', 'last_name' => 'Gabriel', 'address' => 'Michoacán', 'branch_id' => 1]);
+        $this->insert('user', ['username' => 'vendedor', 'auth_key' => Yii::$app->security->generateRandomString(), 'password_hash' => Yii::$app->security->generatePasswordHash('a'), 'email' => 'sales@server.com', 'created_at' => $now, 'updated_at' => $now, 'first_name' => 'Jorge', 'last_name' => 'Rosales', 'address' => 'Pendejolandia', 'branch_id' => 1]);
 
         $authManager->assign($authManager->getRole('admin'), 1);
         $authManager->assign($authManager->getRole('tecnico'), 2);
-        $authManager->assign($authManager->getRole('vendedor'), 2);
+        $authManager->assign($authManager->getRole('vendedor'), 3);
 
         $entities = [
             'brands' => 'marcas',
@@ -43,13 +44,6 @@ class m181015_131651_init_rbac extends Migration {
             'branches' => 'sucursales',
         ];
 
-        /*$this->addPermission($authManager, "index-brands", "Ver lista de marcas", 'admin');
-        $this->addPermission($authManager, "view-brands", "Ver detalles de marcas", 'admin');
-        $this->addPermission($authManager, "create-brands", "Agregar marcas", 'admin');
-        $this->addPermission($authManager, "update-brands", "Actualizar marcas", 'admin');
-        $this->addPermission($authManager, "delete-brands", "Eliminar marcas", 'admin');*/
-
-
         foreach ($entities as $key => $value) {
             $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'admin');
             $this->addPermission($authManager, "view-$key", "Ver detalles de $value", 'admin');
@@ -64,18 +58,26 @@ class m181015_131651_init_rbac extends Migration {
                 $this->addPermission($authManager, "update-$key", "Actualizar $value", 'tecnico');
                 $this->addPermission($authManager, "delete-$key", "Eliminar $value", 'tecnico');
             }
+            if (in_array($key, ['sales', 'items-sales'])) {
+                $this->addPermission($authManager, "index-$key", "Ver lista de $value", 'vendedor');
+                $this->addPermission($authManager, "view-$key", "Ver detalles de $value", 'vendedor');
+                $this->addPermission($authManager, "create-$key", "Agregar $value", 'vendedor');
+                $this->addPermission($authManager, "update-$key", "Actualizar $value", 'vendedor');
+                $this->addPermission($authManager, "delete-$key", "Eliminar $value", 'vendedor');
+            }
         }
+        
         $this->addPermission($authManager, "view-dashboard", "Ver panel de control", 'admin');
         $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'admin');
-        $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'tecnico');
         $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'admin');
-
-        $this->addPermission($authManager, "print-sales", "Imprimir venta", 'tecnico');
         $this->addPermission($authManager, "print-sales", "Imprimir venta", 'admin');
-
-        $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'tecnico');
         $this->addPermission($authManager, "index-app-config", "Ver configuración general", 'admin');
         $this->addPermission($authManager, "update-app-config", "Actualizar configuración general", 'admin');
+
+        $this->addPermission($authManager, "finish-repair-workshop", "Cerrar reparación", 'tecnico');
+        $this->addPermission($authManager, "print-workshop", "Imprimir reparación", 'tecnico');
+
+        $this->addPermission($authManager, "print-sales", "Imprimir venta", 'vendedor');
     }
 
     private function addRole(ManagerInterface $authManager, $name, $description) {

@@ -34,6 +34,32 @@ class m181008_221833_create_stock_table extends Migration
         
         $this->createIndex('idx_stock_codestocktype', 'stock', 'code, stock_type_id, branch_id', true);
         $this->createIndex('idx_stock_devicemodel', 'stock', 'device_type_id, brand_model_id, branch_id', true);
+
+        $this->insert('stock', [
+            'code' => 'C001',
+            'items' => 20,
+            'price_in' => 100,
+            'price_out' => 150,
+            'first_discount' => 10,
+            'major_discount' => 30,
+            'stock_type_id' => 1,
+            'device_type_id' => 1,
+            'brand_model_id' => 1,
+            'branch_id' => 1,
+        ]);
+
+        $this->insert('stock', [
+            'code' => 'C002',
+            'items' => 20,
+            'price_in' => 200,
+            'price_out' => 300,
+            'first_discount' => 20,
+            'major_discount' => 60,
+            'stock_type_id' => 1,
+            'device_type_id' => 2,
+            'brand_model_id' => 10,
+            'branch_id' => 1,
+        ]);
     }
 
     /**
