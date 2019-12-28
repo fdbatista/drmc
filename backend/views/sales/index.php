@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-                [
+            [
                 'label' => AttributesLabels::getAttributeLabel('status'),
                 'attribute' => 'status',
                 'content' => function ($searchModel) {
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => [0 => 'Abierta', 1 => 'Cerrada']
             ],
-                [
+            [
                 'attribute' => 'date',
                 'label' => AttributesLabels::getAttributeLabel('date'),
                 'format' => 'text',
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Yii::$app->formatter->asDatetime($data['date'], "php:Y-m-d");
                 }
             ],
-                [
+            [
                 'attribute' => 'customer',
                 'label' => AttributesLabels::getAttributeLabel('customer_id'),
                 'value' => 'customer.code',
@@ -65,11 +65,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => 'Introduzca un criterio...'
                 ],
             ],
-                [
+            [
+                'attribute' => 'serial_number',
+                'label' => AttributesLabels::getAttributeLabel('serial_number'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+            ],
+            [
+                'attribute' => 'total_price',
+                'label' => AttributesLabels::getAttributeLabel('total_price'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {index-items} {delete}',
+                'template' => '{view} {update} {update-items} {delete}',
                 'buttons' =>
                     [
                     'view' => function ($key) {
@@ -78,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
-                    'index-items' => function ($url, $model) {
+                    'update-items' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-shopping-cart"></span>', $url, [
                                     'title' => Yii::t('yii', 'Dispositivos'),
                                     'data-toggle' => 'tooltip',

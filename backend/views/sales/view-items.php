@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => [
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta'), 'url' => ['view', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Dispositivos'), 'url' => ['index-items', 'id' => $parent->id]];
 $this->params['breadcrumbs'][] = $this->title;?>
+
 <div class="sale-item-view">
 
     <p>

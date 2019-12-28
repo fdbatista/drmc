@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('<i class="material-icons">shopping_cart</i> ' . Yii::t('app', 'Dispositivos'), ['index-items', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<i class="material-icons">shopping_cart</i> ' . Yii::t('app', 'Dispositivos'), ['update-items', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('<i class="material-icons">card_giftcard</i> ' . Yii::t('app', 'Cerrar venta'), ['print', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
