@@ -36,3 +36,4 @@ phpunit.phar
 
 /common/config/main-local.php
 /docker-volumes/db
+/admin/index.php
