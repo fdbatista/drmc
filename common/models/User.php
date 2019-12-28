@@ -30,21 +30,20 @@ use yii\web\IdentityInterface;
  * @property Branch $branch
  * @property Workshop[] $workshops
  */
-class User extends ActiveRecord implements IdentityInterface
-{
+class User extends ActiveRecord implements IdentityInterface {
+
+    private CONST STATUS_ACTIVE = 10;
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'user';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
             [['status', 'branch_id', 'created_at', 'updated_at'], 'integer'],
@@ -64,8 +63,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'username' => Yii::t('app', 'Username'),
@@ -89,16 +87,23 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return ActiveQuery
      */
-    public function getBranch()
-    {
+    public function getBranch() {
         return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
+    }
+
+    public static function isPasswordResetTokenValid($token) {
+        if (empty($token)) {
+            return false;
+        }
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getWorkshops()
-    {
+    public function getWorkshops() {
         return $this->hasMany(Workshop::className(), ['receiver_id' => 'id']);
     }
 
@@ -107,35 +112,104 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function getId() {
-        return $this->id;
+        return $this->getPrimaryKey();
     }
 
-    public function validateAuthKey($authKey): bool {
-        return $this->auth_key === $authKey;
+    public function validateAuthKey($authKey) {
+        return $this->getAuthKey() === $authKey;
     }
 
     public static function findIdentity($id) {
-        return User::findOne($id);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
-    
+
     public static function findIdentityByAccessToken($token, $type = null) {
         return User::findOne(['auth_key' => $token]);
     }
-    
+
     public static function findByUsername($username) {
-        return User::findOne(['username' => $username]);
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
-    
+
+    public static function findByPasswordResetToken($token) {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+        return static::findOne([
+                    'password_reset_token' => $token,
+                    'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
     public function validatePassword($password) {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
     
+    public function validatePasswordInput() {
+        $this->validate();
+        if ($this->getIsNewRecord()) {
+            if (!$this->password) {
+                $this->addError('password', 'Debe especificar una contraseña');
+            } elseif ($this->password !== $this->password_repeat) {
+                $this->addError('password_repeat', 'Las contraseñas no coinciden');
+            }
+        } else {
+            if ($this->password && $this->password !== $this->password_repeat) {
+                $this->addError('password_repeat', 'Las contraseñas no coinciden');
+            }
+        }
+    }
+
     public function getUserData($key) {
         return $this->user_data[$key];
     }
-    
+
     public function getFullName() {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getRole() {
+        $roles = Yii::$app->authManager->getRolesByUser($this->id);
+        foreach ($roles as $key => $value) {
+            return $key;
+        }
+        return 'tecnico';
+    }
+
+    public function getRoleObject() {
+        $roles = Yii::$app->authManager->getRolesByUser($this->id);
+        foreach ($roles as $role) {
+            return $role;
+        }
+        return null;
+    }
+
+    public function getRoleDescription() {
+        $roles = Yii::$app->authManager->getRolesByUser($this->id);
+        foreach ($roles as $key => $value) {
+            return "$key ($value->description)";
+        }
+        return null;
+    }
+
+    public function setUserData($key, $value) {
+        $this->user_data[$key] = $value;
+    }
+
+    public function removePasswordResetToken() {
+        $this->password_reset_token = null;
+    }
+
+    public function generatePasswordResetToken() {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    public function generateAuthKey() {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    public function setPassword($password) {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
 }
