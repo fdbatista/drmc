@@ -1,1 +1,1 @@
-./yii migrate/fresh --migrationPath=@yii/rbac/migrations -y && ./yii migrate -y
+./yii migrate/fresh --migrationPath=@yii/rbac/migrations && ./yii migrate
