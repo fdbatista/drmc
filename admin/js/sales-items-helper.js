@@ -85,7 +85,7 @@ function updateGUI() {
 }
 
 function updateCartRows() {
-    let content = '<div class="row">';
+    let content = '';
     totalPrice = 0;
     maxDiscount = 0;
     let itemsCount = cartItems.length;
@@ -94,14 +94,15 @@ function updateCartRows() {
         let item = cartItems[i];
         totalPrice += parseFloat(item.price);
         maxDiscount += (getItemAttributeFromArray(stockItems, item, 'major_discount') * item.items);
+        content += '<div class="row">';
         content += '<div class="col-sm-3"><label>' + item.device_type + '</label></div>';
         content += '<div class="col-sm-3"><label>' + item.brand_model + '</label></div>';
         content += '<div class="col-sm-2"><label>$' + item.price + '</label></div>';
         content += '<div class="col-sm-3"><label>' + item.items + '</label>';
         content += '<a class="btn-action btn-add" onclick="updateCartItemQuantity(' + i + ', 1)">+</a><a class="btn-action btn-substract" onclick="updateCartItemQuantity(' + i + ', -1)">-</a>';
         content += '</div>';
+        content += '</div>';
     }
-    content += '</div>';
 
     if (totalPrice > 0) {
         content += '<div class="row">';
