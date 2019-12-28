@@ -73,7 +73,10 @@ class SalesController extends GenericController {
                     $post['Sale']['customer_id'] = $customer->id;
                 }
                 if ($model->load($post) && $model->save()) {
-                    return $this->actionIndexItems($model->id);
+                    $code = str_pad($model->id, 11, '0', STR_PAD_LEFT);
+                    $model->serial_number = "V-$code";
+                    $model->save();
+                    return $this->actionUpdateItems($model->id);
                 }
             }
         }
@@ -178,9 +181,9 @@ class SalesController extends GenericController {
                 if ($stockModel->items < $model->items) {
                     $model->addError('items', 'Solo existen ' . $stockModel->items . ' unidades disponibles de este producto.');
                 }
-                /*if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
-                    $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
-                }*/
+                /* if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
+                  $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
+                  } */
                 if ($model->discount_applied > 0 && $model->discount_applied > $stockModel->major_discount * $model->items) {
                     $model->addError('discount_applied', 'El descuento aplicado no debe ser mayor de ' . $stockModel->major_discount * $model->items . '.');
                 }
@@ -202,22 +205,41 @@ class SalesController extends GenericController {
         return $this->render('create-items', ['model' => $model]);
     }
 
-    /**
-     * Updates an existing SaleItem model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdateItems($id) {
-        $model = $this->findItemsModel($id);
+    public function actionGetAvailableItemsForSale($saleId) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $result = ['stock' => [], 'cart' => [], 'discount_applied' => Sale::findOne($saleId)->discount_applied];
 
-        if ($model->load(Yii::$app->request->post())) {
+        $stockItems = Stock::find()->where(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 1])->andWhere('items > 0')->select(['code', 'items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'device_type_id', 'brand_model_id'])->asArray()->all();
+        foreach ($stockItems as $item) {
+            $result['stock'][] = $this->addAvailableItemData($item, 'stock');
+        }
+
+        $saleItems = SaleItem::find()->where(['sale_id' => $saleId])->asArray()->all();
+        foreach ($saleItems as $saleItem) {
+            $result['cart'][] = $this->addAvailableItemData($saleItem, 'cart');
+        }
+
+        return $result;
+    }
+
+    private function addAvailableItemData($item, $type) {
+        $newItem = $item;
+        $newItem['device_type'] = DeviceType::findOne($item['device_type_id'])->name;
+        $brandModel = BrandModel::findOne($item['brand_model_id']);
+        $newItem['brand_model'] = "{$brandModel->brand->name} {$brandModel->name}";
+        if ($type === 'cart') {
+            $newItem['quantity'] = $newItem['items'];
+            $newItem['price'] = $newItem['items'] * $newItem['price_out'];
+        }
+        return $newItem;
+    }
+    
+    public function actionUpdateItems($id) {
+        $model = $this->findModel($id);
+        
+        /*if ($model->load(Yii::$app->request->post())) {
             $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $model->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stockModel) {
-                /*if ($model->discount_applied > 0 && (($model->discount_applied < $stockModel->first_discount * $model->items) || ($model->discount_applied > $stockModel->major_discount * $model->items))) {
-                    $model->addError('discount_applied', 'El descuento aplicado debe ser un valor entre ' . $stockModel->first_discount * $model->items . ' y ' . $stockModel->major_discount * $model->items . '.');
-                }*/
                 if ($model->discount_applied > 0 && $model->discount_applied > $stockModel->major_discount * $model->items) {
                     $model->addError('discount_applied', 'El descuento aplicado no debe ser mayor de ' . $stockModel->major_discount * $model->items . '.');
                 }
@@ -229,7 +251,7 @@ class SalesController extends GenericController {
                 $model->save();
                 return $this->redirect(['view-items', 'id' => $model->id]);
             }
-        }
+        }*/
         return $this->render('update-items', ['model' => $model]);
     }
 
@@ -243,7 +265,7 @@ class SalesController extends GenericController {
     public function actionDeleteItems($id) {
         $model = $this->findItemsModel($id);
         $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'brand_model_id' => $model->brand_model_id, 'device_type_id' => $model->device_type_id]);
-        
+
         if ($stockModel) {
             $stockModel->items += $model->items;
             $stockModel->save();
@@ -323,20 +345,105 @@ class SalesController extends GenericController {
 
     public function actionPrint($id) {
         $model = $this->findModel($id);
+        $saleItems = $model->saleItems;
+
+        $transaction = Yii::$app->db->beginTransaction();
+
+        foreach ($saleItems as $saleItem) {
+            $differenceErrors = [];
+
+            if ($model->status !== 1) {
+                $stockModel = Stock::findOne(['branch_id' => $model->branch_id, 'device_type_id' => $saleItem->device_type_id, 'brand_model_id' => $saleItem->brand_model_id]);
+                $difference = $stockModel->items - $saleItem->items;
+                if ($difference >= 0) {
+                    $stockModel->items = $difference;
+                    $stockModel->save();
+                } else {
+                    $differenceErrors['id'][] = "Solo quedan {$stockModel->items} unidades de {$stockModel->deviceType->name} {$stockModel->brandModel->name}";
+                }
+            }
+        }
+        
+        if (count($differenceErrors) > 0) {
+            $transaction->rollBack();
+            $model->addErrors($differenceErrors);
+            return $this->actionUpdateItems($id);
+        }
         $model->status = 1;
         $model->save();
-        $saleItems = $model->saleItems;
-        $saleItemsCount = 0;
-        $saleItemsAmount = 0;
-        foreach ($saleItems as $saleItem) {
-            $saleItemsCount += $saleItem->items;
-            $saleItemsAmount += $saleItem->final_price;
+        $transaction->commit();
+        
+        return $this->render('print', ['model' => $model]);
+    }
+
+    public function actionSetItems() {
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+        $post = Yii::$app->request->post();
+
+        $sale = $this->findModel($post['sale_id']);
+
+        if (!$sale) {
+            throw new Exception('Sale not found');
         }
-        return $this->render('print', [
-                    'model' => $model,
-                    'saleItemsCount' => $saleItemsCount,
-                    'saleItemsAmount' => $saleItemsAmount,
-        ]);
+
+        $transaction = Yii::$app->db->beginTransaction();
+        SaleItem::deleteAll(['sale_id' => $sale->id]);
+
+        try {
+            $devices = $post['devices'];
+            $discountApplied = $post['discount_applied'];
+            $maxDiscountsSum = 0;
+            $totalSalePrice = 0;
+
+            foreach ($devices as $device) {
+                $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $device['device_type_id'], 'brand_model_id' => $device['brand_model_id']]);
+
+                if (!$stockModel) {
+                    throw new Exception("No existen dispositivos disponibles de tipo {$device['device_type']} y marca {$device['brand_model']}.");
+                }
+
+                $itemsCount = $device['items'];
+                
+                if ($itemsCount > $stockModel->items) {
+                    throw new Exception("La cantidad de unidades de tipo {$device['device_type']} y marca {$device['brand_model']} no puede ser mayor que {$stockModel->items}.");
+                }
+
+                //$itemFinalPrice = ($stockModel->price_out * $itemsQuantity) - $discountApplied;
+
+                $saleItem = new SaleItem([
+                    'price_in' => $stockModel->price_in,
+                    'price_out' => $stockModel->price_out,
+                    'items' => $itemsCount,
+                    //'discount_applied' => $discountApplied,
+                    //'final_price' => $itemFinalPrice,
+                    'device_type_id' => $stockModel->device_type_id,
+                    'brand_model_id' => $stockModel->brand_model_id,
+                    'sale_id' => $sale->id,
+                ]);
+
+                $saleItem->save();
+                $maxItemDiscount = $stockModel->major_discount * $itemsCount;
+                $maxDiscountsSum += $maxItemDiscount;
+                $totalSalePrice += ($stockModel->price_out * $itemsCount);
+            }
+            
+            if ($discountApplied > 0 && $discountApplied > $maxDiscountsSum) {
+                $transaction->rollBack();
+                throw new Exception("El descuento aplicado no debe ser mayor de $maxDiscountsSum.");
+            }
+
+            $sale->discount_applied = $discountApplied;
+            $sale->total_price = $totalSalePrice - $discountApplied;
+            $sale->save();
+            $transaction->commit();
+
+            $response->data = "Operación realizada con éxito.";
+            return $response;
+        } catch (Exception $exc) {
+            $transaction->rollBack();
+            throw $exc;
+        }
     }
 
 }
