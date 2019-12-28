@@ -1,11 +1,3 @@
-/*
- * 
- * 
- $('#btn-new-code').removeClass('btn-info').addClass('btn-danger');
- * 
- * 
- * */
-
 let stockItems = [], cartItems = [];
 let totalPrice = 0, maxDiscount = 0, discountApplied = 0, discountedPrice = 0;
 
@@ -127,7 +119,7 @@ function updateCartRows() {
 
         content += '<div class="row">';
         content += '<div class="col-sm-3"><a id="btn-finish" onclick="sendItems()" class="btn btn-primary btn-sm"><i class="material-icons" style="top: 1px; margin-right: 3px;">check</i>Terminar</a></div>';
-        content += '<div class="col-sm-3"><a id="btn-clear-cart" onclick="clearCart()" class="btn btn-danger btn-sm">Cancelar</a></div>';
+        content += '<div class="col-sm-3"><a id="btn-clear-cart" onclick="redirectToSaleDetailsView()" class="btn btn-danger btn-sm">Cancelar</a></div>';
         content += '</div>';
     }
 
@@ -148,6 +140,7 @@ function sendItems() {
         success: function (response) {
             $('#btn-finish').prop('disabled', false);
             alert(response);
+            redirectToSaleDetailsView();
         },
         error: function (jqXHR) {
             alert(jqXHR.responseText);
@@ -156,6 +149,11 @@ function sendItems() {
             $('#btn-new-code').prop('disabled', false);
         }
     });
+}
+
+function redirectToSaleDetailsView() {
+    let currentUrl = window.location.href;
+    window.location.href = currentUrl.replace('update-items', 'view');
 }
 
 function clearCart() {
