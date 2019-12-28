@@ -56,6 +56,7 @@ class AttributesLabels {
         'date_closed' => 'Fecha del cierre',
         'device' => 'Dispositivo',
         'branch_id' => 'Sucursal',
+        'total_price' => 'Precio final',
     ];
     
     public static function getAttributeLabel($name) {
