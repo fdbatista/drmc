@@ -14,7 +14,6 @@ use Yii;
  * @property StockType $stockType
  * @property SaleItem[] $saleItems
  * @property Stock[] $stocks
- * @property BrandModel[] $brandModels
  * @property Workshop[] $workshops
  * @property WorkshopPreDiagnosis[] $workshopPreDiagnoses
  */
@@ -76,14 +75,6 @@ class DeviceType extends \yii\db\ActiveRecord
     public function getStocks()
     {
         return $this->hasMany(Stock::className(), ['device_type_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBrandModels()
-    {
-        return $this->hasMany(BrandModel::className(), ['id' => 'brand_model_id'])->viaTable('stock', ['device_type_id' => 'id']);
     }
 
     /**

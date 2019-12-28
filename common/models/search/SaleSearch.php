@@ -20,7 +20,7 @@ class SaleSearch extends Sale {
     public function rules() {
         return [
                 [['id', 'customer_id'], 'integer'],
-                [['date', 'updated_at', 'customer', 'status'], 'safe'],
+                [['date', 'updated_at', 'customer', 'status', 'serial_number', 'total_price'], 'safe'],
         ];
     }
 
@@ -71,11 +71,13 @@ class SaleSearch extends Sale {
             'updated_at' => $this->updated_at,
             'branch_id' => $this->branch_id,
         ]);
-        $query->andFilterWhere(['like', 'customer.code', $this->customer]);
+        
+        $query->andFilterWhere(['like', 'customer.code', $this->customer])
+                ->andFilterWhere(['like', 'serial_number', $this->serial_number])
+                ->andFilterWhere(['like', 'total_price', $this->total_price]);
 
         if ($this->date) {
             $date = explode(' al ', $this->date);
-            //$query->andFilterWhere(['between', 'date', "$date[0]", "$date[1]"]);
             $query->andFilterWhere(['between', 'date', $date[0], $date[1]]);
         }
         return $dataProvider;

@@ -21,7 +21,7 @@ class WorkshopSearch extends Workshop {
     public function rules() {
         return [
                 [['effort', 'receiver_id'], 'integer'],
-                [['deviceType', 'brandModel', 'password', 'folio_number', 'status'], 'safe'],
+                [['deviceType', 'brandModel', 'password', 'folio_number', 'status', 'final_price'], 'safe'],
         ];
     }
 
@@ -76,6 +76,7 @@ class WorkshopSearch extends Workshop {
             'receiver_id' => $this->receiver_id,
             'status' => $this->status,
             'branch_id' => $this->branch_id,
+            'final_price' => $this->final_price,
         ]);
 
         $query->andFilterWhere(['like', 'password', $this->password])

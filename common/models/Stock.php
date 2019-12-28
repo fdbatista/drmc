@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use common\utils\AttributesLabels;
 use Yii;
 
 /**
@@ -61,7 +60,20 @@ class Stock extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return AttributesLabels::getLabels();
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'code' => Yii::t('app', 'Code'),
+            'items' => Yii::t('app', 'Items'),
+            'price_in' => Yii::t('app', 'Price In'),
+            'price_out' => Yii::t('app', 'Price Out'),
+            'first_discount' => Yii::t('app', 'First Discount'),
+            'major_discount' => Yii::t('app', 'Major Discount'),
+            'stock_type_id' => Yii::t('app', 'Stock Type ID'),
+            'device_type_id' => Yii::t('app', 'Device Type ID'),
+            'brand_model_id' => Yii::t('app', 'Brand Model ID'),
+            'branch_id' => Yii::t('app', 'Branch ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+        ];
     }
 
     /**

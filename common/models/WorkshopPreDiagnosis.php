@@ -46,11 +46,11 @@ class WorkshopPreDiagnosis extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'workshop_id' => 'Workshop ID',
-            'device_type_id' => 'Device Type ID',
-            'price_per_unit' => 'Price Per Unit',
-            'items' => 'Items',
+            'id' => Yii::t('app', 'ID'),
+            'workshop_id' => Yii::t('app', 'Workshop ID'),
+            'device_type_id' => Yii::t('app', 'Device Type ID'),
+            'price_per_unit' => Yii::t('app', 'Price Per Unit'),
+            'items' => Yii::t('app', 'Items'),
         ];
     }
 

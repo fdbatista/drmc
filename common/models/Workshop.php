@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use common\utils\AttributesLabels;
 use Yii;
 
 /**
@@ -56,7 +55,7 @@ class Workshop extends \yii\db\ActiveRecord
     {
         return [
             [['pattern_gif', 'signature_in', 'signature_out'], 'string'],
-            [['date_received', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number', 'effort', 'device_type_id', 'brand_model_id', 'branch_id', 'discount_applied'], 'required'],
+            [['date_received', 'serial_number', 'customer_name', 'customer_telephone', 'folio_number', 'effort', 'device_type_id', 'brand_model_id', 'branch_id'], 'required'],
             [['date_received', 'date_closed', 'warranty_until', 'updated_at'], 'safe'],
             [['discount_applied', 'final_price', 'effort'], 'number'],
             [['status', 'receiver_id', 'device_type_id', 'brand_model_id', 'branch_id'], 'integer'],
@@ -76,32 +75,31 @@ class Workshop extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return AttributesLabels::getLabels();
-        /*return [
-            'id' => 'ID',
-            'password' => 'Password',
-            'pattern' => 'Pattern',
-            'pattern_gif' => 'Pattern Gif',
-            'observations' => 'Observations',
-            'signature_in' => 'Signature In',
-            'signature_out' => 'Signature Out',
-            'date_received' => 'Date Received',
-            'date_closed' => 'Date Closed',
-            'warranty_until' => 'Warranty Until',
-            'updated_at' => 'Updated At',
-            'serial_number' => 'Serial Number',
-            'customer_name' => 'Customer Name',
-            'customer_telephone' => 'Customer Telephone',
-            'folio_number' => 'Folio Number',
-            'discount_applied' => 'Discount Applied',
-            'final_price' => 'Final Price',
-            'effort' => 'Effort',
-            'status' => 'Status',
-            'receiver_id' => 'Receiver ID',
-            'device_type_id' => 'Device Type ID',
-            'brand_model_id' => 'Brand Model ID',
-            'branch_id' => 'Branch ID',
-        ];*/
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'password' => Yii::t('app', 'Password'),
+            'pattern' => Yii::t('app', 'Pattern'),
+            'pattern_gif' => Yii::t('app', 'Pattern Gif'),
+            'observations' => Yii::t('app', 'Observations'),
+            'signature_in' => Yii::t('app', 'Signature In'),
+            'signature_out' => Yii::t('app', 'Signature Out'),
+            'date_received' => Yii::t('app', 'Date Received'),
+            'date_closed' => Yii::t('app', 'Date Closed'),
+            'warranty_until' => Yii::t('app', 'Warranty Until'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'serial_number' => Yii::t('app', 'Serial Number'),
+            'customer_name' => Yii::t('app', 'Customer Name'),
+            'customer_telephone' => Yii::t('app', 'Customer Telephone'),
+            'folio_number' => Yii::t('app', 'Folio Number'),
+            'discount_applied' => Yii::t('app', 'Discount Applied'),
+            'final_price' => Yii::t('app', 'Final Price'),
+            'effort' => Yii::t('app', 'Effort'),
+            'status' => Yii::t('app', 'Status'),
+            'receiver_id' => Yii::t('app', 'Receiver ID'),
+            'device_type_id' => Yii::t('app', 'Device Type ID'),
+            'brand_model_id' => Yii::t('app', 'Brand Model ID'),
+            'branch_id' => Yii::t('app', 'Branch ID'),
+        ];
     }
 
     /**

@@ -13,6 +13,7 @@ use Yii;
  *
  * @property Sale[] $sales
  * @property Stock[] $stocks
+ * @property User[] $users
  * @property Workshop[] $workshops
  */
 class Branch extends \yii\db\ActiveRecord
@@ -44,9 +45,9 @@ class Branch extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Name'),
+            'description' => Yii::t('app', 'Description'),
         ];
     }
 
@@ -64,6 +65,14 @@ class Branch extends \yii\db\ActiveRecord
     public function getStocks()
     {
         return $this->hasMany(Stock::className(), ['branch_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['branch_id' => 'id']);
     }
 
     /**

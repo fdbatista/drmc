@@ -55,16 +55,16 @@ class SaleItem extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'price_in' => 'Price In',
-            'price_out' => 'Price Out',
-            'items' => 'Items',
-            'discount_applied' => 'Discount Applied',
-            'final_price' => 'Final Price',
-            'device_type_id' => 'Device Type ID',
-            'brand_model_id' => 'Brand Model ID',
-            'sale_id' => 'Sale ID',
-            'updated_at' => 'Updated At',
+            'id' => Yii::t('app', 'ID'),
+            'price_in' => Yii::t('app', 'Price In'),
+            'price_out' => Yii::t('app', 'Price Out'),
+            'items' => Yii::t('app', 'Items'),
+            'discount_applied' => Yii::t('app', 'Discount Applied'),
+            'final_price' => Yii::t('app', 'Final Price'),
+            'device_type_id' => Yii::t('app', 'Device Type ID'),
+            'brand_model_id' => Yii::t('app', 'Brand Model ID'),
+            'sale_id' => Yii::t('app', 'Sale ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 

@@ -13,35 +13,40 @@ use Yii;
  * @property int $brand_id
  *
  * @property Brand $brand
- * @property Device[] $devices
+ * @property SaleItem[] $saleItems
+ * @property Stock[] $stocks
+ * @property Workshop[] $workshops
  */
-class BrandModel extends \yii\db\ActiveRecord {
-
+class BrandModel extends \yii\db\ActiveRecord
+{
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'brand_model';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-                [['name', 'brand_id'], 'required'],
-                [['brand_id'], 'integer'],
-                [['name'], 'string', 'max' => 75],
-                [['description'], 'string', 'max' => 250],
-                [['name'], 'unique'],
-                [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
+            [['name', 'brand_id'], 'required'],
+            [['brand_id'], 'integer'],
+            [['name'], 'string', 'max' => 75],
+            [['description'], 'string', 'max' => 250],
+            [['name'], 'unique'],
+            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
@@ -53,15 +58,32 @@ class BrandModel extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBrand() {
+    public function getBrand()
+    {
         return $this->hasOne(Brand::className(), ['id' => 'brand_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDevices() {
-        return $this->hasMany(Device::className(), ['model_id' => 'id']);
+    public function getSaleItems()
+    {
+        return $this->hasMany(SaleItem::className(), ['brand_model_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStocks()
+    {
+        return $this->hasMany(Stock::className(), ['brand_model_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWorkshops()
+    {
+        return $this->hasMany(Workshop::className(), ['brand_model_id' => 'id']);
+    }
 }

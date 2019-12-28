@@ -45,11 +45,11 @@ class WorkshopPayment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'amount' => 'Amount',
-            'date' => 'Date',
-            'workshop_id' => 'Workshop ID',
-            'updated_at' => 'Updated At',
+            'id' => Yii::t('app', 'ID'),
+            'amount' => Yii::t('app', 'Amount'),
+            'date' => Yii::t('app', 'Date'),
+            'workshop_id' => Yii::t('app', 'Workshop ID'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 
