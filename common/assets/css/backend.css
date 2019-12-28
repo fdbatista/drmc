@@ -181,12 +181,17 @@ table tbody tr th {
     width: 25%;
 }
 
-.data-content {
-    text-decoration: underline;
+.data-name {
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .data-row {
-    margin-top: 20px;
+    margin-top: 5px;
+}
+
+.data-content {
+    text-decoration: underline;
 }
 
 .signature-row {
@@ -195,15 +200,49 @@ table tbody tr th {
 
 .img-print {
     background-color: #383838!important;
-    height: 80px;
+    height: 40px;
     color: #fff;
-    padding-top: 30px;
+    padding-top: 10px;
     text-align: center;
     font-family: Verdana;
-    font-size: 48px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: bolder;
 }
 
 .footer {
     height: 72px;
+}
+
+.underline {
+    text-decoration: underline!important;
+}
+
+.btn-action {
+    border-radius: 3px;
+    margin-left: 5px;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.btn-add {
+    padding: 1px 6px;
+    background-color: green;
+}
+
+.btn-substract {
+    padding: 1px 7px;
+    background-color: red;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.fa-wrapper {
+    top: 2px;
+    margin-right: 3px;
 }
