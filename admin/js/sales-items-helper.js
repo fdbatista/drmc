@@ -1,5 +1,5 @@
 let stockItems = [], cartItems = [];
-let totalPrice = 0, maxDiscount = 0, discountApplied = 0, discountedPrice = 0;
+let totalPrice = 0, maxDiscount = 0, discountApplied = 0, discountedPrice = 0, saleId = null;
 
 $(document).ready(function () {
     getItemsForSaleAndCart();
@@ -7,7 +7,7 @@ $(document).ready(function () {
 
 function getItemsForSaleAndCart() {
     var csrfToken = $('meta[name="csrf-token"]').attr("content");
-    let saleId = $('#sale_id').val();
+    saleId = $('#sale_id').val();
 
     $.ajax({
         url: '/sales/get-available-items-for-sale',
@@ -119,7 +119,7 @@ function updateCartRows() {
 
         content += '<div class="row">';
         content += '<div class="col-sm-3"><a id="btn-finish" onclick="sendItems()" class="btn btn-primary btn-sm"><i class="material-icons" style="top: 1px; margin-right: 3px;">check</i>Terminar</a></div>';
-        content += '<div class="col-sm-3"><a id="btn-clear-cart" onclick="redirectToSaleDetailsView()" class="btn btn-danger btn-sm">Cancelar</a></div>';
+        content += '<div class="col-sm-3"><a id="btn-clear-cart" onclick="redirectToSaleDetailsView(null)" class="btn btn-danger btn-sm">Cancelar</a></div>';
         content += '</div>';
     }
 
@@ -133,14 +133,14 @@ function sendItems() {
     $('#btn-finish').prop('disabled', true);
 
     $.ajax({
-        url: '/sales/set-items?_csrf=' + csrfToken,
+        url: '/sales/ajax-set-items?_csrf=' + csrfToken,
         data: {sale_id: saleId, devices: cartItems, discount_applied: discountApplied},
         type: 'POST',
         dataType: 'json',
         success: function (response) {
             $('#btn-finish').prop('disabled', false);
-            alert(response);
-            redirectToSaleDetailsView();
+            alert(response.msg);
+            redirectToSaleDetailsView(response.data);
         },
         error: function (jqXHR) {
             alert(jqXHR.responseText);
@@ -151,9 +151,10 @@ function sendItems() {
     });
 }
 
-function redirectToSaleDetailsView() {
+function redirectToSaleDetailsView(ajaxSaleId) {
     let currentUrl = window.location.href;
-    window.location.href = currentUrl.replace('update-items', 'view');
+    let newUrl = (saleId) ? currentUrl.replace('update-items', 'view') : (ajaxSaleId) ? currentUrl.replace('create', 'view') + '?id=' + ajaxSaleId : currentUrl.replace('create', 'index');
+    window.location.href = newUrl;
 }
 
 function clearCart() {
