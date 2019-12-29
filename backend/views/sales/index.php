@@ -57,15 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'customer',
-                'label' => AttributesLabels::getAttributeLabel('customer_id'),
-                'value' => 'customer.code',
-                'filterInputOptions' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Introduzca un criterio...'
-                ],
-            ],
-            [
                 'attribute' => 'serial_number',
                 'label' => AttributesLabels::getAttributeLabel('serial_number'),
                 'filterInputOptions' => [
@@ -85,14 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {update-items} {delete}',
+                'template' => '{view} {update-items} {print} {delete}',
                 'buttons' =>
                     [
                     'view' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Detalles"><span class="glyphicon glyphicon-eye-open"></span></a>';
-                    },
-                    'update' => function ($key) {
-                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
                     },
                     'update-items' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-shopping-cart"></span>', $url, [
@@ -101,6 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-placement' => 'top',
                                     'data-pjax' => 0,
                         ]);
+                    },
+                            'print' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Imprimir"><span class="glyphicon glyphicon-print"></span></a>';
                     },
                     'delete' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
