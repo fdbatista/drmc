@@ -10,8 +10,9 @@ use Yii;
  * @property int $id
  * @property int $workshop_id
  * @property int $device_type_id
- * @property double $price_per_unit
+ * @property double $price_out
  * @property int $items
+ * @property int $price_in
  *
  * @property DeviceType $deviceType
  * @property Workshop $workshop
@@ -32,9 +33,9 @@ class WorkshopPreDiagnosis extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['workshop_id', 'device_type_id', 'price_per_unit', 'items'], 'required'],
-            [['workshop_id', 'device_type_id', 'items'], 'integer'],
-            [['price_per_unit'], 'number'],
+            [['workshop_id', 'device_type_id', 'price_out', 'items'], 'required'],
+            [['workshop_id', 'device_type_id', 'items', 'price_in'], 'integer'],
+            [['price_out'], 'number'],
             [['device_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['device_type_id' => 'id']],
             [['workshop_id'], 'exist', 'skipOnError' => true, 'targetClass' => Workshop::className(), 'targetAttribute' => ['workshop_id' => 'id']],
         ];
@@ -49,8 +50,9 @@ class WorkshopPreDiagnosis extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'workshop_id' => Yii::t('app', 'Workshop ID'),
             'device_type_id' => Yii::t('app', 'Device Type ID'),
-            'price_per_unit' => Yii::t('app', 'Price Per Unit'),
+            'price_out' => Yii::t('app', 'Price Out'),
             'items' => Yii::t('app', 'Items'),
+            'price_in' => Yii::t('app', 'Price In'),
         ];
     }
 
