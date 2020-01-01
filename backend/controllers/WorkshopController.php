@@ -82,7 +82,8 @@ class WorkshopController extends GenericController {
                         $workshopPreDiagnosis->items = $preDiagnosisItem['items'];
                         $workshopPreDiagnosis->workshop_id = $model->id;
                         $workshopPreDiagnosis->device_type_id = $stockModel->device_type_id;
-                        $workshopPreDiagnosis->price_per_unit = $stockModel->price_out;
+                        $workshopPreDiagnosis->price_in = $stockModel->price_in;
+                        $workshopPreDiagnosis->price_out = $stockModel->price_out;
                         $workshopPreDiagnosis->save();
                         $stockModel->items -= $preDiagnosisItem['items'];
                         if ($stockModel->items > 0) {
@@ -131,7 +132,8 @@ class WorkshopController extends GenericController {
                             $workshopPreDiagnosis->items = $preDiagnosisItem['items'];
                             $workshopPreDiagnosis->workshop_id = $model->id;
                             $workshopPreDiagnosis->device_type_id = $stockModel->device_type_id;
-                            $workshopPreDiagnosis->price_per_unit = $stockModel->price_out;
+                            $workshopPreDiagnosis->price_in = $stockModel->price_in;
+                            $workshopPreDiagnosis->price_out = $stockModel->price_out;
                             $workshopPreDiagnosis->save();
                             $stockModel->items -= $preDiagnosisItem['items'];
                             if ($stockModel->items > 0) {
@@ -338,18 +340,13 @@ class WorkshopController extends GenericController {
         $maxDiscount = 0;
         $preDiagnosisItems = $model->workshopPreDiagnoses;
         foreach ($preDiagnosisItems as $preDiagnosisItem) {
-            //$model->final_price += ($preDiagnosisItem->price_per_unit * $preDiagnosisItem->items);
             $stockModel = Stock::findOne(['branch_id' => Yii::$app->session->get('branch_id'), 'device_type_id' => $preDiagnosisItem->device_type_id, 'brand_model_id' => $model->brand_model_id]);
             if ($stockModel) {
                 $minDiscount += ($stockModel->first_discount * $preDiagnosisItem->items);
                 $maxDiscount += ($stockModel->major_discount * $preDiagnosisItem->items);
             }
         }
-        //$model->final_price -= $model->discount_applied;
-        /* if ($model->discount_applied !== '0' && ($model->discount_applied < $minDiscount || $model->discount_applied > $maxDiscount)) {
-          $model->addError('discount_applied', "El descuento aplicado debe estar entre $minDiscount y $maxDiscount.");
-          $model->final_price += $model->discount_applied;
-          } */
+
         if ($model->discount_applied !== '0' && $model->discount_applied > $maxDiscount) {
             $model->addError('discount_applied', "El descuento aplicado no debe ser mayor de $maxDiscount.");
             $model->final_price += $model->discount_applied;
@@ -368,7 +365,7 @@ class WorkshopController extends GenericController {
             if (!$model->hasErrors()) {
                 $model->status = 1;
                 $model->save();
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['print', 'id' => $model->id]);
             }
         }
         return $this->render('finish-repair', ['model' => $model, 'passwordOrPattern' => $model->password ? 1 : 2]);
