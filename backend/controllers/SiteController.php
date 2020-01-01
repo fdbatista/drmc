@@ -5,10 +5,15 @@ namespace backend\controllers;
 use common\models\Branch;
 use common\models\LoginForm;
 use common\models\User;
+use common\models\VSalesCurrentInfo;
+use common\models\VSalesGroupedAmounts;
+use common\models\VWorkshopCurrentInfo;
+use common\models\VWorkshopGroupedAmounts;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -30,7 +35,7 @@ class SiteController extends Controller {
                         'allow' => true,
                     ],
                         [
-                        'actions' => ['logout', 'index', 'profile'],
+                        'actions' => ['logout', 'index', 'profile', 'get-last-days-sales', 'get-last-weeks-sales', 'get-last-months-sales'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -85,7 +90,52 @@ class SiteController extends Controller {
 
     public function actionViewDashboard() {
         Yii::$app->view->params['active'] = 'dashboard';
-        return $this->render('dashboard');
+        
+        $data = [
+            'sales' => [
+                'currentInfo' => [
+                    ['title' => 'Hoy', 'data' => VSalesCurrentInfo::findOne(['type' => 'day'])],
+                    ['title' => 'Esta semana', 'data' => VSalesCurrentInfo::findOne(['type' => 'week'])],
+                    ['title' => 'Este mes', 'data' => VSalesCurrentInfo::findOne(['type' => 'month'])],
+                    ['title' => 'Este año', 'data' => VSalesCurrentInfo::findOne(['type' => 'year'])],
+                ],
+            ]
+        ];
+        return $this->render('dashboard', ['data' => $data]);
+    }
+    
+    public function actionGetLastDaysSales() {
+        return $this->getLastPeriodSales("select SUBSTRING(date_format(`value`, '%W'), 1, 3) `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'day' order by `value` desc", 7);
+    }
+    
+    public function actionGetLastWeeksSales() {
+        return $this->getLastPeriodSales("select `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'week' order by `value` desc", 4);
+    }
+    
+    public function actionGetLastMonthsSales() {
+        return $this->getLastPeriodSales("select `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'month' order by `value` desc", 12);
+    }
+    
+    private function getLastPeriodSales($sql, $limit) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $salesInfo = VSalesGroupedAmounts::findBySql($sql)->limit($limit)->all();
+        $result = ['highest_series' => 0, 'labels' => [], 'series' => []];
+        foreach ($salesInfo as $saleInfo) {
+            $result['labels'][] = $saleInfo['value'];
+            
+            $seriesValue = intval($saleInfo['amount']);
+            $result['series'][0][] = $seriesValue;
+            if ($seriesValue > $result['highest_series']){
+                $result['highest_series'] = $seriesValue + 100;
+            }
+            
+            $seriesValue = intval($saleInfo['profit']);
+            $result['series'][1][] = $seriesValue;
+            if ($seriesValue > $result['highest_series']){
+                $result['highest_series'] = $seriesValue + 100;
+            }
+        }
+        return $result;
     }
 
     public function actionSelectBranch() {
