@@ -9,14 +9,14 @@ $(document).on('click', '.btn-remove-pre-diagnosis', function () {
 
 $(document).ready(function () {
     var model_id = $('#workshop-id').val();
-    var baseUrl = $('#base-url').val();
+    //var baseUrl = $('#base-url').val();
 
-    if (model_id && baseUrl) {
+    if (model_id) {
 
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
 
         $.ajax({
-            url: baseUrl + '/workshop/get-pre-diagnosis-items',
+            url: '/workshop/get-pre-diagnosis-items',
             data: {model_id: model_id, _csrf: csrfToken, XDEBUG_SESSION_START: 'netbeans-xdebug'},
             type: 'GET',
             dataType: 'json',
@@ -28,6 +28,7 @@ $(document).ready(function () {
                  var newOption = new Option(item.name, item.id, false, false);
                  $('#devices-by-brand-list').append(newOption).trigger('change');
                  }*/
+                console.log(response);
                 updatePreDiagnosisItemsContainer();
             },
             error: function (jqXHR, status, error) {
