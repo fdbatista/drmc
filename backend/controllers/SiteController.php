@@ -7,8 +7,7 @@ use common\models\LoginForm;
 use common\models\User;
 use common\models\VSalesCurrentInfo;
 use common\models\VSalesGroupedAmounts;
-use common\models\VWorkshopCurrentInfo;
-use common\models\VWorkshopGroupedAmounts;
+use common\models\VSoldProductsCurrentInfo;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -99,13 +98,20 @@ class SiteController extends Controller {
                     ['title' => 'Este mes', 'data' => VSalesCurrentInfo::findOne(['type' => 'month'])],
                     ['title' => 'Este año', 'data' => VSalesCurrentInfo::findOne(['type' => 'year'])],
                 ],
+            ],
+            'sold_products' => [
+                ['title' => 'Hoy', 'id' => 'sold_today', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'day'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Esta semana', 'id' => 'sold_this_week', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'week'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Este mes', 'id' => 'sold_this_month', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'month'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Este a&ntilde;o', 'id' => 'sold_this_year', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'year'])->orderBy(['sold_items' => SORT_DESC])->all()],
             ]
         ];
+        
         return $this->render('dashboard', ['data' => $data]);
     }
     
     public function actionGetLastDaysSales() {
-        return $this->getLastPeriodSales("select SUBSTRING(date_format(`value`, '%W'), 1, 3) `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'day' order by `value` desc", 7);
+        return $this->getLastPeriodSales("select substring(date_format(`value`, '%W'), 1, 3) `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'day' ", 7);
     }
     
     public function actionGetLastWeeksSales() {
@@ -113,7 +119,7 @@ class SiteController extends Controller {
     }
     
     public function actionGetLastMonthsSales() {
-        return $this->getLastPeriodSales("select `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'month' order by `value` desc", 12);
+        return $this->getLastPeriodSales("select substr(`value`, 1, 3) `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'month' order by `value` desc", 12);
     }
     
     private function getLastPeriodSales($sql, $limit) {
@@ -123,16 +129,16 @@ class SiteController extends Controller {
         foreach ($salesInfo as $saleInfo) {
             $result['labels'][] = $saleInfo['value'];
             
-            $seriesValue = intval($saleInfo['amount']);
-            $result['series'][0][] = $seriesValue;
-            if ($seriesValue > $result['highest_series']){
-                $result['highest_series'] = $seriesValue + 100;
+            $amount = intval($saleInfo['amount']);
+            $result['series'][0][] = $amount;
+            if ($amount > $result['highest_series']){
+                $result['highest_series'] = $amount + 100;
             }
             
-            $seriesValue = intval($saleInfo['profit']);
-            $result['series'][1][] = $seriesValue;
-            if ($seriesValue > $result['highest_series']){
-                $result['highest_series'] = $seriesValue + 100;
+            $profit = intval($saleInfo['profit']);
+            $result['series'][1][] = $profit;
+            if ($profit > $result['highest_series']){
+                $result['highest_series'] = $profit + 100;
             }
         }
         return $result;
