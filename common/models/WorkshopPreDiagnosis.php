@@ -33,7 +33,7 @@ class WorkshopPreDiagnosis extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['workshop_id', 'device_type_id', 'price_out', 'items'], 'required'],
+            [['workshop_id', 'device_type_id', 'price_out', 'items', 'price_in'], 'required'],
             [['workshop_id', 'device_type_id', 'items', 'price_in'], 'integer'],
             [['price_out'], 'number'],
             [['device_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeviceType::className(), 'targetAttribute' => ['device_type_id' => 'id']],
