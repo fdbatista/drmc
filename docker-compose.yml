@@ -13,7 +13,6 @@ services:
   db:
     image: mysql:5.7
     container_name: drmc_db
-    restart: always
     ports:
       - 3307:3306
     volumes:
