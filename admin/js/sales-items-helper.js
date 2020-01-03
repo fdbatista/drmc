@@ -139,7 +139,6 @@ function sendItems() {
         dataType: 'json',
         success: function (response) {
             $('#btn-finish').prop('disabled', false);
-            alert(response.msg);
             redirectToSaleDetailsView(response.data);
         },
         error: function (jqXHR) {
