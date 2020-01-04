@@ -8,6 +8,7 @@ use common\models\User;
 use common\models\VSalesCurrentInfo;
 use common\models\VSalesGroupedAmounts;
 use common\models\VSoldProductsCurrentInfo;
+use common\models\VWorkshopCurrentInfo;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -104,7 +105,15 @@ class SiteController extends Controller {
                 ['title' => 'Esta semana', 'id' => 'sold_this_week', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'week'])->orderBy(['sold_items' => SORT_DESC])->all()],
                 ['title' => 'Este mes', 'id' => 'sold_this_month', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'month'])->orderBy(['sold_items' => SORT_DESC])->all()],
                 ['title' => 'Este a&ntilde;o', 'id' => 'sold_this_year', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'year'])->orderBy(['sold_items' => SORT_DESC])->all()],
-            ]
+            ],
+            'workshop' => [
+                'currentInfo' => [
+                    ['title' => 'Hoy', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'day'])],
+                    ['title' => 'Esta semana', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'week'])],
+                    ['title' => 'Este mes', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'month'])],
+                    ['title' => 'Este año', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'year'])],
+                ],
+            ],
         ];
         
         return $this->render('dashboard', ['data' => $data]);
