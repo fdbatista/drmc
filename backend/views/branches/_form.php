@@ -1,13 +1,13 @@
 <?php
 
-use common\models\Brand;
+use common\models\Branch;
 use common\utils\AttributesLabels;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this View */
-/* @var $model Brand */
+/* @var $model Branch */
 /* @var $form ActiveForm */
 ?>
 
@@ -25,7 +25,7 @@ use yii\bootstrap\ActiveForm;
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
                         <div class="row">
                             <div class="col-xs-10">
-                                <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true])->label(false) ?>
+                                <?= $form->field($model, 'name', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('name') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'autofocus' =>true])->label(false) ?>
                             </div>
                         </div>
 
@@ -33,6 +33,19 @@ use yii\bootstrap\ActiveForm;
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <?= $form->field($model, 'description', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('description') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <?= $form->field($model, 'phone_number', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('phone_number') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <?= $form->field($model, 'address', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('address') . '</label>{input}</div>'])->textarea(['maxlength' => true, 'class' => 'form-control'])->label(false) ?>
                                 </div>
                             </div>
                         </div>
