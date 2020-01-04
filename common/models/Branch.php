@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $description
+ * @property string $address
+ * @property string $phone_number
  *
  * @property Sale[] $sales
  * @property Stock[] $stocks
@@ -32,9 +34,10 @@ class Branch extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'address', 'phone_number'], 'required'],
             [['name'], 'string', 'max' => 75],
             [['description'], 'string', 'max' => 250],
+            [['address', 'phone_number'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
     }
@@ -48,6 +51,8 @@ class Branch extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'description' => Yii::t('app', 'Description'),
+            'address' => Yii::t('app', 'Address'),
+            'phone_number' => Yii::t('app', 'Phone Number'),
         ];
     }
 
