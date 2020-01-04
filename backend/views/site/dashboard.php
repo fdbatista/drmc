@@ -8,12 +8,15 @@ $currSalesInfo = $salesInfo['currentInfo'];
 
 $soldProducts = $data['sold_products'];
 $soldProductsType = count($soldProducts);
+
+$workshopInfo = $data['workshop'];
+$currWorkshopInfo = $workshopInfo['currentInfo'];
 ?>
 
 <div class="content">
     <div class="container-fluid">
-        <div class="row">
 
+        <div class="row">
             <?php foreach ($currSalesInfo as $currSaleInfo) { ?>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats">
@@ -31,7 +34,6 @@ $soldProductsType = count($soldProducts);
                     </div>
                 </div>
             <?php } ?>
-
         </div>
 
         <div class="row">
@@ -134,5 +136,27 @@ $soldProductsType = count($soldProducts);
             </div>
 
         </div>
+        
+        <div class="row">
+
+            <?php foreach ($currWorkshopInfo as $currWorkshopInfoObj) { ?>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats">
+                        <div class="card-header" data-background-color="green">
+                            <i class="material-icons">store</i>
+                        </div>
+                        <div class="card-content">
+                            <p class="category"><i class="material-icons">card_giftcard</i> TALLER</p>
+                        </div>
+                        <div class="card-footer" style="margin-top: 30px;">
+                            <p class="category"><i class="material-icons">date_range</i> <?= $currWorkshopInfoObj['title'] ?></p>
+                            <h5 class="title">Ingresos: $<?= $currWorkshopInfoObj['data'] ? $currWorkshopInfoObj['data']->amount : "0" ?></h5>
+                            <h5 class="title">Ganancia: $<?= $currWorkshopInfoObj['data'] ? $currWorkshopInfoObj['data']->profit : "0" ?></h5>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+        
     </div>
 </div>
