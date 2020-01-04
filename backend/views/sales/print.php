@@ -19,6 +19,8 @@ $this->title = Yii::t('app', 'Imprimir comprobante');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ventas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta'), 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
+
+$branch = $model->branch;
 ?>
 
 <div class="content">
@@ -39,13 +41,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
             
             <div class="row data-row">
                 <div class="col-sm-6">
-                    <span class="data-name">Direcci&oacute;n: </span><span>Av. Ju&aacute;rez 5 Col. Centro, Chilpancingo, Gro.</span>
+                    <span class="data-name">Direcci&oacute;n: </span><span><?= $branch->address ?></span>
                 </div>
             </div>
             
             <div class="row">
                 <div class="col-sm-6">
-                    <span class="data-name">Tel&eacute;fono: </span><span>4716037</span>
+                    <span class="data-name">Tel&eacute;fono: </span><span><?= $branch->phone_number ?></span>
                 </div>
             </div>
             
