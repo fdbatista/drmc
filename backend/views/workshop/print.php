@@ -1,6 +1,5 @@
 <?php
 
-use backend\assets\DatePickerAsset;
 use backend\assets\PrintAsset;
 use common\models\Workshop;
 use common\utils\AttributesLabels;
@@ -8,7 +7,6 @@ use common\utils\StaticMembers;
 use yii\bootstrap\ActiveForm;
 use yii\web\View;
 
-//DatePickerAsset::register($this);
 PrintAsset::register($this);
 
 /* @var $this View */
@@ -20,6 +18,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reparaciones'), 'url
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos de la reparación'), 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
+$branch = $model->branch;
 ?>
 
 <div class="content">
@@ -51,7 +50,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <p>Av. Ju&aacute;rez 5 Col. Centro<br />Chilpancingo, Gro. Tel: 4716037</p>
+                        <p><?= $branch->address ?><br />Tel: <?= $branch->phone_number ?></p>
                     </div>
                     <div class="col-sm-6">
                         <p style="margin-top: 10px;"><span class="img-print" style="font-size: 36px; background: #383838; color: #fff; padding: 2px 3px 0 10px; font-weight: 700;">f</span> Tecno - Cell</p>
