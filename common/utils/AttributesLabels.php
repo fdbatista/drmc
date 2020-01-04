@@ -57,6 +57,7 @@ class AttributesLabels {
         'device' => 'Dispositivo',
         'branch_id' => 'Sucursal',
         'total_price' => 'Precio final',
+        'phone_number' => 'Teléfono',
     ];
     
     public static function getAttributeLabel($name) {
