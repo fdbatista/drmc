@@ -33,8 +33,9 @@ class VSoldProductsPerSale extends \yii\db\ActiveRecord
             [['day'], 'safe'],
             [['year', 'sold_items'], 'integer'],
             [['sold_items'], 'required'],
-            [['week', 'month'], 'string', 'max' => 7],
-            [['product'], 'string', 'max' => 202],
+            [['week'], 'string', 'max' => 35],
+            [['month'], 'string', 'max' => 500],
+            [['product'], 'string', 'max' => 500],
         ];
     }
 

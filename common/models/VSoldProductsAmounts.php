@@ -29,9 +29,9 @@ class VSoldProductsAmounts extends \yii\db\ActiveRecord
     {
         return [
             [['sold_items'], 'number'],
-            [['type'], 'string', 'max' => 5],
-            [['value'], 'string', 'max' => 11],
-            [['product'], 'string', 'max' => 202],
+            [['type'], 'string', 'max' => 25],
+            [['value'], 'string', 'max' => 500],
+            [['product'], 'string', 'max' => 500],
         ];
     }
 
