@@ -84,7 +84,7 @@ class m200126_235309_divide_statistics_views_by_branch extends Migration
             DATE_FORMAT(`date_closed`, '%M %Y') AS `month`,
             YEAR(`date_closed`) AS `year`,
             `final_price` AS `amount`,
-            `effort` + (SELECT SUM(`price_out`) - SUM(`price_in`) FROM `workshop_pre_diagnosis` WHERE `workshop_id` = `w`.`id`) AS `profit`
+            `effort` + COALESCE((SELECT SUM(`price_out`) - SUM(`price_in`) FROM `workshop_pre_diagnosis` WHERE `workshop_id` = `w`.`id`), 0) AS `profit`
             FROM `workshop` `w`
             WHERE `w`.`status` = 1
             "
