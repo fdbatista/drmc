@@ -7,6 +7,7 @@ use Yii;
 /**
  * This is the model class for table "v_sold_products_per_sale".
  *
+ * @property int $branch_id
  * @property string $day
  * @property string $week
  * @property string $month
@@ -30,12 +31,12 @@ class VSoldProductsPerSale extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['branch_id', 'sold_items'], 'required'],
+            [['branch_id', 'year', 'sold_items'], 'integer'],
             [['day'], 'safe'],
-            [['year', 'sold_items'], 'integer'],
-            [['sold_items'], 'required'],
-            [['week'], 'string', 'max' => 35],
-            [['month'], 'string', 'max' => 500],
-            [['product'], 'string', 'max' => 500],
+            [['week'], 'string', 'max' => 7],
+            [['month'], 'string', 'max' => 69],
+            [['product'], 'string', 'max' => 202],
         ];
     }
 
@@ -45,6 +46,7 @@ class VSoldProductsPerSale extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'branch_id' => Yii::t('app', 'Branch ID'),
             'day' => Yii::t('app', 'Day'),
             'week' => Yii::t('app', 'Week'),
             'month' => Yii::t('app', 'Month'),

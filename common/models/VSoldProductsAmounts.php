@@ -7,6 +7,7 @@ use Yii;
 /**
  * This is the model class for table "v_sold_products_amounts".
  *
+ * @property int $branch_id
  * @property string $type
  * @property string $value
  * @property string $product
@@ -28,10 +29,11 @@ class VSoldProductsAmounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['branch_id'], 'integer'],
             [['sold_items'], 'number'],
-            [['type'], 'string', 'max' => 25],
-            [['value'], 'string', 'max' => 500],
-            [['product'], 'string', 'max' => 500],
+            [['type'], 'string', 'max' => 5],
+            [['value'], 'string', 'max' => 69],
+            [['product'], 'string', 'max' => 202],
         ];
     }
 
@@ -41,6 +43,7 @@ class VSoldProductsAmounts extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'branch_id' => Yii::t('app', 'Branch ID'),
             'type' => Yii::t('app', 'Type'),
             'value' => Yii::t('app', 'Value'),
             'product' => Yii::t('app', 'Product'),
