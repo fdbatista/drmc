@@ -62,12 +62,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => 'Introduzca un criterio...'
                 ],
             ],
+            [
+                'attribute' => 'price_out',
+                'label' => AttributesLabels::getAttributeLabel('price_out'),
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Introduzca un criterio...'
+                ],
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Acciones',
                 'headerOptions' => ['class' => 'actions-grid-header'],
-                'template' => '{view} {update} {delete}',
+                'template' => '{view} {update} {update-gallery} {delete}',
                 'buttons' =>
                     [
                     'view' => function ($key) {
@@ -75,6 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'update' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar"><span class="glyphicon glyphicon-pencil"></span></a>';
+                    },
+                    'update-gallery' => function ($key) {
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Actualizar galer&iacute;a"><span class="glyphicon glyphicon-camera"></span></a>';
                     },
                     'delete' => function ($key) {
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
