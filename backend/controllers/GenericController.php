@@ -13,13 +13,13 @@ use yii\web\Controller;
 class GenericController extends Controller {
 
     protected $entityId = '';
-    
+
     public function beforeAction($action) {
         $timeZone = Yii::$app->user->isGuest ? null : Yii::$app->user->identity->getUserData('time_zone');
         date_default_timezone_set($timeZone ? $timeZone : 'America/Havana');
         return parent::beforeAction($action);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +35,16 @@ class GenericController extends Controller {
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['ajax-set-items', 'get-available-items-for-sale', 'select-branch', 'get-brand-models-for-sale', 'calculate-price-with-discounts', 'get-warehouse-items-by-brand-model', 'get-pre-diagnosis-items'],
+                        'actions' => [
+                            'ajax-set-items',
+                            'get-available-items-for-sale',
+                            'select-branch',
+                            'get-brand-models-for-sale',
+                            'calculate-price-with-discounts',
+                            'get-warehouse-items-by-brand-model',
+                            'get-pre-diagnosis-items',
+                            'update-gallery',
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -52,5 +61,5 @@ class GenericController extends Controller {
             ]
         ];
     }
-    
+
 }

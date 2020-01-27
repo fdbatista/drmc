@@ -94,7 +94,25 @@ class ShopController extends GenericController {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
+        $relativeDir = "img/productos";
+        $uploadDir = \Yii::$app->getBasePath() . "/../admin/$relativeDir/$id";
+        $this->rrmdir($uploadDir);
         return $this->redirect(['index']);
+    }
+
+    function rrmdir($dir) {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (is_dir($dir . "/" . $object) && !is_link($dir . "/" . $object))
+                        rrmdir($dir . "/" . $object);
+                    else
+                        unlink($dir . "/" . $object);
+                }
+            }
+            rmdir($dir);
+        }
     }
 
     /**
@@ -105,11 +123,16 @@ class ShopController extends GenericController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Stock::findOne(['id' => $id, 'branch_id' => Yii::$app->session->get('branch_id'), ])) !== null) {
+        if (($model = Stock::findOne(['id' => $id, 'branch_id' => Yii::$app->session->get('branch_id'),])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionUpdateGallery($id) {
+        $model = $this->findModel($id);
+        return $this->render('update-gallery', ['model' => $model]);
     }
 
 }

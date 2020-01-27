@@ -30,21 +30,21 @@ class SiteController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                        [
+                    [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
-                        [
+                    [
                         'actions' => ['logout', 'index', 'profile', 'get-last-days-sales', 'get-last-weeks-sales', 'get-last-months-sales'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                        [
+                    [
                         'actions' => ['set-branch'],
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
-                        [
+                    [
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
@@ -90,63 +90,64 @@ class SiteController extends Controller {
 
     public function actionViewDashboard() {
         Yii::$app->view->params['active'] = 'dashboard';
-        
+        $branchId = Yii::$app->session->get('branch_id');
+
         $data = [
             'sales' => [
                 'currentInfo' => [
-                    ['title' => 'Hoy', 'data' => VSalesCurrentInfo::findOne(['type' => 'day'])],
-                    ['title' => 'Esta semana', 'data' => VSalesCurrentInfo::findOne(['type' => 'week'])],
-                    ['title' => 'Este mes', 'data' => VSalesCurrentInfo::findOne(['type' => 'month'])],
-                    ['title' => 'Este año', 'data' => VSalesCurrentInfo::findOne(['type' => 'year'])],
+                    ['title' => 'Hoy', 'data' => VSalesCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'day'])],
+                    ['title' => 'Esta semana', 'data' => VSalesCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'week'])],
+                    ['title' => 'Este mes', 'data' => VSalesCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'month'])],
+                    ['title' => 'Este año', 'data' => VSalesCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'year'])],
                 ],
             ],
             'sold_products' => [
-                ['title' => 'Hoy', 'id' => 'sold_today', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'day'])->orderBy(['sold_items' => SORT_DESC])->all()],
-                ['title' => 'Esta semana', 'id' => 'sold_this_week', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'week'])->orderBy(['sold_items' => SORT_DESC])->all()],
-                ['title' => 'Este mes', 'id' => 'sold_this_month', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'month'])->orderBy(['sold_items' => SORT_DESC])->all()],
-                ['title' => 'Este a&ntilde;o', 'id' => 'sold_this_year', 'data' => VSoldProductsCurrentInfo::find()->where(['type' => 'year'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Hoy', 'id' => 'sold_today', 'data' => VSoldProductsCurrentInfo::find()->where(['branch_id' => $branchId, 'type' => 'day'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Esta semana', 'id' => 'sold_this_week', 'data' => VSoldProductsCurrentInfo::find()->where(['branch_id' => $branchId, 'type' => 'week'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Este mes', 'id' => 'sold_this_month', 'data' => VSoldProductsCurrentInfo::find()->where(['branch_id' => $branchId, 'type' => 'month'])->orderBy(['sold_items' => SORT_DESC])->all()],
+                ['title' => 'Este a&ntilde;o', 'id' => 'sold_this_year', 'data' => VSoldProductsCurrentInfo::find()->where(['branch_id' => $branchId, 'type' => 'year'])->orderBy(['sold_items' => SORT_DESC])->all()],
             ],
             'workshop' => [
                 'currentInfo' => [
-                    ['title' => 'Hoy', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'day'])],
-                    ['title' => 'Esta semana', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'week'])],
-                    ['title' => 'Este mes', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'month'])],
-                    ['title' => 'Este año', 'data' => VWorkshopCurrentInfo::findOne(['type' => 'year'])],
+                    ['title' => 'Hoy', 'data' => VWorkshopCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'day'])],
+                    ['title' => 'Esta semana', 'data' => VWorkshopCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'week'])],
+                    ['title' => 'Este mes', 'data' => VWorkshopCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'month'])],
+                    ['title' => 'Este año', 'data' => VWorkshopCurrentInfo::findOne(['branch_id' => $branchId, 'type' => 'year'])],
                 ],
             ],
         ];
-        
+
         return $this->render('dashboard', ['data' => $data]);
     }
-    
+
     public function actionGetLastDaysSales() {
         return $this->getLastPeriodSales("select substring(date_format(`value`, '%W'), 1, 3) `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'day' ", 7);
     }
-    
+
     public function actionGetLastWeeksSales() {
         return $this->getLastPeriodSales("select `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'week' order by `value` desc", 4);
     }
-    
+
     public function actionGetLastMonthsSales() {
         return $this->getLastPeriodSales("select substr(`value`, 1, 3) `value`, `amount`, `profit` from `v_sales_grouped_amounts` where `type` = 'month' order by `value` desc", 12);
     }
-    
+
     private function getLastPeriodSales($sql, $limit) {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $salesInfo = VSalesGroupedAmounts::findBySql($sql)->limit($limit)->all();
         $result = ['highest_series' => 0, 'labels' => [], 'series' => []];
         foreach ($salesInfo as $saleInfo) {
             $result['labels'][] = $saleInfo['value'];
-            
+
             $amount = intval($saleInfo['amount']);
             $result['series'][0][] = $amount;
-            if ($amount > $result['highest_series']){
+            if ($amount > $result['highest_series']) {
                 $result['highest_series'] = $amount + 100;
             }
-            
+
             $profit = intval($saleInfo['profit']);
             $result['series'][1][] = $profit;
-            if ($profit > $result['highest_series']){
+            if ($profit > $result['highest_series']) {
                 $result['highest_series'] = $profit + 100;
             }
         }

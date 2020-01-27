@@ -246,3 +246,8 @@ table tbody tr th {
     top: 2px;
     margin-right: 3px;
 }
+
+.preview a img, .preview canvas {
+    width: 150px;
+    height: auto;
+}

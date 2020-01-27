@@ -85,7 +85,7 @@ use yii\web\View;
                                 <?= $form->field($model, 'major_discount', ['inputTemplate' => '<div class="form-group label-floating"><label class="control-label">' . AttributesLabels::getAttributeLabel('major_discount') . '</label>{input}</div>'])->textInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
                             </div>
                         </div>
-
+                        
                         <div class="form-group mt-20">
                             <?= Html::submitButton(Yii::t('app', '<i class="material-icons">check</i> Aceptar'), ['class' => 'btn btn-primary pull-right']) ?>
                         </div>
