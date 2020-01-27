@@ -41,6 +41,25 @@ class m200126_235309_divide_statistics_views_by_branch extends Migration
             "
         );
         
+        $this->execute("CREATE OR REPLACE VIEW `v_sold_products_per_sale`
+        AS
+        SELECT
+            `branch_id`,
+            DATE(`date`) AS `day`,
+            DATE_FORMAT(`date`, '%Y-%u') AS `week`,
+            DATE_FORMAT(`date`, '%M %Y') AS `month`,
+            YEAR(`date`) AS `year`,
+            CONCAT(`dt`.`name`, ' ', `b`.`name`, ' ', `bm`.`name`) AS `product`,
+            `items` AS `sold_items`
+            FROM `sale` `s`
+                INNER JOIN `sale_item` `si` ON (`s`.`id` = `si`.`sale_id`)
+                INNER JOIN `device_type` `dt` ON (`si`.`device_type_id` = `dt`.`id`)
+                INNER JOIN `brand_model` `bm` ON (`si`.`brand_model_id` = `bm`.`id`)
+                INNER JOIN `brand` `b` ON (`bm`.`brand_id` = `b`.`id`)
+            WHERE `s`.`status` = 1
+            "
+        );
+        
         $this->execute("
         CREATE OR REPLACE VIEW `v_sold_products_amounts`
         AS
@@ -123,26 +142,7 @@ class m200126_235309_divide_statistics_views_by_branch extends Migration
             ORDER BY `sold_items` DESC
             "
         );
-        
-        $this->execute("CREATE OR REPLACE VIEW `v_sold_products_per_sale`
-        AS
-        SELECT
-            `branch_id`,
-            DATE(`date`) AS `day`,
-            DATE_FORMAT(`date`, '%Y-%u') AS `week`,
-            DATE_FORMAT(`date`, '%M %Y') AS `month`,
-            YEAR(`date`) AS `year`,
-            CONCAT(`dt`.`name`, ' ', `b`.`name`, ' ', `bm`.`name`) AS `product`,
-            `items` AS `sold_items`
-            FROM `sale` `s`
-                INNER JOIN `sale_item` `si` ON (`s`.`id` = `si`.`sale_id`)
-                INNER JOIN `device_type` `dt` ON (`si`.`device_type_id` = `dt`.`id`)
-                INNER JOIN `brand_model` `bm` ON (`si`.`brand_model_id` = `bm`.`id`)
-                INNER JOIN `brand` `b` ON (`bm`.`brand_id` = `b`.`id`)
-            WHERE `s`.`status` = 1
-            "
-        );
-        
+
     }
 
     /**
