@@ -27,7 +27,8 @@ class m200103_071947_update_sold_products_per_sale_view extends Migration
                 INNER JOIN `brand_model` `bm` ON (`si`.`brand_model_id` = `bm`.`id`)
                 INNER JOIN `brand` `b` ON (`bm`.`brand_id` = `b`.`id`)
             WHERE `s`.`status` = 1
-            ");
+            "
+        );
     }
 
     /**
