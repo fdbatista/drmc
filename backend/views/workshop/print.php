@@ -30,7 +30,7 @@ $appConfig = AppConfig::findOne(1);
     <div class="container-fluid" id="print-page">
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
                 <div class="row">
                     <div class="col-sm-12">
                         <p class="img-print text-uppercase"><?= $appConfig->app_title ?></p>
@@ -42,73 +42,73 @@ $appConfig = AppConfig::findOne(1);
         <div style="font-size: 14px;">
 
             <div class="row data-row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name">Direcci&oacute;n: </span><span><?= $branch->address ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name">Tel&eacute;fono: </span><span><?= $branch->phone_number ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('folio_number') ?>: </span><span><?= $model->folio_number ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('date_received') ?>: </span><span><?= $model->date_received ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('date_closed') ?>: </span><span><?= $model->date_closed ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('name') ?>: </span><span><?= $model->customer_name ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('telephone') ?>: </span><span><?= $model->customer_telephone ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('device') ?>: </span><span><?= $model->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($model->brandModel) ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('pre_diagnosis') ?>: </span><span><?= $preDiagnosis ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('receiver_id') ?>: </span><span><?= $model->receiver->fullName ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name">Contrase&ntilde;a de la nube: </span><span><?= $model->password ? $model->password : $model->pattern ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name">Costo de la reparaci&oacute;n: </span><span>$<?= $model->final_price ?></span>
                 </div>
             </div>
@@ -151,13 +151,13 @@ $appConfig = AppConfig::findOne(1);
             ?>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('warranty_until') ?>: </span><span><?= $model->warranty_until ?></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('observations') ?>: </span><span><?= $model->observations ?></span>
                 </div>
             </div>
