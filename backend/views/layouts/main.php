@@ -188,7 +188,7 @@ $currBranchId = Yii::$app->session->get('branch_id');
                         <div class="row">
                             <div class="col-xs-12">
                                 <p class="copyright pull-right">
-                                    &copy; <?= date('Y') ?> <a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>
+                                    <?= date('Y-m-d h:i')?> | &copy;<a href="https://www.linkedin.com/profile/felix-daniel-batista">fdbatista</a>
                                 </p>
                             </div>
                         </div>
