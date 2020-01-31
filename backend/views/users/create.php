@@ -12,5 +12,5 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Usuarios'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">
-    <?= $this->render('_form', ['model' => $model]) ?>
+    <?= $this->render('_form', ['model' => $model, 'post' => $post]) ?>
 </div>

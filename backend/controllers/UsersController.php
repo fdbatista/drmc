@@ -63,7 +63,7 @@ class UsersController extends GenericController {
             }
         }
 
-        return $this->render('create', ['model' => $model, 'userRole' => 'tecnico']);
+        return $this->render('create', ['model' => $model, 'userRole' => 'tecnico', 'post' => Yii::$app->request->post()]);
     }
 
     /**

@@ -33,11 +33,21 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface {
 
     private CONST STATUS_ACTIVE = 10;
+    
+    public $password;
+    public $password_repeat;
     /**
      * {@inheritdoc}
      */
     public static function tableName() {
         return 'user';
+    }
+    
+    public function safeAttributes() {
+        $safeAttribs = parent::safeAttributes();
+        $safeAttribs[] = 'password';
+        $safeAttribs[] = 'password_repeat';
+        return $safeAttribs;
     }
 
     /**
@@ -45,7 +55,7 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
-            [['username', 'auth_key', 'first_name', 'address', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
+            [['username', 'auth_key', 'first_name', 'address', 'email', 'created_at', 'updated_at'], 'required'],
             [['status', 'branch_id', 'created_at', 'updated_at'], 'integer'],
             [['user_data'], 'safe'],
             [['username', 'first_name', 'last_name', 'email'], 'string', 'max' => 50],
@@ -56,6 +66,7 @@ class User extends ActiveRecord implements IdentityInterface {
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
+            //['password', 'compare', 'compareAttribute' => 'password_repeat'],
             [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
         ];
     }

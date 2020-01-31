@@ -23,7 +23,9 @@ use yii\web\View;
                         <p class="category">Complete el siguiente formulario</p>
                     </div>
                     <div class="card-content">
-                        <?php $form = ActiveForm::begin(); ?>
+                        <?php $form = ActiveForm::begin(); 
+                        echo $model->password . ' - ' . $model->password_repeat;
+                        ?>
                         <?php include_once __DIR__ . '/../layouts/partials/model-errors.php'; ?>
 
                         <div class="row">
