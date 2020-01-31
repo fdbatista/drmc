@@ -2,6 +2,7 @@
 
 use backend\assets\DatePickerAsset;
 use backend\assets\PrintAsset;
+use common\models\AppConfig;
 use common\models\Sale;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
@@ -21,6 +22,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Detalles de la venta
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
 $branch = $model->branch;
+$appConfig = AppConfig::findOne(1);
 ?>
 
 <div class="content">
@@ -31,7 +33,7 @@ $branch = $model->branch;
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-12">
-                        <p class="img-print">TECNO - CELL</p>
+                        <p class="img-print text-uppercase"><?= $appConfig->app_title ?></p>
                     </div>
                 </div>
             </div>
