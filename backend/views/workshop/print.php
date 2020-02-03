@@ -125,10 +125,10 @@ $appConfig = AppConfig::findOne(1);
                         <span class="data-content">ANTICIPO</span>
                     </div>
                     <div class="col-sm-1">
-                        <span class="data-content">FECHA</span>
+                        <span class="data-content pull-right">FECHA</span>
                     </div>
                     <div class="col-sm-1">
-                        <span class="data-content">CANT</span>
+                        <span class="data-content pull-right">CANT</span>
                     </div>
                 </div>
                 <?php
@@ -140,10 +140,10 @@ $appConfig = AppConfig::findOne(1);
                         <span class="data-name">Anticipo <?= $key + 1 ?>: </span>
                     </div>
                     <div class="col-sm-1">
-                        <span class="data-content"><?= (new DateTime($value->date))->format('Y-m-d') ?></span>
+                        <span class="data-content pull-right"><?= (new DateTime($value->date))->format('Y-m-d') ?></span>
                     </div>
                     <div class="col-sm-1">
-                        <span class="data-content">$<?= $value->amount ?></span>
+                        <span class="data-content pull-right">$<?= $value->amount ?></span>
                     </div>
                 </div>
                 <?php

@@ -66,7 +66,8 @@ html {
 }
 
 .col-sm-3, .col-xs-3 {
-    width:25% !important;
+    /*width:25% !important;*/
+    width:33% !important;
 }
 
 .col-sm-2, .col-xs-2 {
@@ -74,7 +75,8 @@ html {
 }
 
 .col-sm-1, .col-xs-1 {
-    width:8.33333333% !important;
+/*    width:8.33333333% !important;*/
+    width:11% !important;
 }
 
 .col-sm-1,

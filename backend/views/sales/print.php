@@ -72,10 +72,10 @@ $appConfig = AppConfig::findOne(1);
                     <span class="data-content">PRODUCTO</span>
                 </div>
                 <div class="col-sm-1">
-                    <span class="data-content">CANT</span>
+                    <span class="data-content pull-right">CANT</span>
                 </div>
                 <div class="col-sm-1">
-                    <span class="data-content">PRECIO</span>
+                    <span class="data-content pull-right">PRECIO</span>
                 </div>
             </div>
 
@@ -85,13 +85,13 @@ $appConfig = AppConfig::findOne(1);
                 ?>
                 <div class="row">
                     <div class="col-sm-1">
-                        <span><?= $value->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($value->brandModel) ?></span>
+                        <span><?= $value->deviceType->name ?></span>
                     </div>
                     <div class="col-sm-1">
-                        <span><?= $value->items ?></span>
+                        <span class="pull-right"><?= $value->items ?></span>
                     </div>
                     <div class="col-sm-1">
-                        <span>$<?= $value->price_out * $value->items ?></span>
+                        <span class="pull-right">$<?= $value->price_out * $value->items ?></span>
                     </div>
                 </div>
                 <?php
@@ -104,7 +104,7 @@ $appConfig = AppConfig::findOne(1);
                 </div>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-1">
-                    <span>$<?= $model->total_price + $model->discount_applied ?></span>
+                    <span class="pull-right">$<?= $model->total_price + $model->discount_applied ?></span>
                 </div>
             </div>
             
@@ -114,7 +114,7 @@ $appConfig = AppConfig::findOne(1);
                 </div>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-1">
-                    <span>$<?= $model->discount_applied ?></span>
+                    <span class="pull-right">$<?= $model->discount_applied ?></span>
                 </div>
             </div>
             
@@ -124,7 +124,7 @@ $appConfig = AppConfig::findOne(1);
                 </div>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-1">
-                    <span class="data-name">$<?= $model->total_price ?></span>
+                    <span class="data-name data-content pull-right">$<?= $model->total_price ?></span>
                 </div>
             </div>
             
