@@ -40,25 +40,25 @@ $appConfig = AppConfig::findOne(1);
         </div>
 
         <div style="font-size: 14px;">
-            
+
             <div class="row data-row">
                 <div class="col-sm-3">
                     <span class="data-name">Direcci&oacute;n: </span><span><?= $branch->address ?></span>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-sm-3">
                     <span class="data-name">Tel&eacute;fono: </span><span><?= $branch->phone_number ?></span>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-sm-3">
                     <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span><span><?= $model->date ?></span>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-sm-3">
                     <span class="data-name">Folio: </span><span><?= $model->serial_number ?></span>
@@ -107,17 +107,23 @@ $appConfig = AppConfig::findOne(1);
                     <span class="pull-right">$<?= $model->total_price + $model->discount_applied ?></span>
                 </div>
             </div>
-            
-            <div class="row">
-                <div class="col-sm-1">
-                    <span class="data-name">DESCUENTO</span>
+
+            <?php
+            if ($model->discount_applied > 0) {
+                ?>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <span class="data-name">DESCUENTO</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-1">
+                        <span class="pull-right">$<?= $model->discount_applied ?></span>
+                    </div>
                 </div>
-                <div class="col-sm-1"></div>
-                <div class="col-sm-1">
-                    <span class="pull-right">$<?= $model->discount_applied ?></span>
-                </div>
-            </div>
-            
+                <?php
+            }
+            ?>
+
             <div class="row">
                 <div class="col-sm-1">
                     <span class="data-name">TOTAL</span>
@@ -127,9 +133,9 @@ $appConfig = AppConfig::findOne(1);
                     <span class="data-name data-content pull-right">$<?= $model->total_price ?></span>
                 </div>
             </div>
-            
+
         </div>
-    
+
         <div class="row non-printable">
             <div class="col-sm-12">
                 <p class="text-left">
@@ -137,7 +143,7 @@ $appConfig = AppConfig::findOne(1);
                 </p>
             </div>
         </div>
-    
+
     </div>
 
 </div>
