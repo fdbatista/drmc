@@ -5,7 +5,6 @@ use backend\assets\PrintAsset;
 use common\models\AppConfig;
 use common\models\Sale;
 use common\utils\AttributesLabels;
-use common\utils\StaticMembers;
 use yii\bootstrap\ActiveForm;
 use yii\web\View;
 

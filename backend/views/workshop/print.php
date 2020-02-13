@@ -1,15 +1,12 @@
 <?php
 
-use backend\assets\DatePickerAsset;
 use backend\assets\PrintAsset;
-use common\models\AppConfig;
 use common\models\Workshop;
 use common\utils\AttributesLabels;
 use common\utils\StaticMembers;
 use yii\bootstrap\ActiveForm;
 use yii\web\View;
 
-DatePickerAsset::register($this);
 PrintAsset::register($this);
 
 /* @var $this View */
@@ -22,148 +19,11 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Datos de la reparaci
 $this->params['breadcrumbs'][] = Yii::t('app', 'Imprimir comprobante');
 
 $branch = $model->branch;
-$appConfig = AppConfig::findOne(1);
 ?>
 
 <div class="content">
 
     <div class="container-fluid" id="print-page">
-
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <p class="img-print text-uppercase"><?= $appConfig->app_title ?></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div style="font-size: 14px;">
-
-            <div class="row data-row">
-                <div class="col-sm-3">
-                    <span class="data-name">Direcci&oacute;n: </span><span><?= $branch->address ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name">Tel&eacute;fono: </span><span><?= $branch->phone_number ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('folio_number') ?>: </span><span><?= $model->folio_number ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date_received') ?>: </span><span><?= $model->date_received ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date_closed') ?>: </span><span><?= $model->date_closed ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('name') ?>: </span><span><?= $model->customer_name ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('telephone') ?>: </span><span><?= $model->customer_telephone ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('device') ?>: </span><span><?= $model->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($model->brandModel) ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('pre_diagnosis') ?>: </span><span><?= $preDiagnosis ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('receiver_id') ?>: </span><span><?= $model->receiver->fullName ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name">Contrase&ntilde;a de la nube: </span><span><?= $model->password ? $model->password : $model->pattern ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name">Costo de la reparaci&oacute;n: </span><span>$<?= $model->final_price ?></span>
-                </div>
-            </div>
-
-            <br />
-
-
-            <?php
-            $items = $model->getWorkshopPayments()->orderBy(['date' => 'asc'])->all();
-            if (count($items) > 0) {
-                ?>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <span class="data-content">ANTICIPO</span>
-                    </div>
-                    <div class="col-sm-1">
-                        <span class="data-content pull-right">FECHA</span>
-                    </div>
-                    <div class="col-sm-1">
-                        <span class="data-content pull-right">CANT</span>
-                    </div>
-                </div>
-                <?php
-            }
-            foreach ($items as $key => $value) {
-                ?>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <span class="data-name">Anticipo <?= $key + 1 ?>: </span>
-                    </div>
-                    <div class="col-sm-1">
-                        <span class="data-content pull-right"><?= (new DateTime($value->date))->format('Y-m-d') ?></span>
-                    </div>
-                    <div class="col-sm-1">
-                        <span class="data-content pull-right">$<?= $value->amount ?></span>
-                    </div>
-                </div>
-                <?php
-            }
-            ?>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('warranty_until') ?>: </span><span><?= $model->warranty_until ?></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('observations') ?>: </span><span><?= $model->observations ?></span>
-                </div>
-            </div>
-
-
-        </div>
 
         <div class="row non-printable">
             <div class="col-sm-12">
@@ -172,7 +32,170 @@ $appConfig = AppConfig::findOne(1);
                 </p>
             </div>
         </div>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="img-print">TECNO - CELL</p>
+                    </div>
+                    <div class="col-sm-12">
+                        <p style="text-align: center; font-size: 24px; font-weight: bolder; font-style: italic;">
+                            Soporte especializado en:
+                        </p>
+                        <p style="text-align: center; font-size: 24px; font-weight: bolder; font-style: italic;">
+                            Celulares, Tablets y Laptops
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p><?= $branch->address ?><br />Tel: <?= $branch->phone_number ?></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p style="margin-top: 10px;"><span class="img-print" style="font-size: 36px; background: #383838; color: #fff; padding: 2px 3px 0 10px; font-weight: 700;">f</span> Tecno - Cell</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <p style="text-align: left; margin-top: 25px; color: #383838"><i class="material-icons" style="font-size: 120px;">phone_iphone</i></p>
+            </div>
+        </div>
 
+        <div style="font-size: 16px;">
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('folio_number') ?>: </span>
+                </div>
+                <div class="col-sm-4">
+                    <span class="data-content"><?= $model->folio_number ?></span>
+                </div>
+                <div class="col-sm-1">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('date') ?>: </span>
+                </div>
+                <div class="col-sm-2">
+                    <span class="data-content"><?= $model->date_received ?></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('name') ?>: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content"><?= $model->customer_name ?></span>
+                </div>
+            </div>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('telephone') ?>: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content"><?= $model->customer_telephone ?></span>
+                </div>
+            </div>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('device') ?>: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content"><?= $model->deviceType->name . ' ' . StaticMembers::getModelAndBrandName($model->brandModel) ?></span>
+                </div>
+            </div>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('pre_diagnosis') ?>: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content"><?= $preDiagnosis ?></span>
+                </div>
+            </div>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('receiver_id') ?>: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content"><?= $model->receiver->fullName ?></span>
+                </div>
+            </div>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name">Contrase&ntilde;a de la Nube: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content"><?= $model->password ? $model->password : $model->pattern ?></span>
+                </div>
+            </div>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name">Costo de la reparaci&oacute;n: </span>
+                </div>
+                <div class="col-sm-9">
+                    <span class="data-content">$<?= $model->final_price ?></span>
+                </div>
+            </div>
+
+            <?php
+            $items = $model->getWorkshopPayments()->orderBy(['date' => 'asc'])->all();
+            foreach ($items as $key => $value) {
+                ?>
+                <div class="row">
+                    <div class="col-sm-3" style="padding-left: 30px;">
+                        <span class="data-name">Anticipo <?= $key + 1 ?>: </span>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="data-content">$<?= $value->amount ?></span>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="data-name">Fecha: </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="data-content"><?= (new DateTime($value->date))->format('Y-m-d') ?></span>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('warranty_until') ?>: </span>
+                </div>
+                <div class="col-sm-4">
+                    <span class="data-content"><?= $model->warranty_until ?></span>
+                </div>
+            </div>
+            
+            <div class="row data-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('observations') ?>: </span>
+                </div>
+                <div class="col-sm-4">
+                    <span class="data-content"><?= $model->observations ?></span>
+                </div>
+            </div>
+
+            <div class="row signature-row">
+                <div class="col-sm-3">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_in') ?></span>
+                </div>
+                <div class="col-sm-2" style="border-bottom: 1px solid grey;"></div>
+                <div class="col-sm-3 col-sm-offset-1">
+                    <span class="data-name"><?= AttributesLabels::getAttributeLabel('signature_out') ?></span>
+                </div>
+                <div class="col-sm-2" style="border-bottom: 1px solid grey;"></div>
+            </div>
+
+        </div>
     </div>
 
 </div>
