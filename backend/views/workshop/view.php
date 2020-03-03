@@ -24,14 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
             echo Html::a('<i class="material-icons">credit_card</i> ' . Yii::t('app', 'Anticipos'), ['index-payments', 'id' => $model->id], ['class' => 'btn btn-info']);
             echo Html::a('<i class="material-icons">update</i> ' . Yii::t('app', 'Actualizar'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
             echo Html::a('<i class="material-icons">healing</i> ' . Yii::t('app', 'Cerrar reparación'), ['finish-repair', 'id' => $model->id], ['class' => 'btn btn-warning']);
-            echo Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
+            
+        }
+        
+        echo Html::a('<i class="material-icons">delete</i> ' . Yii::t('app', 'Eliminar'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('app', 'Confirme que desa eliminar este elemento'),
                     'method' => 'post',
                 ],
             ]);
-        }
         ?>
     </p>
 

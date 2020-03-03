@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Imprimir"><span class="glyphicon glyphicon-print"></span></a>';
                     },
                     'delete' => function ($key, $model) {
-                        return $model->status === 0 ? '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>' : '';
+                        return '<a href="' . $key . '" data-toggle="tooltip" data-placement="top" title="Eliminar" data-confirm="Confirmar eliminación de este elemento" data-method="post"><span class="glyphicon glyphicon-trash"></span></a>';
                     },
                 ]
             ],
