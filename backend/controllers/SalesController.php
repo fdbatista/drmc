@@ -207,7 +207,7 @@ class SalesController extends GenericController {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $result = ['stock' => [], 'cart' => [], 'discount_applied' => $saleId ? Sale::findOne($saleId)->discount_applied : 0];
 
-        $stockItems = Stock::find()->where(['branch_id' => Yii::$app->session->get('branch_id'), 'stock_type_id' => 1])->andWhere('items > 0')->select(['code', 'items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'device_type_id', 'brand_model_id'])->asArray()->all();
+        $stockItems = Stock::find()->where(['branch_id' => Yii::$app->session->get('branch_id')/*, 'stock_type_id' => 1*/])->andWhere('items > 0')->select(['code', 'items', 'price_in', 'price_out', 'first_discount', 'major_discount', 'device_type_id', 'brand_model_id', 'stock_type_id'])->asArray()->all();
         foreach ($stockItems as $item) {
             $result['stock'][] = $this->addAvailableItemData($item, 'stock');
         }
